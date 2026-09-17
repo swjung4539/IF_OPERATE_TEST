@@ -1,0 +1,3 @@
+config load "C:\Users\LAB\Desktop\MSC-HIFx\sub\mxc-hif1-dio\interface_sub\interface_sub.ioc"
+project generate
+exit

@@ -1,0 +1,2887 @@
+[
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\.clangd",
+        "Destination":  "Firmware\\Main\\.clangd",
+        "SHA256":  "6B29D06CE8DDDA67DFF00722C094EDB9DE9A0B0F267E274E003C1E3BEA68EAA4"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\.cproject",
+        "Destination":  "Firmware\\Main\\.cproject",
+        "SHA256":  "EEB856C3B62EFF1926AE09C90F1844361A67CF01852596417A368947912A3A0F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\.gitignore",
+        "Destination":  "Firmware\\Main\\.gitignore",
+        "SHA256":  "AB0F5309E08DF26BA8F7D54AEB314CF0FB4EB5E1048CF7616623F4A3C5F86AAB"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\.mxproject",
+        "Destination":  "Firmware\\Main\\.mxproject",
+        "SHA256":  "15CBB64FAECF49F79E7873802B46AAED551844A84490E4E8F2079579FDEE0F13"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\.project",
+        "Destination":  "Firmware\\Main\\.project",
+        "SHA256":  "62A8FD7A8BBC81D7997FFA5A92423AAFD9D695A8969AD2D7C5BA08FC7D229AE7"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\AGENTS.md",
+        "Destination":  "Firmware\\Main\\AGENTS.md",
+        "SHA256":  "E7AB55B3AB8EC69A1982F17EC1BF4002D8E0DB9BB8907ED1C1C7C2A63A636F7F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\CLAUDE.md",
+        "Destination":  "Firmware\\Main\\CLAUDE.md",
+        "SHA256":  "F7EB68CADC607012EE31A7B963EE7FA6545154CCB223CAAD4D822D8A806E9849"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\CMakeLists.txt",
+        "Destination":  "Firmware\\Main\\CMakeLists.txt",
+        "SHA256":  "449F5EFA62044FA9A913DF0049882E33431606E9DCB32A6DA0C2A3037AA2FCEE"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\CMakePresets.json",
+        "Destination":  "Firmware\\Main\\CMakePresets.json",
+        "SHA256":  "4D0B8FB936DD9BBB4A4DF02E567AD7AB970E0475D0329E8BE31BD88FFF6B953F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\IF_MAIN.ioc",
+        "Destination":  "Firmware\\Main\\IF_MAIN.ioc",
+        "SHA256":  "6BA93D2251B8A6172B1CFECFD5D0BF1A5AEFCE77F67AEC1E98DB1885BA267425"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\IF_main.launch",
+        "Destination":  "Firmware\\Main\\IF_main.launch",
+        "SHA256":  "F97A555B8815E0ECB9B0BCE0A8D395D04707B0D55D2424CB0F162141A3BE9AAE"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\startup_stm32l452xx.s",
+        "Destination":  "Firmware\\Main\\startup_stm32l452xx.s",
+        "SHA256":  "09AD3A040149F363B27444CEA910FE62C942B361F3D9999B6D04C1A3162DCF9D"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\STM32L452VETX_FLASH.ld",
+        "Destination":  "Firmware\\Main\\STM32L452VETX_FLASH.ld",
+        "SHA256":  "01F1D64FDE4949442CCB56CB6556189E141EC38EE4D578BF7A4651CCA6162627"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\STM32L452VETX_RAM.ld",
+        "Destination":  "Firmware\\Main\\STM32L452VETX_RAM.ld",
+        "SHA256":  "05638E88F6BB76109281B1F78D2C5AC018F32778302C5825B991A6751E1F4BE9"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\STM32L452VETX_SLOTA.ld",
+        "Destination":  "Firmware\\Main\\STM32L452VETX_SLOTA.ld",
+        "SHA256":  "1C67A71D6B27DB6F49D42156DCC31773DA0BDAE0B89770596426D2AE91A7A943"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\STM32L452VETX_SLOTB.ld",
+        "Destination":  "Firmware\\Main\\STM32L452VETX_SLOTB.ld",
+        "SHA256":  "FD3CF75AFE4100A98B1B81E72A2EB450507A9016A89AE55850071D32C0CBB472"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\STM32L452XX_FLASH.ld",
+        "Destination":  "Firmware\\Main\\STM32L452XX_FLASH.ld",
+        "SHA256":  "4F4084733DDF7FF75186C177C0092EB1B0070CE2226018A1F141F340B0D6C2E9"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\.settings\\bundles-lock.store.json",
+        "Destination":  "Firmware\\Main\\.settings\\bundles-lock.store.json",
+        "SHA256":  "C1B3A45D98383A7A0263C76554E53232C159A3F3106E0E9F7F5265772B9E1AE5"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\.settings\\bundles.store.json",
+        "Destination":  "Firmware\\Main\\.settings\\bundles.store.json",
+        "SHA256":  "C917EB74F2F40AE4525FBBCDBA19599077849F429810022DF78E7505B3786332"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\.settings\\com.st.stm32cube.ide.mcu.sfr.prefs",
+        "Destination":  "Firmware\\Main\\.settings\\com.st.stm32cube.ide.mcu.sfr.prefs",
+        "SHA256":  "25B6DB25D77F22324A14A2A15E8842541412D7151A5BE255A475A32DC7DFA069"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\.settings\\com.st.stm32cube.ide.mcu.sfrview.prefs",
+        "Destination":  "Firmware\\Main\\.settings\\com.st.stm32cube.ide.mcu.sfrview.prefs",
+        "SHA256":  "A6188E0FF8E84F1AE480F614D33AF1DA46C360359EE8C6E29A97B521C1331B7F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\.settings\\ide.store.json",
+        "Destination":  "Firmware\\Main\\.settings\\ide.store.json",
+        "SHA256":  "D3902FC03A8F0AE4CD33805134B0527EB0679326CA0443C486673EB5DF761D10"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\.settings\\language.settings.xml",
+        "Destination":  "Firmware\\Main\\.settings\\language.settings.xml",
+        "SHA256":  "663138EABB5760246BDAA929F20430C0AECC21312F19F03F25A67FEF0D7D0457"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\.settings\\org.eclipse.cdt.core.prefs",
+        "Destination":  "Firmware\\Main\\.settings\\org.eclipse.cdt.core.prefs",
+        "SHA256":  "DD2BE980674A58269C75B44E9A33C398CCB194A3CAD67F80F06EAC060852BD74"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\.settings\\org.eclipse.core.resources.prefs",
+        "Destination":  "Firmware\\Main\\.settings\\org.eclipse.core.resources.prefs",
+        "SHA256":  "1A5B17D8A429F89E30D0D5FC6E12E81D37EA8F6F3F4A206383F4AF8564292AC0"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\.settings\\stm32cubeide.project.prefs",
+        "Destination":  "Firmware\\Main\\.settings\\stm32cubeide.project.prefs",
+        "SHA256":  "302C8FC11C7D13CCF79E4502EC18BE0898BC0710901EE961729A44B4A01E9CB5"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\.vscode\\c_cpp_properties.json",
+        "Destination":  "Firmware\\Main\\.vscode\\c_cpp_properties.json",
+        "SHA256":  "1F004DB932FB215F8FD2852F9D24FBAAC2A8D2FD71145E4E7B04A0CAA48A4614"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\.vscode\\settings.json",
+        "Destination":  "Firmware\\Main\\.vscode\\settings.json",
+        "SHA256":  "F7EAEDB8CBC48FE7715ADE8B79146B5D919C5E5CEBD50EB5CCE9320A7F67E9CD"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\INDEX.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\INDEX.md",
+        "SHA256":  "BF112D21694798B38365AFEE44A10878B0342C9F23FE30562FDEB05E4D9F2AAB"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\agent-guides\\00-core-rules.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\agent-guides\\00-core-rules.md",
+        "SHA256":  "6F02C56961B7685FBBD0FF82AE9F823FB20C5806392307F966864935C2CD4983"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\agent-guides\\01-superpowers-scope.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\agent-guides\\01-superpowers-scope.md",
+        "SHA256":  "734902887DB6756EE299C856650478B229C4CD3A96FC131F96A4BB82B0863DD5"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\agent-guides\\02-workflow.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\agent-guides\\02-workflow.md",
+        "SHA256":  "8DABDF4D80DDF102CC6CE016AD6CAF15D07A5D40AB468E6C631663D145F05424"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\agent-guides\\03-sdd.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\agent-guides\\03-sdd.md",
+        "SHA256":  "03335857BAA47DD4F88F130D6B7915681375D251573338186E9FA41A9DD6DAC7"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\agent-guides\\04-tdd.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\agent-guides\\04-tdd.md",
+        "SHA256":  "E6F973A7A4F3DA1C1CDA91317F642EDAF0D1F26196AA111E4ABAF68AA42B25A3"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\agent-guides\\05-debugging.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\agent-guides\\05-debugging.md",
+        "SHA256":  "A3BCA403BF20995FE30B63BE1649E3451F63B0641E98726D141C81929C502E24"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\agent-guides\\06-code-review.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\agent-guides\\06-code-review.md",
+        "SHA256":  "1B4BAC9DF6D622BAD268F05352BB64B828F37FD5A9A7B122CE422DB428AF918C"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\agent-guides\\07-verification.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\agent-guides\\07-verification.md",
+        "SHA256":  "6243A186D3EA5A6CAD2D9060ED5A97F7E8B76C8A1674F3460D06480FBCE1495B"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\agent-guides\\08-yagni-dry.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\agent-guides\\08-yagni-dry.md",
+        "SHA256":  "E1EC14167F71731E479E21FC2961AA3622D9130CCE5AB3874E385F6F0B775785"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\agent-guides\\09-safety-communication.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\agent-guides\\09-safety-communication.md",
+        "SHA256":  "1F27203B8D23225C66F0193D1A739553C12D5A1FBE5449869D557859A8ABB41A"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\agent-guides\\10-skill-tool-recommendation.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\agent-guides\\10-skill-tool-recommendation.md",
+        "SHA256":  "E1B8B2F570022F09E8026CD81D0A0E2BFFAACDC33308B5B293D0B3A8A8DC881E"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\agent-guides\\11-auto-correction-loop.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\agent-guides\\11-auto-correction-loop.md",
+        "SHA256":  "05C0B8E4F66D3D5292A9F1B9B335CE628F995F42672D5455B1FA89BBE19B86E3"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\agent-guides\\12-issue-feedback-log.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\agent-guides\\12-issue-feedback-log.md",
+        "SHA256":  "7058BFE92EC8BCE75B505D11410C867CD285A5AC0213388CD77A3194C1CBD9E9"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\agent-guides\\13-protected-paths.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\agent-guides\\13-protected-paths.md",
+        "SHA256":  "212894CA5FF9E56F962F5D5F5B56BF43B67A7A23497193C051A2E3A40C1CFD06"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\agent-guides\\14-firmware-coding-standard.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\agent-guides\\14-firmware-coding-standard.md",
+        "SHA256":  "1DD2FF0B29F98F8BB60A0FD2C08D45B01C54302C95E492DF72B557158BF04BF8"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\agent-guides\\15-context-learning-memory.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\agent-guides\\15-context-learning-memory.md",
+        "SHA256":  "227D3737339D63C29BE4925AF961A747D36A36772E7C32FFBC43F7218B0AA44D"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\agent-guides\\README.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\agent-guides\\README.md",
+        "SHA256":  "C7C86C5C615FEB83D790D84B62FB1EA82FACA3E3CE8E286C2F19E417F2159626"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\artifacts\\01-sequence-diagrams.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\artifacts\\01-sequence-diagrams.md",
+        "SHA256":  "BA563C6002AEAB926788D974540724DD9997EE3E35562EF0733CFD7C4B4DB2B9"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\artifacts\\02-full-code-review-2026-06-30.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\artifacts\\02-full-code-review-2026-06-30.md",
+        "SHA256":  "044CFEA49C441FAC99075C8C785B8329E07019BC31A5AB5AFF5FFB7426B8B598"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\artifacts\\03-communication-flow.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\artifacts\\03-communication-flow.md",
+        "SHA256":  "DE0E7B43DE179415451E3793D8113578BC88FF36B5A109ABB91F75AE47B9CBD0"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\artifacts\\04-handover-2026-07-30.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\artifacts\\04-handover-2026-07-30.md",
+        "SHA256":  "68006FDD611AB8F17179370D94BFF4F93B5F76F38E01656105E7A0CED68E116E"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\artifacts\\README.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\artifacts\\README.md",
+        "SHA256":  "661E22113763FEB450501C7C61D16454F05FC16BE9273599A55479BD2F47E315"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\checklists\\.gitkeep",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\checklists\\.gitkeep",
+        "SHA256":  "7EB70257593DA06F682A3DDDA54A9D260D4FC514F645237F5CA74B08F8DA61A6"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\checklists\\01-tdd-checklist.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\checklists\\01-tdd-checklist.md",
+        "SHA256":  "E490409E86D83281C981A46151F52416B6C5420C336738E3A0E94DAC72E64FD7"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\checklists\\02-debugging-checklist.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\checklists\\02-debugging-checklist.md",
+        "SHA256":  "EE0482F23FB024D197AE69F770F45B994C83F9D81D3808DD7F40D2DCC7A4120A"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\checklists\\03-implementation-completion-checklist.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\checklists\\03-implementation-completion-checklist.md",
+        "SHA256":  "18C8B8C0E9CF077928823D13CFDBE81B83CECD107998AD8739212B01EEB0E011"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\checklists\\04-firmware-coding-checklist.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\checklists\\04-firmware-coding-checklist.md",
+        "SHA256":  "522802A2A70672F8145BDECA3D945A58E5C0649D100A6A2CE47D100F4AA4D185"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\checklists\\05-communication-checklist.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\checklists\\05-communication-checklist.md",
+        "SHA256":  "76F415E84D1257375BEE459CC216F769ABE8EF8B07E37FEBC1E0771022E16987"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\checklists\\README.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\checklists\\README.md",
+        "SHA256":  "73209634D73CEC893F10B7227C4E182E5FF3110C9978546FFE5AFD9538EE2636"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\documents\\.gitkeep",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\documents\\.gitkeep",
+        "SHA256":  "7EB70257593DA06F682A3DDDA54A9D260D4FC514F645237F5CA74B08F8DA61A6"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\documents\\01-requirements.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\documents\\01-requirements.md",
+        "SHA256":  "E4BA042928E3437423E1C78B8FBDC1BB53FD7D18626FDC7956B77CEA1F5C4421"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\documents\\02-architecture.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\documents\\02-architecture.md",
+        "SHA256":  "B99B69809B7F99A6D44CEF840549B02A05E8283A1578575B236BAD9C44BA5CCC"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\documents\\03-interfaces.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\documents\\03-interfaces.md",
+        "SHA256":  "28D02912A59F66189F43E6A16E3D913A9AE97470A664BFBD02E833E747FCC97A"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\documents\\04-data-model.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\documents\\04-data-model.md",
+        "SHA256":  "FBD9D9BA5D0625EAF404662851FC0FA64187063A9AD8C3DD1FA67344ECF7E896"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\documents\\05-protocol.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\documents\\05-protocol.md",
+        "SHA256":  "B873CCC11A6C9A5A887C2002DBD87B70A41601F92F4A98366F35E3EA74646053"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\documents\\06-design-decisions.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\documents\\06-design-decisions.md",
+        "SHA256":  "F5D68DE0D4581E184F13376727C9A52E9F6F03B38EEC34AF8589C082303341F9"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\documents\\07-implementation-plan.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\documents\\07-implementation-plan.md",
+        "SHA256":  "329B19E9611B7E8286832003A0E763A5BA2CB26BDAE0A229C42BA8A058E74D36"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\documents\\08-at25sf041b-desired-state-recovery-report.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\documents\\08-at25sf041b-desired-state-recovery-report.md",
+        "SHA256":  "206C3FA6B609E91977CE2438C7387254E11BE20D24C0F1674A7E7706D663128D"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\documents\\08-implementation-notes.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\documents\\08-implementation-notes.md",
+        "SHA256":  "92FCFB208DA2EA1742DCD8CD0E160DCE1BA7316E1206606ACC9FD4804EE9AFF8"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\documents\\README.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\documents\\README.md",
+        "SHA256":  "8138A9339DD2D921A5885D76A0E17530BB8E64394827F3D6B43A245BD9C54C0C"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\feedback\\.gitkeep",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\feedback\\.gitkeep",
+        "SHA256":  "7EB70257593DA06F682A3DDDA54A9D260D4FC514F645237F5CA74B08F8DA61A6"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\feedback\\01-issue-log.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\feedback\\01-issue-log.md",
+        "SHA256":  "C3CBDC47C1D1FBFC37DAC1322183038DCD53E31D2F301368B7FD6A6AE7D44A96"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\feedback\\02-work-log.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\feedback\\02-work-log.md",
+        "SHA256":  "C3A681A599B3C3873D60CE07921FE27AA95493C6D438AA5D933C43D9ADFD4BC5"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\feedback\\README.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\feedback\\README.md",
+        "SHA256":  "B06C5AB6D6BEA33E6725DCFB3BEBA98BD88703A4E0FA39BAEEF536B48667E804"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\references\\.gitkeep",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\references\\.gitkeep",
+        "SHA256":  "7EB70257593DA06F682A3DDDA54A9D260D4FC514F645237F5CA74B08F8DA61A6"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\references\\01-swv-itm-logging.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\references\\01-swv-itm-logging.md",
+        "SHA256":  "CAA80E7F4404032EA73A024A3F83C06EB62D08625C5F5A64AF05547984E1AA3F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\references\\02-Æ߿þ¾¹ßǥÁعװü¸®Áöħ.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\references\\02-Æ߿þ¾¹ßǥÁعװü¸®Áöħ.md",
+        "SHA256":  "561BDBFB925A2A07190A37F71E76EC69F5086CA348956AAE6B34D010765A79AF"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\references\\MXC-HIF_ÅëÇÕ_°³¹ß_»ç¾缭_Rev00 1.xlsx",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\references\\MXC-HIF_ÅëÇÕ_°³¹ß_»ç¾缭_Rev00 1.xlsx",
+        "SHA256":  "7B11E16B366D10FDB3F5C866D63A070B4E6A3541546ABA03D9A29C6DACBD42D9"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\references\\README.md",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\references\\README.md",
+        "SHA256":  "69EA4E34A410C9B62001C6DF95B458C44990728BF90074453FE9BE78B8FB98B2"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\ai_work_documents\\references\\¿ܺÎÅë½ÅÇÁ·ÎÅäÄÝ »ç¾缭_PLC_MXC_HIF_R08.docx",
+        "Destination":  "Firmware\\Main\\ai_work_documents\\references\\¿ܺÎÅë½ÅÇÁ·ÎÅäÄÝ »ç¾缭_PLC_MXC_HIF_R08.docx",
+        "SHA256":  "E4AAA0B5852D272BD30D03B4BB459DCE133E9A781BFF145A28281D08CF78A370"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\cmake\\gcc-arm-none-eabi.cmake",
+        "Destination":  "Firmware\\Main\\cmake\\gcc-arm-none-eabi.cmake",
+        "SHA256":  "2F21222E4B0E391B2085755DEC0D00A519BA6439D6D82719FB35AABF354E5C40"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\cmake\\starm-clang.cmake",
+        "Destination":  "Firmware\\Main\\cmake\\starm-clang.cmake",
+        "SHA256":  "D364BC965F2BC56474255DCE8B17D0691D1432D4DD62E249C85939C5A2D591A3"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\cmake\\stm32cubemx\\CMakeLists.txt",
+        "Destination":  "Firmware\\Main\\cmake\\stm32cubemx\\CMakeLists.txt",
+        "SHA256":  "CAD7A8203B6E6F8F15578C930BED686EDA94D891B849EFCACDFB81F900AA5862"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Core\\Inc\\FreeRTOSConfig.h",
+        "Destination":  "Firmware\\Main\\Core\\Inc\\FreeRTOSConfig.h",
+        "SHA256":  "9BBF670A493D5B89658AAE731A743D977D79805CA471F63EE9D83C2A7B834F3D"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Core\\Inc\\main.h",
+        "Destination":  "Firmware\\Main\\Core\\Inc\\main.h",
+        "SHA256":  "8EFB3D41E9E6F2D6D3371FE8DB54ED41500806CD85FC7D903930599B6F5089E2"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Core\\Inc\\stm32l4xx_hal_conf.h",
+        "Destination":  "Firmware\\Main\\Core\\Inc\\stm32l4xx_hal_conf.h",
+        "SHA256":  "2EAC75B05FBEDD8436BF574C7AF2985F88EFFC7B806843A6A8A6B80ACFC160F2"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Core\\Inc\\stm32l4xx_it.h",
+        "Destination":  "Firmware\\Main\\Core\\Inc\\stm32l4xx_it.h",
+        "SHA256":  "A6CCE89AF44764794BE29A1EAD3B87757ADCEE4DA7146276ADBCA3C0E58DB1E4"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Core\\Src\\freertos.c",
+        "Destination":  "Firmware\\Main\\Core\\Src\\freertos.c",
+        "SHA256":  "AD92A531DB86D985E5D214C41DC4CD99C7522A59ADF9B27F98D067A52F1DBD70"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Core\\Src\\main.c",
+        "Destination":  "Firmware\\Main\\Core\\Src\\main.c",
+        "SHA256":  "111DF9DBD908F1B1FBE0CD9F286337A1551916EA4418F065BFB62312878BC02C"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Core\\Src\\stm32l4xx_hal_msp.c",
+        "Destination":  "Firmware\\Main\\Core\\Src\\stm32l4xx_hal_msp.c",
+        "SHA256":  "4555550D75FE7BD05EE851BEFF25FFCB2FBF1BA73B7E18B98520989BBE6E9BEF"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Core\\Src\\stm32l4xx_hal_timebase_tim.c",
+        "Destination":  "Firmware\\Main\\Core\\Src\\stm32l4xx_hal_timebase_tim.c",
+        "SHA256":  "8D3139D10B43FCE41A4D21D0E13274ABE8470146BA08DEB56A8D0921873A68E0"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Core\\Src\\stm32l4xx_it.c",
+        "Destination":  "Firmware\\Main\\Core\\Src\\stm32l4xx_it.c",
+        "SHA256":  "1F3A4E98EF4103A6014B65D7A5A9355699D0C5A336DCC653887390BB3B7D1C5A"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Core\\Src\\syscalls.c",
+        "Destination":  "Firmware\\Main\\Core\\Src\\syscalls.c",
+        "SHA256":  "73A05935E9CC8DD08A05A6A2F1714CCF6ED27166996B7BE2130A217FB7A73D03"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Core\\Src\\sysmem.c",
+        "Destination":  "Firmware\\Main\\Core\\Src\\sysmem.c",
+        "SHA256":  "8A32B49AAF7B34C4D539F32E62521038346E9F8D35E4C5A2FB55EAE126B08032"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Core\\Src\\system_stm32l4xx.c",
+        "Destination":  "Firmware\\Main\\Core\\Src\\system_stm32l4xx.c",
+        "SHA256":  "8CD78425B29E297232FE19F8EA97DEA80548692DAFFCEBA395BB8F7901157B9D"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Core\\Startup\\startup_stm32l452vetx.s",
+        "Destination":  "Firmware\\Main\\Core\\Startup\\startup_stm32l452vetx.s",
+        "SHA256":  "09AD3A040149F363B27444CEA910FE62C942B361F3D9999B6D04C1A3162DCF9D"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\LICENSE.txt",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\LICENSE.txt",
+        "SHA256":  "E03BA41D7FAB20700769FE4118BAB50D800CB74F990353A05D2F5FFF1C228363"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\License.md",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\License.md",
+        "SHA256":  "F2E4F78DABD3D2D81F9A04EC5B88B00D590F8FAF5270EF9658F7BE2929C637E7"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\LICENSE.txt",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\LICENSE.txt",
+        "SHA256":  "D65CAD1327EB8DAE95D0AEAB71FB22505F99A3D7CD1CE2530D7D40C52AECE002"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\Include\\stm32l452xx.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\Include\\stm32l452xx.h",
+        "SHA256":  "8959D766224422A4CB10DD45244304034CCA0709E13033C02DEE3B02CBF14DAD"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\Include\\stm32l4xx.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\Include\\stm32l4xx.h",
+        "SHA256":  "400F8B4CC3E98DC34E000139A43A7FB574492DB33E0BFB454DEF7F59ECFCDCBA"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\Include\\system_stm32l4xx.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\Include\\system_stm32l4xx.h",
+        "SHA256":  "C516404BFDB6564E74E88B9D24AEE8CDEF937605D9F3C54BEB1608CB1779EB5D"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\cmsis_armcc.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\cmsis_armcc.h",
+        "SHA256":  "E6BA28E21B5A3CD44D4E2D2981E37568F419E5DF693C8B58E87674FBDF28DEEB"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\cmsis_armclang.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\cmsis_armclang.h",
+        "SHA256":  "99B25AB977F383840994CB456AE3F259A5C9B036CB6A0D8C003B7CBBA4F6123A"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\cmsis_armclang_ltm.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\cmsis_armclang_ltm.h",
+        "SHA256":  "31622280A8296B67BDACE0539710A3CFBF828B71F88BD0D5CCC5D7D291AB3A9F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\cmsis_compiler.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\cmsis_compiler.h",
+        "SHA256":  "869640702D811C4C63ABB52206715C891A93FD03BE954DF5AD40D378355AF3D6"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\cmsis_gcc.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\cmsis_gcc.h",
+        "SHA256":  "0837F98E834D6A529854C8C86336E9D99EB8E379BF1DEB964858D7863950F862"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\cmsis_iccarm.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\cmsis_iccarm.h",
+        "SHA256":  "A40C60D322903D410FE892C2ECCB92D82D8876DCE605FBB4CB563D52182AEB16"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\cmsis_version.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\cmsis_version.h",
+        "SHA256":  "DD03AF200B23BDD8D091FFA7BEB3D1A2C4FC5611557567BD57EC613205F6DF1F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\core_armv81mml.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\core_armv81mml.h",
+        "SHA256":  "FB6FF226BC14B8730B3D5C5E49A32514DE811B485DC3F0543045FFFFD8787F85"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\core_armv8mbl.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\core_armv8mbl.h",
+        "SHA256":  "319FD8C698098A16F2775FE292B734C91AAEEC3FEEE418E515CC3A1761EDEC76"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\core_armv8mml.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\core_armv8mml.h",
+        "SHA256":  "1778FD691A0768DBEE4FBE537B3CC4D03FCFAB4AB9F60E31EC52605364F3DD36"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\core_cm0.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\core_cm0.h",
+        "SHA256":  "20300B57C02D5B7B34C7B58BF7009E81713A60F44CA2A338F67CB4B473F4F3C4"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\core_cm0plus.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\core_cm0plus.h",
+        "SHA256":  "4B79D5BF9F9165DDAE727C9F035F82FB0EA85CEEE2587B503D5D7BCD172D2DF9"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\core_cm1.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\core_cm1.h",
+        "SHA256":  "C243C4AFB291068FE7078D2911B2F0001E78A4D5466C26728611B06147D65C2B"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\core_cm23.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\core_cm23.h",
+        "SHA256":  "009F762A79B693F7F82EFC9298A33A14765C06DBD4CB2BF5C9B4FFBB6F7E56FF"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\core_cm3.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\core_cm3.h",
+        "SHA256":  "EFEFEF85CD419652F5B7C1074EDE2F5C24DA943528C5156DE8D2A194DE1888DC"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\core_cm33.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\core_cm33.h",
+        "SHA256":  "3E50058F0D08B8D8897FEC65E636E2F96635D1F8BCEF37D2DEC289E834539548"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\core_cm35p.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\core_cm35p.h",
+        "SHA256":  "32DBDE7EDB75784B23411639FA8CB8ECD3A3DA26F923530B9AE606E010FCAE57"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\core_cm4.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\core_cm4.h",
+        "SHA256":  "CDC0C5AB9BA0F24C065E891D26C3E686ED04106700CE6A572CC7E83E71965B59"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\core_cm7.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\core_cm7.h",
+        "SHA256":  "FF629C5BF98A8CAADF360D0BCC48E1042FEFA19995F7B64855D5E81E4C2E81CB"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\core_sc000.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\core_sc000.h",
+        "SHA256":  "E306205844323C8FE4CC3E5433C91ED34D9D5055ED11ECEEF03401FDFB0C3600"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\core_sc300.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\core_sc300.h",
+        "SHA256":  "CDDD97BB6172B5CDAD96A48445124A6D97A449546F5617E48F03847CBC4A09A4"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\mpu_armv7.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\mpu_armv7.h",
+        "SHA256":  "E504A7D47DFDB3D61DFAE3CF08D27BA9BC69AA4B2B81CA568EFDAFD65D6ABDCC"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\mpu_armv8.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\mpu_armv8.h",
+        "SHA256":  "95A05E406C38CB770621F07AC066B8C89B90874A50559EC9B10C9587B6049503"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\CMSIS\\Include\\tz_context.h",
+        "Destination":  "Firmware\\Main\\Drivers\\CMSIS\\Include\\tz_context.h",
+        "SHA256":  "7FCC21FC190F6FD970390E9CAAA6A86D72FD10F9EDF4EFAB36F12AECF1A8BAA0"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\LICENSE.txt",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\LICENSE.txt",
+        "SHA256":  "BDC7B0F98DB4846279336431024C49A01D578A2EA1D19EC68797BBE33E718D2D"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal.h",
+        "SHA256":  "CA188D7AA8DFB5ACBC5FDE021D7A5D5B806D48839E9FB14D2878D39074A47F45"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_can.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_can.h",
+        "SHA256":  "CFF21A838D97B1775BAB136E62995EF1C8E560966A11B48568D18397FD48F9FE"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_cortex.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_cortex.h",
+        "SHA256":  "574E82149AC5E938382C6EF4B443DB0BF5ECD596B2E481AA7AACDEC4FC36C547"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_def.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_def.h",
+        "SHA256":  "E55D92D18F962EF49F02E84AF434CAB6B59511577C0BC03213B33FB245236242"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_dma.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_dma.h",
+        "SHA256":  "104965F6611313A57B25C5211786F5FFEC4BD1B9186A50E1198CBBD6D90D9705"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_dma_ex.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_dma_ex.h",
+        "SHA256":  "3E08F5C04BA8F583D3C1396CCE7D347DE5B432D047D2B171CC4986CC6E453F20"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_exti.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_exti.h",
+        "SHA256":  "26ED3015C0C4062A056DDA61706AEB62C1BAB145DFE0FE597E7CEEEE90577CAE"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_flash.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_flash.h",
+        "SHA256":  "D067D9B26EE15F77A643535F0B37FF12BE89EEC1A10BAC9BD8A0B068B70364B5"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_flash_ex.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_flash_ex.h",
+        "SHA256":  "CE9B06E5E159E11A29B642E8727217A104DB21821E06691680F0F00D5BF1738A"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_flash_ramfunc.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_flash_ramfunc.h",
+        "SHA256":  "D500D042AF76E75925663270484897B68717245BC4CBA09FD90EE524D924591F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_gpio.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_gpio.h",
+        "SHA256":  "77016D1D173F05A3935F890259B44BEAEE7EDF0705E6CFAA79D829B71B856D3E"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_gpio_ex.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_gpio_ex.h",
+        "SHA256":  "AA5AF32FF104F064B43A496FFCC268B352C5649405A0903B413B422E3BC3D269"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_i2c.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_i2c.h",
+        "SHA256":  "21B4C06334F1CD64F4D335E2C06E01B8E085EEF780CD822DA2C4A54EB37B2DDF"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_i2c_ex.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_i2c_ex.h",
+        "SHA256":  "B1D941C87D72738D875D6D634E6A0B02D3F90C9C0539170D950DEB2C6112C75D"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_iwdg.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_iwdg.h",
+        "SHA256":  "C793FE56D8223B4EE892F13164D693AFB3DC5D2944C087A477EF24EB8FC7CDF3"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_pcd.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_pcd.h",
+        "SHA256":  "C060D4FA0665F497DE5D6DB808DEE272A2BFBA974DCCEC094A192C986C7AF1C9"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_pcd_ex.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_pcd_ex.h",
+        "SHA256":  "E468AF99E37C41C7D26F6D4E2E4922E6F5D1F820C96AEC87F4636A822C0E05FE"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_pwr.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_pwr.h",
+        "SHA256":  "226D361B11D2623434C0BE61630AC8BE81A8745AFD5F177F7E2F095E0708FA31"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_pwr_ex.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_pwr_ex.h",
+        "SHA256":  "3AD9B6A0431CC47B80C485422133E24AE700D86DC845510A52365A78C61BE52E"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_rcc.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_rcc.h",
+        "SHA256":  "EE31E3D363CA97E0001942B6695242CAFF8FA905EF04CA539E9E876517678A46"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_rcc_ex.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_rcc_ex.h",
+        "SHA256":  "524207172713422BA52ABCD5060658F776BE9D25E58029FF93B501C50EEF324A"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_spi.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_spi.h",
+        "SHA256":  "0BD6A3DF9AFEB8AC0D1C3836937C2648E47B3A103E52AB441DD797D47674C7B7"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_spi_ex.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_spi_ex.h",
+        "SHA256":  "7EA007F954D895F2764E2E86ADB293226E1DC181C59359E9EBB3D424416A7B26"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_tim.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_tim.h",
+        "SHA256":  "99AF05594096EB3CBD079911C2B0F9E3FA51A851D95DA2F1FF4B5FBB790F5647"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_tim_ex.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_tim_ex.h",
+        "SHA256":  "C66BD77C8B71C5C6A7EE146A21428EA682A901E9779BAB1A7065E09C5E1030D3"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_uart.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_uart.h",
+        "SHA256":  "F487FB71541361219BBA6274FDCF7CB3F231229518D9AFDD6627802A2143ED9C"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_uart_ex.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_uart_ex.h",
+        "SHA256":  "E42DA99469F429D42FF871B584024BFEAA19417E11438DF8F9B74A04F777364B"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_bus.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_bus.h",
+        "SHA256":  "676A275A9E860C79958979CC79AA8A7164ABD4B062A8CB0C9EB5E4BB67E7E0EB"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_cortex.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_cortex.h",
+        "SHA256":  "9B3A59FE98AD565EDA322E2973E9A5A6792AF131F3C981CB8EFD31EAFF10615B"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_crs.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_crs.h",
+        "SHA256":  "A3ABDBFA76F0455BF00E207115C487E03A76B3EA8B2643692AA356BEB43087D9"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_dma.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_dma.h",
+        "SHA256":  "F6BA7920BDE82F99775E0B8D313187307154860CE9FFE6992C41C9E357DDAFDD"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_dmamux.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_dmamux.h",
+        "SHA256":  "14168273D5292811B1625A7EBE3057F9A14B880AF7E3108EB96A54D3A06DFCDB"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_exti.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_exti.h",
+        "SHA256":  "5CEE953B6708F73D91BE1B8D598B8D76695496078D2C17C95DB96FEAC6B725E9"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_gpio.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_gpio.h",
+        "SHA256":  "1127AF211AF317F3DC98586B55FC0EB142980D43DEC5D18DE6709CD7C532B07F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_iwdg.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_iwdg.h",
+        "SHA256":  "C0AFF8A7BC4521BF9B6E93C6417D10C1E7AEFE677FF85EF68BBC49167E9A0D26"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_lpuart.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_lpuart.h",
+        "SHA256":  "12F443E2B3B592B401B393D22009919F46514708CDB2D1E7F97B632E59AC2B30"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_pwr.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_pwr.h",
+        "SHA256":  "E5574518482CFDBC3B033185F854A69E415882594DB30679D8B7B6B82F7916EF"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_rcc.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_rcc.h",
+        "SHA256":  "91B453313EC255A8069EC275B8D490C99C2FEAD12FDCB13F26190D7B60AE4D37"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_spi.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_spi.h",
+        "SHA256":  "D5E66124AB9BC3836D94DCE0EC074A4F46409E4B460F13F5C324BC1258A8EB56"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_system.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_system.h",
+        "SHA256":  "6963B59EEC94428C560534A3A6585E09F8AA03EB4A43443395D549EFA951609F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_tim.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_tim.h",
+        "SHA256":  "423A9F4443804EF6456ACC89645816B78F28908A02B04B750758C53B54F67ADD"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_usart.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_usart.h",
+        "SHA256":  "B1CB09C1A15E5B614844A968CE4CEB99A662984BE2FCDAA9E3A712974FCB30D1"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_usb.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_usb.h",
+        "SHA256":  "090D328F75B4DD4FC9788D1B99641D832519F54297C330E8991EAA0C9F333EA7"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_utils.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_utils.h",
+        "SHA256":  "BF1712E187623982F07AC867866939F270DF78A41BE157688F87955A8FF1805F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\Legacy\\stm32_hal_legacy.h",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\Legacy\\stm32_hal_legacy.h",
+        "SHA256":  "6F7775FC523D712334D199E745E1327192ACDCE4214113E09B76E37CB36BB892"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal.c",
+        "SHA256":  "B8B48F6A0B3EC60502E5E9883D742654A091A8C86D74E50CABD75B6642BF36C8"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_can.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_can.c",
+        "SHA256":  "CB66D0440E5918D21AC6668452BE10174E35DA5F0AF5652EDB057859187C7F08"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_cortex.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_cortex.c",
+        "SHA256":  "294275CD7DE3436F5CA43D71595F6D893EA86F2F7A7E1285BD602822FDA2EC91"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_dma.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_dma.c",
+        "SHA256":  "D6E6BCFAF67D0B8F55A2A4570EC0009A41E22C344843C1FB92C916B363C7204E"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_dma_ex.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_dma_ex.c",
+        "SHA256":  "03240ADEFD86F35E20984EA289F7F7D3279732694DB65B79B160BF6653ABC8F3"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_exti.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_exti.c",
+        "SHA256":  "13E2CE211075D340C549ADB429E704AB4B2A6A479EB1AC41C1133F33672ECB55"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_flash.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_flash.c",
+        "SHA256":  "71C176FB0270842E5279F080BA0FE65331EE3F864DE7F6BC238CF2013CC91672"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_flash_ex.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_flash_ex.c",
+        "SHA256":  "550E33930FC3A5D5B5C26689D96CA47D77386C226DA1BA7E82854D4B61CBB2A4"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_flash_ramfunc.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_flash_ramfunc.c",
+        "SHA256":  "6A54DB9F4BA3BC7ABD20822C983057D8B4E10587C2E564E6401ECD322895EE95"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_gpio.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_gpio.c",
+        "SHA256":  "7639671D33269D071DEF64498DE0A9FB6EF0582297C93828D0BDB20C6DF45E80"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_i2c.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_i2c.c",
+        "SHA256":  "8CD8F93BC71AEDA17E3C5297EAC94A5B9C3E22B485A60FB906D12803910C73AC"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_i2c_ex.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_i2c_ex.c",
+        "SHA256":  "12730ADD5928EDB2E92843E65289873D7C5E41F1D556D5879E5B9835FF9D301C"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_iwdg.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_iwdg.c",
+        "SHA256":  "3C24932E7D652D648203018E8FF1520BDAADE86ECEA5BC0E7ABC0A6286391DCF"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_pcd.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_pcd.c",
+        "SHA256":  "0EC8461D6B5BB8CF4CB3AE8EDC50237890ED934AB0496DAD23518CE92E2F9CDF"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_pcd_ex.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_pcd_ex.c",
+        "SHA256":  "1C0D8985C82E79FA50C69B661344546266F9A396EEF56A8B3F3B87C4B1662BFC"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_pwr.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_pwr.c",
+        "SHA256":  "5C01FC2B3CC52F4628A7B59E58FB97CF18E4A03EB029CA56746C2AE3DB299CDC"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_pwr_ex.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_pwr_ex.c",
+        "SHA256":  "A24EBEFC95B3EFCB4F0316DB8EF80485BD67FF9FBBD23CC3235763F601191DC5"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_rcc.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_rcc.c",
+        "SHA256":  "D37CE29D4D0B445EEF90E2BE39DA41807A8AECF32C9485F8D75AF8F7EE41E437"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_rcc_ex.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_rcc_ex.c",
+        "SHA256":  "556151576DDE11D39D4CD3EA111EDDB3368692B80A3188196A862291D512CB20"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_spi.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_spi.c",
+        "SHA256":  "AF934FEB517B5A94B27398BDC7432B9DE070BAB3461C41F822D32708B57F7FBD"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_spi_ex.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_spi_ex.c",
+        "SHA256":  "4F6F185213EF6386CFCFD6D8A1703FA681FC092FACDBD2BF47B734101C99A25C"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_tim.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_tim.c",
+        "SHA256":  "424AA127F6DD61C04929379ECA4354ABE752FA95B7D41A7DCA052CBC4F2B7396"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_tim_ex.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_tim_ex.c",
+        "SHA256":  "0644A813539945B008D2E0C5FD1EC998242DA7B17C3FA814BEE313DDC2533139"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_uart.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_uart.c",
+        "SHA256":  "D3E1EB29E0D4D88CC4990BC4366780F61BF60978F2335227E899EF38C3C72242"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_uart_ex.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_uart_ex.c",
+        "SHA256":  "9C1E9C684EEF775C4341F2A36FC5FAC7720015CA0D975EDDECE3A4A3192D677A"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_ll_usb.c",
+        "Destination":  "Firmware\\Main\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_ll_usb.c",
+        "SHA256":  "11127E0D6BB1895A882A53CD05C74E3D22AFA71E041757175B5EE43C2E054E47"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\ST\\STM32_USB_Device_Library\\LICENSE.txt",
+        "Destination":  "Firmware\\Main\\Middlewares\\ST\\STM32_USB_Device_Library\\LICENSE.txt",
+        "SHA256":  "8702152A0CD7F3A7DA4C3FECFDBAAC89779B54449243429AC71E93793F1188EF"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\ST\\STM32_USB_Device_Library\\Class\\CDC\\Inc\\usbd_cdc.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\ST\\STM32_USB_Device_Library\\Class\\CDC\\Inc\\usbd_cdc.h",
+        "SHA256":  "41200B06109527C0B23977E80B6E2A458B6814C334642F8E3A36FE446E16E0BA"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\ST\\STM32_USB_Device_Library\\Class\\CDC\\Src\\usbd_cdc.c",
+        "Destination":  "Firmware\\Main\\Middlewares\\ST\\STM32_USB_Device_Library\\Class\\CDC\\Src\\usbd_cdc.c",
+        "SHA256":  "4DD8D556F2BCCF29509B8915D6F440FB12A8937365B4E7B5D65B28C803885EDB"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Inc\\usbd_core.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Inc\\usbd_core.h",
+        "SHA256":  "28967F78C4D89437124AD90DF076766236884ACFEDCC6E2C81943F0370FA0253"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Inc\\usbd_ctlreq.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Inc\\usbd_ctlreq.h",
+        "SHA256":  "0D766FE68A0F746B29CAA7C6EA1E96C45C5FCA50360E1D224C19935A76EB666F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Inc\\usbd_def.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Inc\\usbd_def.h",
+        "SHA256":  "0624C7313D88CA648B9D87E47C611EB78DC58EE62C6FF848B1D9F20E15CE4307"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Inc\\usbd_ioreq.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Inc\\usbd_ioreq.h",
+        "SHA256":  "FC7FFBED8FF7752453BB510493B43165EF29F4C5091E50FB6D0C4C8652D4F560"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Src\\usbd_core.c",
+        "Destination":  "Firmware\\Main\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Src\\usbd_core.c",
+        "SHA256":  "4B43509C00EDCBB5901D8BC2D797B7DF2564B85A8709E5D8E66CB075C62BE60A"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Src\\usbd_ctlreq.c",
+        "Destination":  "Firmware\\Main\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Src\\usbd_ctlreq.c",
+        "SHA256":  "4A46C29CED0EEC6E97CE1534F1C580350A027616925CB59AC54DC3D744BF84B5"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Src\\usbd_ioreq.c",
+        "Destination":  "Firmware\\Main\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Src\\usbd_ioreq.c",
+        "SHA256":  "EB0FD86544C9AE3DC362A32D4F201EA524EBC875CBC40C3791E56F55258148D3"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\croutine.c",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\croutine.c",
+        "SHA256":  "E31CD1C9C280C919A92EDC28885E9BEBCE589D4CFAB71CEFAB832A73683200FB"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\event_groups.c",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\event_groups.c",
+        "SHA256":  "A72063C3977FAD098A87A5430E04E9FC5B892D703E01FBE09EA907F67AACF20E"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\LICENSE",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\LICENSE",
+        "SHA256":  "49678287E48228D68AF25ED82841491552B0646E31A8080165758FA72B67105A"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\list.c",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\list.c",
+        "SHA256":  "E735517F308FAD5DD77D03B6858C16BDBC937BB9D0754735849FC7799EBE2B59"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\queue.c",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\queue.c",
+        "SHA256":  "06A153C1CE111213AF32DFC8797BD2E5C7819E264DFA338B4049F058DC1EDB11"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\stream_buffer.c",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\stream_buffer.c",
+        "SHA256":  "4376714FECAD0F72DC4C8B45236591A7E0FFE24DD018382F56E8B0DFC2230B28"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\tasks.c",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\tasks.c",
+        "SHA256":  "8CB1EABE18F130B2B8980E880847F773FB12A4071C763D26C51624223B32A3A4"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\timers.c",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\timers.c",
+        "SHA256":  "0D16405E621A2C4B003B5F0324B9713CD4865364133DF6F742F482A6B2DBC773"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2\\cmsis_os.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2\\cmsis_os.h",
+        "SHA256":  "9F18B2E616411DEF39B415994B7FBE8E782A185E045C894AD2645C1AB7E83100"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2\\cmsis_os2.c",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2\\cmsis_os2.c",
+        "SHA256":  "0DD9EC29EB5862C4520EEDE87B05E063A4C80223555140C0187E80F97AE9E8AA"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2\\cmsis_os2.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2\\cmsis_os2.h",
+        "SHA256":  "F116A1A3F842194AABBBEDDF3D0F9F345AB7D35D4DE7BE0F04AF289F9B1FDFC8"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2\\freertos_mpool.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2\\freertos_mpool.h",
+        "SHA256":  "EED1C836ED2F0CDE7D41A93DA7E7E208C539D59162E872351526E1DDBD56B1B3"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2\\freertos_os2.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2\\freertos_os2.h",
+        "SHA256":  "3DDB74193DAF32483CAEE33E31A3EF0D40703E909E0E41E896839CCF37EDCFFC"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\atomic.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\atomic.h",
+        "SHA256":  "B74AB6F4AAE9A397565ADB5F14C9D8E33B9F782A2E35F77535AF751413AC68DE"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\croutine.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\croutine.h",
+        "SHA256":  "8DF4C5EEC7EB30262F09B7C47FC2EB0534A27721293B0D260A3398846494F9AC"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\deprecated_definitions.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\deprecated_definitions.h",
+        "SHA256":  "382F8A7A0E00240FB69911DFF8D8515248BEB9DADFE77C22C4E5544F49CC76EB"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\event_groups.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\event_groups.h",
+        "SHA256":  "3B9CBD64DB721C4317544700FFF4E42AC68D989F71B7D610B31087BB19175839"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\FreeRTOS.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\FreeRTOS.h",
+        "SHA256":  "B7A81501C3F4FF9537DF5C9A5E0231F37638CDC8324965AE10064128FDED840F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\list.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\list.h",
+        "SHA256":  "F9B239F168976F7B167E054FA72616826F55AE4D74D76B87C9E70B2DF079363F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\message_buffer.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\message_buffer.h",
+        "SHA256":  "504A77558F13B66FD1EEC5ADF4D81E274F0B54C12880424833C24F577BE0800A"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\mpu_prototypes.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\mpu_prototypes.h",
+        "SHA256":  "3FAFD21399EF619A55B2F8112750D750685C8AE1CB458363D21EE37A105AC6E7"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\mpu_wrappers.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\mpu_wrappers.h",
+        "SHA256":  "C1FC47ACDB79EFB0FB8A0FB8A169AE4423FDC3A6D820B2F81D49E8E077C1ED48"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\portable.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\portable.h",
+        "SHA256":  "39795C8DDED505F24F53646ECD8192251851C74F366D2A5B0AAE3FBFA68C191B"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\projdefs.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\projdefs.h",
+        "SHA256":  "399814721D9735E91D74CA07BE3974EDB20639ACB46A6792230FF9F61F67B353"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\queue.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\queue.h",
+        "SHA256":  "39D58A203F1B67FDB1099293914A2AF9722D223586CFC5FF06E230E047919DEA"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\semphr.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\semphr.h",
+        "SHA256":  "B9B2FF28A0C80FA21443690BB28DE64C8B9451CCCD57E484DE0BCF02FC367575"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\StackMacros.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\StackMacros.h",
+        "SHA256":  "C27D1653D2F7F34292387CAB8A8B074426CC1EF73AEAA27663D56BA634F7F8AB"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\stack_macros.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\stack_macros.h",
+        "SHA256":  "7D1D30B6C9AE34BEBB26B14402F78A59A35AE826F460A1AD28534C9590B32151"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\stream_buffer.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\stream_buffer.h",
+        "SHA256":  "0607FCCA1927BA782A29A3814481D69DB3569E6E53A68EBF2C01F5598A3AF2B8"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\task.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\task.h",
+        "SHA256":  "830990F7B17B8E0CE3BDB0A7475D2CDC7D659EAFFF16B88A855C84C06A7A2A3E"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\timers.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\timers.h",
+        "SHA256":  "7FA62F648014533CE5BD8DA1775DDD814CBF208F9AF7C748A40BB8B50A8E8912"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\GCC\\ARM_CM4F\\port.c",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\GCC\\ARM_CM4F\\port.c",
+        "SHA256":  "89F24A509EC85BF502724334C2607EEB7A432E1F26AFBC9B7291254B8F7971DC"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\GCC\\ARM_CM4F\\portmacro.h",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\GCC\\ARM_CM4F\\portmacro.h",
+        "SHA256":  "356CE2EC084883D8FC41D380910F828AEE559F140E877629974752EA26A89792"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\MemMang\\heap_4.c",
+        "Destination":  "Firmware\\Main\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\MemMang\\heap_4.c",
+        "SHA256":  "C697B88E48E9906A19CABEF187E5797A5A45009144F9E473262752C86A5D2C50"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\USB_DEVICE\\App\\usbd_cdc_if.c",
+        "Destination":  "Firmware\\Main\\USB_DEVICE\\App\\usbd_cdc_if.c",
+        "SHA256":  "1D2727E1A555B8846058A24E2FA7891E825F64B63D8F4CA2A4ED4290716ECD61"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\USB_DEVICE\\App\\usbd_cdc_if.h",
+        "Destination":  "Firmware\\Main\\USB_DEVICE\\App\\usbd_cdc_if.h",
+        "SHA256":  "463301CC9BBA9D02642186EBD09C697F9BF9D2FB0B1CDF927E7EAB8123644666"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\USB_DEVICE\\App\\usbd_desc.c",
+        "Destination":  "Firmware\\Main\\USB_DEVICE\\App\\usbd_desc.c",
+        "SHA256":  "9EED2C01A02C34BC4D1A16FDA7AAC0599F7145BF7BCFB9561AA4560787F2EBE4"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\USB_DEVICE\\App\\usbd_desc.h",
+        "Destination":  "Firmware\\Main\\USB_DEVICE\\App\\usbd_desc.h",
+        "SHA256":  "1E47DE8ED0F3D14AC0E8B702DD29CFA96325BD31DC20786018AFE40CFBF08069"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\USB_DEVICE\\App\\usb_device.c",
+        "Destination":  "Firmware\\Main\\USB_DEVICE\\App\\usb_device.c",
+        "SHA256":  "43D40ED1812C09EC3AA85F2DD45812D1191FB3529B3F618254C8A4AFFC0D238D"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\USB_DEVICE\\App\\usb_device.h",
+        "Destination":  "Firmware\\Main\\USB_DEVICE\\App\\usb_device.h",
+        "SHA256":  "BCF3853F518F4A0D100EA7825E50FBC9470DEE618F0AACBE1B6B920EBE6851BF"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\USB_DEVICE\\Target\\usbd_conf.c",
+        "Destination":  "Firmware\\Main\\USB_DEVICE\\Target\\usbd_conf.c",
+        "SHA256":  "2CB7D7304240BC9ADB707CBACA75CCAAEEC3F1E5A8437E81D9297DEBB5213366"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\USB_DEVICE\\Target\\usbd_conf.h",
+        "Destination":  "Firmware\\Main\\USB_DEVICE\\Target\\usbd_conf.h",
+        "SHA256":  "A5B1F5F8CD210C5EBB7636FC3B5AC69B262F475CD9445138B2E34EB373E36E55"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Inc\\a_application.h",
+        "Destination":  "Firmware\\Main\\User\\Application\\Inc\\a_application.h",
+        "SHA256":  "576B6D7009EAD9376D4476A346FE7D3F6712AD5D17FB53E257AB18DD23E50D16"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Inc\\a_at25sf041b.h",
+        "Destination":  "Firmware\\Main\\User\\Application\\Inc\\a_at25sf041b.h",
+        "SHA256":  "B23AE57430641F10000A60FB3EB9E211EE9CBA357682F59A78B7CF1B5AEF2325"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Inc\\a_bootloader_link.h",
+        "Destination":  "Firmware\\Main\\User\\Application\\Inc\\a_bootloader_link.h",
+        "SHA256":  "14F3EFA6CCF257A6D3B80A4EF4E32BBBCA51E509155798CD13A2F2D13AFC3C3B"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Inc\\a_boot_link.h",
+        "Destination":  "Firmware\\Main\\User\\Application\\Inc\\a_boot_link.h",
+        "SHA256":  "F88293DBE65B858AB624B8BC73689759BB16FF87F13B9A4BF33CEF31E04912EF"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Inc\\a_comm_config.h",
+        "Destination":  "Firmware\\Main\\User\\Application\\Inc\\a_comm_config.h",
+        "SHA256":  "10A3CB45B9D0BCB426345ED478E62134088C1E277E3B35CC053CE6A28B95345B"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Inc\\a_desired_state_mirror.h",
+        "Destination":  "Firmware\\Main\\User\\Application\\Inc\\a_desired_state_mirror.h",
+        "SHA256":  "DF832F02B30D7A82D1D2F466440DC0227D0D0D3BD84AC212425BA2F3194E7AD3"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Inc\\a_gst_protocol.h",
+        "Destination":  "Firmware\\Main\\User\\Application\\Inc\\a_gst_protocol.h",
+        "SHA256":  "7C26F2FA875E05E590D5AAADD86E62F937DD1039FF06D313A98791EDC3AF411B"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Inc\\a_log.h",
+        "Destination":  "Firmware\\Main\\User\\Application\\Inc\\a_log.h",
+        "SHA256":  "7C9BA25B6E5BFA46EE6581C8D904F98C9100DC177DE039895C10B861C8804295"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Inc\\a_modbus_master.h",
+        "Destination":  "Firmware\\Main\\User\\Application\\Inc\\a_modbus_master.h",
+        "SHA256":  "CFA558A8984DECD0632E8F306A94E496E48F8C2FEB5458C355C5954986076DD9"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Inc\\a_modbus_slave.h",
+        "Destination":  "Firmware\\Main\\User\\Application\\Inc\\a_modbus_slave.h",
+        "SHA256":  "6572EC8E14AC9AE062B5C97897A977401819911829E03B1994813DA634390A91"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Inc\\a_plc_group_map.h",
+        "Destination":  "Firmware\\Main\\User\\Application\\Inc\\a_plc_group_map.h",
+        "SHA256":  "E0268B842493F1DCCBFCC49908C52C0B8A04FAFDB19D95C9934826585F2A239D"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Inc\\a_poll_table.h",
+        "Destination":  "Firmware\\Main\\User\\Application\\Inc\\a_poll_table.h",
+        "SHA256":  "EB22899822EADBADE39B63E8D7ACDB704A595BF79ED6379DD25407B39AE0C828"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Inc\\a_shared_map.h",
+        "Destination":  "Firmware\\Main\\User\\Application\\Inc\\a_shared_map.h",
+        "SHA256":  "8DC6EE66880EF377D008EE50C6C1FEE46B0C065135E27222D97A027FFBEB46CE"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Inc\\a_uart.h",
+        "Destination":  "Firmware\\Main\\User\\Application\\Inc\\a_uart.h",
+        "SHA256":  "5F3BF0F4C6A2D51A557AD9BD5141192EB6882832CD68B170FA9F89CE35B8D10F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Inc\\bootloader_shared.h",
+        "Destination":  "Firmware\\Main\\User\\Application\\Inc\\bootloader_shared.h",
+        "SHA256":  "82049999A4ED4A12FF8674B9AE865285BFD44DCB00761D3682A2B18D66A435D7"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Inc\\m_datablock.h",
+        "Destination":  "Firmware\\Main\\User\\Application\\Inc\\m_datablock.h",
+        "SHA256":  "EEA8EAEBE1F12E4398D3A110E3E897D9D2679B8CDED331487BFA91BB66EB0AC5"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Inc\\m_modbus.h",
+        "Destination":  "Firmware\\Main\\User\\Application\\Inc\\m_modbus.h",
+        "SHA256":  "06379FB23176EA0F02FB8275C3DC106430A1895EE48FA622B418B096E946750B"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Src\\a_application.c",
+        "Destination":  "Firmware\\Main\\User\\Application\\Src\\a_application.c",
+        "SHA256":  "78C2CD0170BB557D9E30B183A97398783927533122FB506FA597471ADC10473D"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Src\\a_at25sf041b.c",
+        "Destination":  "Firmware\\Main\\User\\Application\\Src\\a_at25sf041b.c",
+        "SHA256":  "0BDDD94DF4A95A4DC90D9E9C583AB87BDCECA89AD2FB878EC6EB7847144F5EB9"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Src\\a_bootloader_link.c",
+        "Destination":  "Firmware\\Main\\User\\Application\\Src\\a_bootloader_link.c",
+        "SHA256":  "BF25ED83F443D46CA4FC2DD9870209B5D9C0742B1B8E3262663E9C384A4DBB18"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Src\\a_boot_link.c",
+        "Destination":  "Firmware\\Main\\User\\Application\\Src\\a_boot_link.c",
+        "SHA256":  "898DA254B521BF7C73020B146D83A133AEFF09B7CA354B6D9B679875D86732AE"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Src\\a_comm_config.c",
+        "Destination":  "Firmware\\Main\\User\\Application\\Src\\a_comm_config.c",
+        "SHA256":  "C48DD2C1180034E2827B106B92641BD714FEA42712EA0CABAB4E89BBC8253255"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Src\\a_desired_state_mirror.c",
+        "Destination":  "Firmware\\Main\\User\\Application\\Src\\a_desired_state_mirror.c",
+        "SHA256":  "EC287F196B35BAADE770C437D5DBBBC8221C0CC79D3956315150077AA69E40CD"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Src\\a_gst_protocol.c",
+        "Destination":  "Firmware\\Main\\User\\Application\\Src\\a_gst_protocol.c",
+        "SHA256":  "6C875B05C85225A96D43D102E7B9BA0A215174B9D7EB4733BCEA10503388D7C4"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Src\\a_log.c",
+        "Destination":  "Firmware\\Main\\User\\Application\\Src\\a_log.c",
+        "SHA256":  "25D12DE90C210522FB22A161FEFCC82C9080590B7A00112187556E3220032ACC"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Src\\a_modbus_master.c",
+        "Destination":  "Firmware\\Main\\User\\Application\\Src\\a_modbus_master.c",
+        "SHA256":  "5A1ED19EC5F571B8A6C6F29FF51397117B2329B2444B1447C937351FA8469560"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Src\\a_modbus_slave.c",
+        "Destination":  "Firmware\\Main\\User\\Application\\Src\\a_modbus_slave.c",
+        "SHA256":  "36EAD60FC300536EA6FBBF93F2C462235BFC827C2D890BCA0F266A2C040E9BF3"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Src\\a_plc_group_map.c",
+        "Destination":  "Firmware\\Main\\User\\Application\\Src\\a_plc_group_map.c",
+        "SHA256":  "C341F3514ADFFCC73E83DCDD4FF41660CB9A10B71B842DAC71DCE71C678F9A2C"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Src\\a_poll_table.c",
+        "Destination":  "Firmware\\Main\\User\\Application\\Src\\a_poll_table.c",
+        "SHA256":  "DCC2C9BBC4426BA01CAB79F58AB8C84A4ED2028C905D98CE969AF53F776F50FA"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Src\\a_shared_map.c",
+        "Destination":  "Firmware\\Main\\User\\Application\\Src\\a_shared_map.c",
+        "SHA256":  "833B10E27C660F595B575CFD7AB70B8DEDFF6D855CC7E30D529807BFF8508291"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Src\\a_uart.c",
+        "Destination":  "Firmware\\Main\\User\\Application\\Src\\a_uart.c",
+        "SHA256":  "B11169F7A5C364F04639CD5B313899EE779827588DDE37BACA2BE09FC1DC5E62"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Src\\bootloader_shared.c",
+        "Destination":  "Firmware\\Main\\User\\Application\\Src\\bootloader_shared.c",
+        "SHA256":  "46C41E9F423382F491FD552176CB1187FAA9798A623A771EA98E076D9CE82F5B"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Src\\m_datablock.c",
+        "Destination":  "Firmware\\Main\\User\\Application\\Src\\m_datablock.c",
+        "SHA256":  "A26EA3A96C2722DB7769602A27D0FA0A52AF8D1612771B6AD79C962A6BAA7BF3"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\IF_main\\User\\Application\\Src\\m_modbus.c",
+        "Destination":  "Firmware\\Main\\User\\Application\\Src\\m_modbus.c",
+        "SHA256":  "A3E1B5694251ED54AD0CE4DA9DB7A81828671F7DF50D6E203A7D91B1EA1D1B9B"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\.cproject",
+        "Destination":  "Firmware\\MainBootloader\\.cproject",
+        "SHA256":  "698C13A9FFB81EA1007060A416DD342087026B026EAFA2A8A74955CA8AAA781E"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\.mxproject",
+        "Destination":  "Firmware\\MainBootloader\\.mxproject",
+        "SHA256":  "26043C32E4A71E419DE1FACD547B363D485CBCE383B1C902DEB11313504B3425"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\.project",
+        "Destination":  "Firmware\\MainBootloader\\.project",
+        "SHA256":  "14BD6921A1719C0F7140D3C0EB24CFD75473E81B6E0B0245F7F42C5577BD9161"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Bootloader.ioc",
+        "Destination":  "Firmware\\MainBootloader\\Bootloader.ioc",
+        "SHA256":  "EC94FFDB615F7A2316CBE5E318CBE4B21A1A47A4B756E0A1209A45F852F02C7B"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Bootloader.launch",
+        "Destination":  "Firmware\\MainBootloader\\Bootloader.launch",
+        "SHA256":  "7F0D7ED08E2D507D37262A0907697B56FE577289759AAAD877B3D0E85F307D24"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\STM32L452VETX_FLASH.ld",
+        "Destination":  "Firmware\\MainBootloader\\STM32L452VETX_FLASH.ld",
+        "SHA256":  "A9CC9AB066E7C3C998482E8F61A84C20A2CE6E3BACDE44014E13590034C6CBDC"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\STM32L452VETX_RAM.ld",
+        "Destination":  "Firmware\\MainBootloader\\STM32L452VETX_RAM.ld",
+        "SHA256":  "73948D9C6FC0EE211447C4583B1F43944E72946A306119F224712DF4203E73D1"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\.settings\\language.settings.xml",
+        "Destination":  "Firmware\\MainBootloader\\.settings\\language.settings.xml",
+        "SHA256":  "9243EBA792F627697BBCAFFE11A8CF9A19EC1B75ADE7D4CCF0C478F5ADAA0A9F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\.settings\\org.eclipse.core.resources.prefs",
+        "Destination":  "Firmware\\MainBootloader\\.settings\\org.eclipse.core.resources.prefs",
+        "SHA256":  "1A5B17D8A429F89E30D0D5FC6E12E81D37EA8F6F3F4A206383F4AF8564292AC0"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\.settings\\stm32cubeide.project.prefs",
+        "Destination":  "Firmware\\MainBootloader\\.settings\\stm32cubeide.project.prefs",
+        "SHA256":  "DBD39F588D99DB341209DE5567A2671420B548EEC81C9AADD5E414A8DC93936C"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Inc\\bootloader_shared.h",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Inc\\bootloader_shared.h",
+        "SHA256":  "82049999A4ED4A12FF8674B9AE865285BFD44DCB00761D3682A2B18D66A435D7"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Inc\\boot_flag.h",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Inc\\boot_flag.h",
+        "SHA256":  "53C65F1221618597D89EB00E5D275EF7C571136C2A65BAD2E55245CD28CB4337"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Inc\\boot_flash.h",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Inc\\boot_flash.h",
+        "SHA256":  "3F7138959F243BB97CDDB3D8B44D0825933BBAA90B08F7396C64952FDA0E3109"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Inc\\boot_jump.h",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Inc\\boot_jump.h",
+        "SHA256":  "5994224DA20F16420CE8FC557DA9CE2943F9D8219690802AFF053B3585B39D23"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Inc\\boot_meta.h",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Inc\\boot_meta.h",
+        "SHA256":  "B5884ACFF8FCAB20E5E5846316946A0EC3E4208899CC4C86F729B401C55C311C"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Inc\\boot_protocol.h",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Inc\\boot_protocol.h",
+        "SHA256":  "4FF738B66A450167ADE07E489F0238D8BE26404FA21844ABEE0D4F0E2ABC1B71"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Inc\\boot_rxbuf.h",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Inc\\boot_rxbuf.h",
+        "SHA256":  "EED7753192B058CB0D668D93097E68F730DEB68799578C9BF1CFE57324D20640"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Inc\\main.h",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Inc\\main.h",
+        "SHA256":  "CE42E43C9543DF365C9E88F6343603DFF5BB56905E2C048158CD77A2EF3DAC93"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Inc\\stm32l4xx_hal_conf.h",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Inc\\stm32l4xx_hal_conf.h",
+        "SHA256":  "9F35FF1D2FEE87D56CEDF109FCB6258B0102A9AB99B16E42D6525128C5368587"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Inc\\stm32l4xx_it.h",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Inc\\stm32l4xx_it.h",
+        "SHA256":  "41B97F939BE6987CE82AB21B68F2A0E2B5F158E4B7473B9B7A2C0CF6BFA94122"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Src\\bootloader_shared.c",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Src\\bootloader_shared.c",
+        "SHA256":  "46C41E9F423382F491FD552176CB1187FAA9798A623A771EA98E076D9CE82F5B"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Src\\boot_flag.c",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Src\\boot_flag.c",
+        "SHA256":  "A2C30A0EEA65993C80C7C0A048DA19D8B348B4867E43568CB411335625DB163F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Src\\boot_flash.c",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Src\\boot_flash.c",
+        "SHA256":  "64002278FF150CC7B525FE10D7379519B178FF1DC8ACE50B81A28146BBDCD295"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Src\\boot_jump.c",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Src\\boot_jump.c",
+        "SHA256":  "26317827261D2DB09508343ACDAFE9449F8745A7B0B7D51A0B5924EC2DC16D6D"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Src\\boot_meta.c",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Src\\boot_meta.c",
+        "SHA256":  "78ACBF549A10F15A756C043E15C00FEE90D740923F99E6B0647A3FF1C0915720"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Src\\boot_protocol.c",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Src\\boot_protocol.c",
+        "SHA256":  "CD397A0134D5727F69F3743A6DB3CFC7BA99287B9EF69DB161C74C3FB8DAEE5B"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Src\\boot_rxbuf.c",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Src\\boot_rxbuf.c",
+        "SHA256":  "C7272AF270F6E484337E2085802A9CC5312ACA9A0B6A3B3E8527BEFA2B55C2EB"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Src\\main.c",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Src\\main.c",
+        "SHA256":  "867EBD0864C4B4282200D32EC1D3ED3AEC1B38DE8024AF7A2261E52AB52A7CDA"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Src\\stm32l4xx_hal_msp.c",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Src\\stm32l4xx_hal_msp.c",
+        "SHA256":  "386AF1B9D6E1B41489B59ACC600FA8D9B51F9BC3130797A6349252767B0A51E2"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Src\\stm32l4xx_hal_timebase_tim.c",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Src\\stm32l4xx_hal_timebase_tim.c",
+        "SHA256":  "12812A98B160AB99ED68D9AC0F4D4F21EE03F60EE677F4092217A34A0741C5CB"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Src\\stm32l4xx_it.c",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Src\\stm32l4xx_it.c",
+        "SHA256":  "87F5B6137DD86CDAF45D03943E0D3BB25B739A1B411DA4212B0E5AF203CF283E"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Src\\syscalls.c",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Src\\syscalls.c",
+        "SHA256":  "76E29F34F503AAB966B6DF671B85B985063D940577CB9D5465B36BE73B5F840B"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Src\\sysmem.c",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Src\\sysmem.c",
+        "SHA256":  "A537DF3621C8332550A0012EF8220E9E0989DB5DD43530210F521BD8DF2EEAE4"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Src\\system_stm32l4xx.c",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Src\\system_stm32l4xx.c",
+        "SHA256":  "0FBABAF372F47A82CBF3F807085E31553AF144CA2F0BE13053BB4809D06DF091"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Core\\Startup\\startup_stm32l452vetx.s",
+        "Destination":  "Firmware\\MainBootloader\\Core\\Startup\\startup_stm32l452vetx.s",
+        "SHA256":  "09AD3A040149F363B27444CEA910FE62C942B361F3D9999B6D04C1A3162DCF9D"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\LICENSE.txt",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\LICENSE.txt",
+        "SHA256":  "E03BA41D7FAB20700769FE4118BAB50D800CB74F990353A05D2F5FFF1C228363"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\License.md",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\License.md",
+        "SHA256":  "F2E4F78DABD3D2D81F9A04EC5B88B00D590F8FAF5270EF9658F7BE2929C637E7"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\LICENSE.txt",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\LICENSE.txt",
+        "SHA256":  "D65CAD1327EB8DAE95D0AEAB71FB22505F99A3D7CD1CE2530D7D40C52AECE002"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\Include\\stm32l452xx.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\Include\\stm32l452xx.h",
+        "SHA256":  "8959D766224422A4CB10DD45244304034CCA0709E13033C02DEE3B02CBF14DAD"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\Include\\stm32l4xx.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\Include\\stm32l4xx.h",
+        "SHA256":  "400F8B4CC3E98DC34E000139A43A7FB574492DB33E0BFB454DEF7F59ECFCDCBA"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\Include\\system_stm32l4xx.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\Include\\system_stm32l4xx.h",
+        "SHA256":  "C516404BFDB6564E74E88B9D24AEE8CDEF937605D9F3C54BEB1608CB1779EB5D"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\cmsis_armcc.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\cmsis_armcc.h",
+        "SHA256":  "E6BA28E21B5A3CD44D4E2D2981E37568F419E5DF693C8B58E87674FBDF28DEEB"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\cmsis_armclang.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\cmsis_armclang.h",
+        "SHA256":  "99B25AB977F383840994CB456AE3F259A5C9B036CB6A0D8C003B7CBBA4F6123A"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\cmsis_armclang_ltm.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\cmsis_armclang_ltm.h",
+        "SHA256":  "31622280A8296B67BDACE0539710A3CFBF828B71F88BD0D5CCC5D7D291AB3A9F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\cmsis_compiler.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\cmsis_compiler.h",
+        "SHA256":  "869640702D811C4C63ABB52206715C891A93FD03BE954DF5AD40D378355AF3D6"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\cmsis_gcc.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\cmsis_gcc.h",
+        "SHA256":  "0837F98E834D6A529854C8C86336E9D99EB8E379BF1DEB964858D7863950F862"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\cmsis_iccarm.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\cmsis_iccarm.h",
+        "SHA256":  "A40C60D322903D410FE892C2ECCB92D82D8876DCE605FBB4CB563D52182AEB16"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\cmsis_version.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\cmsis_version.h",
+        "SHA256":  "DD03AF200B23BDD8D091FFA7BEB3D1A2C4FC5611557567BD57EC613205F6DF1F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\core_armv81mml.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\core_armv81mml.h",
+        "SHA256":  "FB6FF226BC14B8730B3D5C5E49A32514DE811B485DC3F0543045FFFFD8787F85"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\core_armv8mbl.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\core_armv8mbl.h",
+        "SHA256":  "319FD8C698098A16F2775FE292B734C91AAEEC3FEEE418E515CC3A1761EDEC76"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\core_armv8mml.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\core_armv8mml.h",
+        "SHA256":  "1778FD691A0768DBEE4FBE537B3CC4D03FCFAB4AB9F60E31EC52605364F3DD36"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\core_cm0.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\core_cm0.h",
+        "SHA256":  "20300B57C02D5B7B34C7B58BF7009E81713A60F44CA2A338F67CB4B473F4F3C4"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\core_cm0plus.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\core_cm0plus.h",
+        "SHA256":  "4B79D5BF9F9165DDAE727C9F035F82FB0EA85CEEE2587B503D5D7BCD172D2DF9"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\core_cm1.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\core_cm1.h",
+        "SHA256":  "C243C4AFB291068FE7078D2911B2F0001E78A4D5466C26728611B06147D65C2B"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\core_cm23.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\core_cm23.h",
+        "SHA256":  "009F762A79B693F7F82EFC9298A33A14765C06DBD4CB2BF5C9B4FFBB6F7E56FF"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\core_cm3.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\core_cm3.h",
+        "SHA256":  "EFEFEF85CD419652F5B7C1074EDE2F5C24DA943528C5156DE8D2A194DE1888DC"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\core_cm33.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\core_cm33.h",
+        "SHA256":  "3E50058F0D08B8D8897FEC65E636E2F96635D1F8BCEF37D2DEC289E834539548"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\core_cm35p.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\core_cm35p.h",
+        "SHA256":  "32DBDE7EDB75784B23411639FA8CB8ECD3A3DA26F923530B9AE606E010FCAE57"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\core_cm4.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\core_cm4.h",
+        "SHA256":  "CDC0C5AB9BA0F24C065E891D26C3E686ED04106700CE6A572CC7E83E71965B59"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\core_cm7.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\core_cm7.h",
+        "SHA256":  "FF629C5BF98A8CAADF360D0BCC48E1042FEFA19995F7B64855D5E81E4C2E81CB"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\core_sc000.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\core_sc000.h",
+        "SHA256":  "E306205844323C8FE4CC3E5433C91ED34D9D5055ED11ECEEF03401FDFB0C3600"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\core_sc300.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\core_sc300.h",
+        "SHA256":  "CDDD97BB6172B5CDAD96A48445124A6D97A449546F5617E48F03847CBC4A09A4"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\mpu_armv7.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\mpu_armv7.h",
+        "SHA256":  "E504A7D47DFDB3D61DFAE3CF08D27BA9BC69AA4B2B81CA568EFDAFD65D6ABDCC"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\mpu_armv8.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\mpu_armv8.h",
+        "SHA256":  "95A05E406C38CB770621F07AC066B8C89B90874A50559EC9B10C9587B6049503"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\CMSIS\\Include\\tz_context.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\CMSIS\\Include\\tz_context.h",
+        "SHA256":  "7FCC21FC190F6FD970390E9CAAA6A86D72FD10F9EDF4EFAB36F12AECF1A8BAA0"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\LICENSE.txt",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\LICENSE.txt",
+        "SHA256":  "BDC7B0F98DB4846279336431024C49A01D578A2EA1D19EC68797BBE33E718D2D"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal.h",
+        "SHA256":  "CA188D7AA8DFB5ACBC5FDE021D7A5D5B806D48839E9FB14D2878D39074A47F45"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_cortex.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_cortex.h",
+        "SHA256":  "574E82149AC5E938382C6EF4B443DB0BF5ECD596B2E481AA7AACDEC4FC36C547"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_def.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_def.h",
+        "SHA256":  "E55D92D18F962EF49F02E84AF434CAB6B59511577C0BC03213B33FB245236242"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_dma.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_dma.h",
+        "SHA256":  "104965F6611313A57B25C5211786F5FFEC4BD1B9186A50E1198CBBD6D90D9705"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_dma_ex.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_dma_ex.h",
+        "SHA256":  "3E08F5C04BA8F583D3C1396CCE7D347DE5B432D047D2B171CC4986CC6E453F20"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_exti.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_exti.h",
+        "SHA256":  "26ED3015C0C4062A056DDA61706AEB62C1BAB145DFE0FE597E7CEEEE90577CAE"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_flash.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_flash.h",
+        "SHA256":  "D067D9B26EE15F77A643535F0B37FF12BE89EEC1A10BAC9BD8A0B068B70364B5"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_flash_ex.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_flash_ex.h",
+        "SHA256":  "CE9B06E5E159E11A29B642E8727217A104DB21821E06691680F0F00D5BF1738A"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_flash_ramfunc.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_flash_ramfunc.h",
+        "SHA256":  "D500D042AF76E75925663270484897B68717245BC4CBA09FD90EE524D924591F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_gpio.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_gpio.h",
+        "SHA256":  "77016D1D173F05A3935F890259B44BEAEE7EDF0705E6CFAA79D829B71B856D3E"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_gpio_ex.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_gpio_ex.h",
+        "SHA256":  "AA5AF32FF104F064B43A496FFCC268B352C5649405A0903B413B422E3BC3D269"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_i2c.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_i2c.h",
+        "SHA256":  "21B4C06334F1CD64F4D335E2C06E01B8E085EEF780CD822DA2C4A54EB37B2DDF"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_i2c_ex.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_i2c_ex.h",
+        "SHA256":  "B1D941C87D72738D875D6D634E6A0B02D3F90C9C0539170D950DEB2C6112C75D"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_pcd.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_pcd.h",
+        "SHA256":  "C060D4FA0665F497DE5D6DB808DEE272A2BFBA974DCCEC094A192C986C7AF1C9"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_pcd_ex.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_pcd_ex.h",
+        "SHA256":  "E468AF99E37C41C7D26F6D4E2E4922E6F5D1F820C96AEC87F4636A822C0E05FE"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_pwr.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_pwr.h",
+        "SHA256":  "226D361B11D2623434C0BE61630AC8BE81A8745AFD5F177F7E2F095E0708FA31"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_pwr_ex.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_pwr_ex.h",
+        "SHA256":  "3AD9B6A0431CC47B80C485422133E24AE700D86DC845510A52365A78C61BE52E"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_rcc.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_rcc.h",
+        "SHA256":  "EE31E3D363CA97E0001942B6695242CAFF8FA905EF04CA539E9E876517678A46"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_rcc_ex.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_rcc_ex.h",
+        "SHA256":  "524207172713422BA52ABCD5060658F776BE9D25E58029FF93B501C50EEF324A"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_tim.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_tim.h",
+        "SHA256":  "99AF05594096EB3CBD079911C2B0F9E3FA51A851D95DA2F1FF4B5FBB790F5647"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_tim_ex.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_hal_tim_ex.h",
+        "SHA256":  "C66BD77C8B71C5C6A7EE146A21428EA682A901E9779BAB1A7065E09C5E1030D3"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_bus.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_bus.h",
+        "SHA256":  "676A275A9E860C79958979CC79AA8A7164ABD4B062A8CB0C9EB5E4BB67E7E0EB"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_cortex.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_cortex.h",
+        "SHA256":  "9B3A59FE98AD565EDA322E2973E9A5A6792AF131F3C981CB8EFD31EAFF10615B"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_crs.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_crs.h",
+        "SHA256":  "A3ABDBFA76F0455BF00E207115C487E03A76B3EA8B2643692AA356BEB43087D9"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_dma.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_dma.h",
+        "SHA256":  "F6BA7920BDE82F99775E0B8D313187307154860CE9FFE6992C41C9E357DDAFDD"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_dmamux.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_dmamux.h",
+        "SHA256":  "14168273D5292811B1625A7EBE3057F9A14B880AF7E3108EB96A54D3A06DFCDB"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_exti.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_exti.h",
+        "SHA256":  "5CEE953B6708F73D91BE1B8D598B8D76695496078D2C17C95DB96FEAC6B725E9"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_gpio.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_gpio.h",
+        "SHA256":  "1127AF211AF317F3DC98586B55FC0EB142980D43DEC5D18DE6709CD7C532B07F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_pwr.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_pwr.h",
+        "SHA256":  "E5574518482CFDBC3B033185F854A69E415882594DB30679D8B7B6B82F7916EF"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_rcc.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_rcc.h",
+        "SHA256":  "91B453313EC255A8069EC275B8D490C99C2FEAD12FDCB13F26190D7B60AE4D37"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_system.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_system.h",
+        "SHA256":  "6963B59EEC94428C560534A3A6585E09F8AA03EB4A43443395D549EFA951609F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_usb.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_usb.h",
+        "SHA256":  "090D328F75B4DD4FC9788D1B99641D832519F54297C330E8991EAA0C9F333EA7"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_utils.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\stm32l4xx_ll_utils.h",
+        "SHA256":  "BF1712E187623982F07AC867866939F270DF78A41BE157688F87955A8FF1805F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\Legacy\\stm32_hal_legacy.h",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\Legacy\\stm32_hal_legacy.h",
+        "SHA256":  "6F7775FC523D712334D199E745E1327192ACDCE4214113E09B76E37CB36BB892"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal.c",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal.c",
+        "SHA256":  "B8B48F6A0B3EC60502E5E9883D742654A091A8C86D74E50CABD75B6642BF36C8"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_cortex.c",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_cortex.c",
+        "SHA256":  "294275CD7DE3436F5CA43D71595F6D893EA86F2F7A7E1285BD602822FDA2EC91"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_dma.c",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_dma.c",
+        "SHA256":  "D6E6BCFAF67D0B8F55A2A4570EC0009A41E22C344843C1FB92C916B363C7204E"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_dma_ex.c",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_dma_ex.c",
+        "SHA256":  "03240ADEFD86F35E20984EA289F7F7D3279732694DB65B79B160BF6653ABC8F3"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_exti.c",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_exti.c",
+        "SHA256":  "13E2CE211075D340C549ADB429E704AB4B2A6A479EB1AC41C1133F33672ECB55"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_flash.c",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_flash.c",
+        "SHA256":  "71C176FB0270842E5279F080BA0FE65331EE3F864DE7F6BC238CF2013CC91672"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_flash_ex.c",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_flash_ex.c",
+        "SHA256":  "550E33930FC3A5D5B5C26689D96CA47D77386C226DA1BA7E82854D4B61CBB2A4"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_flash_ramfunc.c",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_flash_ramfunc.c",
+        "SHA256":  "6A54DB9F4BA3BC7ABD20822C983057D8B4E10587C2E564E6401ECD322895EE95"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_gpio.c",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_gpio.c",
+        "SHA256":  "7639671D33269D071DEF64498DE0A9FB6EF0582297C93828D0BDB20C6DF45E80"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_i2c.c",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_i2c.c",
+        "SHA256":  "8CD8F93BC71AEDA17E3C5297EAC94A5B9C3E22B485A60FB906D12803910C73AC"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_i2c_ex.c",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_i2c_ex.c",
+        "SHA256":  "12730ADD5928EDB2E92843E65289873D7C5E41F1D556D5879E5B9835FF9D301C"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_pcd.c",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_pcd.c",
+        "SHA256":  "0EC8461D6B5BB8CF4CB3AE8EDC50237890ED934AB0496DAD23518CE92E2F9CDF"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_pcd_ex.c",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_pcd_ex.c",
+        "SHA256":  "1C0D8985C82E79FA50C69B661344546266F9A396EEF56A8B3F3B87C4B1662BFC"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_pwr.c",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_pwr.c",
+        "SHA256":  "5C01FC2B3CC52F4628A7B59E58FB97CF18E4A03EB029CA56746C2AE3DB299CDC"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_pwr_ex.c",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_pwr_ex.c",
+        "SHA256":  "A24EBEFC95B3EFCB4F0316DB8EF80485BD67FF9FBBD23CC3235763F601191DC5"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_rcc.c",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_rcc.c",
+        "SHA256":  "D37CE29D4D0B445EEF90E2BE39DA41807A8AECF32C9485F8D75AF8F7EE41E437"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_rcc_ex.c",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_rcc_ex.c",
+        "SHA256":  "556151576DDE11D39D4CD3EA111EDDB3368692B80A3188196A862291D512CB20"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_tim.c",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_tim.c",
+        "SHA256":  "424AA127F6DD61C04929379ECA4354ABE752FA95B7D41A7DCA052CBC4F2B7396"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_tim_ex.c",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_hal_tim_ex.c",
+        "SHA256":  "0644A813539945B008D2E0C5FD1EC998242DA7B17C3FA814BEE313DDC2533139"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_ll_usb.c",
+        "Destination":  "Firmware\\MainBootloader\\Drivers\\STM32L4xx_HAL_Driver\\Src\\stm32l4xx_ll_usb.c",
+        "SHA256":  "11127E0D6BB1895A882A53CD05C74E3D22AFA71E041757175B5EE43C2E054E47"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Middlewares\\ST\\STM32_USB_Device_Library\\LICENSE.txt",
+        "Destination":  "Firmware\\MainBootloader\\Middlewares\\ST\\STM32_USB_Device_Library\\LICENSE.txt",
+        "SHA256":  "8702152A0CD7F3A7DA4C3FECFDBAAC89779B54449243429AC71E93793F1188EF"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Middlewares\\ST\\STM32_USB_Device_Library\\Class\\CDC\\Inc\\usbd_cdc.h",
+        "Destination":  "Firmware\\MainBootloader\\Middlewares\\ST\\STM32_USB_Device_Library\\Class\\CDC\\Inc\\usbd_cdc.h",
+        "SHA256":  "41200B06109527C0B23977E80B6E2A458B6814C334642F8E3A36FE446E16E0BA"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Middlewares\\ST\\STM32_USB_Device_Library\\Class\\CDC\\Src\\usbd_cdc.c",
+        "Destination":  "Firmware\\MainBootloader\\Middlewares\\ST\\STM32_USB_Device_Library\\Class\\CDC\\Src\\usbd_cdc.c",
+        "SHA256":  "4DD8D556F2BCCF29509B8915D6F440FB12A8937365B4E7B5D65B28C803885EDB"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Inc\\usbd_core.h",
+        "Destination":  "Firmware\\MainBootloader\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Inc\\usbd_core.h",
+        "SHA256":  "28967F78C4D89437124AD90DF076766236884ACFEDCC6E2C81943F0370FA0253"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Inc\\usbd_ctlreq.h",
+        "Destination":  "Firmware\\MainBootloader\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Inc\\usbd_ctlreq.h",
+        "SHA256":  "0D766FE68A0F746B29CAA7C6EA1E96C45C5FCA50360E1D224C19935A76EB666F"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Inc\\usbd_def.h",
+        "Destination":  "Firmware\\MainBootloader\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Inc\\usbd_def.h",
+        "SHA256":  "0624C7313D88CA648B9D87E47C611EB78DC58EE62C6FF848B1D9F20E15CE4307"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Inc\\usbd_ioreq.h",
+        "Destination":  "Firmware\\MainBootloader\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Inc\\usbd_ioreq.h",
+        "SHA256":  "FC7FFBED8FF7752453BB510493B43165EF29F4C5091E50FB6D0C4C8652D4F560"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Src\\usbd_core.c",
+        "Destination":  "Firmware\\MainBootloader\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Src\\usbd_core.c",
+        "SHA256":  "4B43509C00EDCBB5901D8BC2D797B7DF2564B85A8709E5D8E66CB075C62BE60A"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Src\\usbd_ctlreq.c",
+        "Destination":  "Firmware\\MainBootloader\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Src\\usbd_ctlreq.c",
+        "SHA256":  "4A46C29CED0EEC6E97CE1534F1C580350A027616925CB59AC54DC3D744BF84B5"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Src\\usbd_ioreq.c",
+        "Destination":  "Firmware\\MainBootloader\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Src\\usbd_ioreq.c",
+        "SHA256":  "EB0FD86544C9AE3DC362A32D4F201EA524EBC875CBC40C3791E56F55258148D3"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\USB_DEVICE\\App\\usbd_cdc_if.c",
+        "Destination":  "Firmware\\MainBootloader\\USB_DEVICE\\App\\usbd_cdc_if.c",
+        "SHA256":  "8C3F30EE2BD9B4BDC2B506AEFA5318D984437237A0267E211CF12355CE91FBEE"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\USB_DEVICE\\App\\usbd_cdc_if.h",
+        "Destination":  "Firmware\\MainBootloader\\USB_DEVICE\\App\\usbd_cdc_if.h",
+        "SHA256":  "463301CC9BBA9D02642186EBD09C697F9BF9D2FB0B1CDF927E7EAB8123644666"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\USB_DEVICE\\App\\usbd_desc.c",
+        "Destination":  "Firmware\\MainBootloader\\USB_DEVICE\\App\\usbd_desc.c",
+        "SHA256":  "9EED2C01A02C34BC4D1A16FDA7AAC0599F7145BF7BCFB9561AA4560787F2EBE4"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\USB_DEVICE\\App\\usbd_desc.h",
+        "Destination":  "Firmware\\MainBootloader\\USB_DEVICE\\App\\usbd_desc.h",
+        "SHA256":  "1E47DE8ED0F3D14AC0E8B702DD29CFA96325BD31DC20786018AFE40CFBF08069"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\USB_DEVICE\\App\\usb_device.c",
+        "Destination":  "Firmware\\MainBootloader\\USB_DEVICE\\App\\usb_device.c",
+        "SHA256":  "43D40ED1812C09EC3AA85F2DD45812D1191FB3529B3F618254C8A4AFFC0D238D"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\USB_DEVICE\\App\\usb_device.h",
+        "Destination":  "Firmware\\MainBootloader\\USB_DEVICE\\App\\usb_device.h",
+        "SHA256":  "BCF3853F518F4A0D100EA7825E50FBC9470DEE618F0AACBE1B6B920EBE6851BF"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\USB_DEVICE\\Target\\usbd_conf.c",
+        "Destination":  "Firmware\\MainBootloader\\USB_DEVICE\\Target\\usbd_conf.c",
+        "SHA256":  "A472EA718A20D51D3E91AA463E7E8078E0A913EC61C4D9E4B2E0A3E38A971C9A"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Bootloader\\Bootloader\\USB_DEVICE\\Target\\usbd_conf.h",
+        "Destination":  "Firmware\\MainBootloader\\USB_DEVICE\\Target\\usbd_conf.h",
+        "SHA256":  "A5B1F5F8CD210C5EBB7636FC3B5AC69B262F475CD9445138B2E34EB373E36E55"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\.cproject",
+        "Destination":  "Firmware\\DIO\\.cproject",
+        "SHA256":  "DC63240A75FCE9B0947A06040A1C89BA859B1CD4EA24B4AC8B2D365DD2BFC035"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\.mxproject",
+        "Destination":  "Firmware\\DIO\\.mxproject",
+        "SHA256":  "09573997274E159390DB3D03CAA9D8D6A57A7EFA74568EC6425CD71F70DA7854"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\.project",
+        "Destination":  "Firmware\\DIO\\.project",
+        "SHA256":  "A1418D9273CE80C405501E232F7B2EA373C1C30719797E1CEC25AA59FA47026C"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\interface_sub Debug.launch",
+        "Destination":  "Firmware\\DIO\\interface_sub Debug.launch",
+        "SHA256":  "C2EA74653DE68A42083B893B1034A979C608CF1EADA932224472EBD5ADF2E5AE"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\interface_sub.ioc",
+        "Destination":  "Firmware\\DIO\\interface_sub.ioc",
+        "SHA256":  "23B1A07932C358E5D5BD9BEF86EEFCDC85C1D0C1D39DAA52A403FE16C7F5B71E"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\STM32G0B1CBTX_FLASH.ld",
+        "Destination":  "Firmware\\DIO\\STM32G0B1CBTX_FLASH.ld",
+        "SHA256":  "5CA681347121D63BCE5EE857BB8AE8D663CDF5A11BB023205FAA06B5CD7898E3"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\STM32G0B1CBTX_RAM.ld",
+        "Destination":  "Firmware\\DIO\\STM32G0B1CBTX_RAM.ld",
+        "SHA256":  "6163B06FB13007A2EAF804946221BDEE20A2D5FD39BE1E62D3D64DB839DD23C7"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\.settings\\com.st.stm32cube.ide.mcu.sfrview.prefs",
+        "Destination":  "Firmware\\DIO\\.settings\\com.st.stm32cube.ide.mcu.sfrview.prefs",
+        "SHA256":  "A6188E0FF8E84F1AE480F614D33AF1DA46C360359EE8C6E29A97B521C1331B7F"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\.settings\\language.settings.xml",
+        "Destination":  "Firmware\\DIO\\.settings\\language.settings.xml",
+        "SHA256":  "771152A6715324305C846275DC726830639B030D8A5082414612C453FD0CB868"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\.settings\\stm32cubeide.project.prefs",
+        "Destination":  "Firmware\\DIO\\.settings\\stm32cubeide.project.prefs",
+        "SHA256":  "0FBDD588A8EA9E497F2E59BBFAA414AAD0EC08A670FD2BAD971C2AE543B5E894"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Core\\Inc\\FreeRTOSConfig.h",
+        "Destination":  "Firmware\\DIO\\Core\\Inc\\FreeRTOSConfig.h",
+        "SHA256":  "75E12B5690AC4A8D790D4D8279E1D8D7517D73596685754E9FB279F83446C5D0"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Core\\Inc\\main.h",
+        "Destination":  "Firmware\\DIO\\Core\\Inc\\main.h",
+        "SHA256":  "CFF2423F96FE92B4F4A6C6184ED150A6526D06E978AC0249C244268D2B8444EE"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Core\\Inc\\stm32g0xx_hal_conf.h",
+        "Destination":  "Firmware\\DIO\\Core\\Inc\\stm32g0xx_hal_conf.h",
+        "SHA256":  "C9FBE1D22FD9B4E86B148880180BA07E3B23AEC742F7ADBC8CF994510FB200B6"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Core\\Inc\\stm32g0xx_it.h",
+        "Destination":  "Firmware\\DIO\\Core\\Inc\\stm32g0xx_it.h",
+        "SHA256":  "B7D90AC4C0420D406B9747D59599DDDBD5FD589214C36EC38E64D0C62D8798B0"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Core\\Src\\app_freertos.c",
+        "Destination":  "Firmware\\DIO\\Core\\Src\\app_freertos.c",
+        "SHA256":  "D1AC4DE135426B6742680DB236432E02564B2D22B165A21B0CC4F72879CEED05"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Core\\Src\\main.c",
+        "Destination":  "Firmware\\DIO\\Core\\Src\\main.c",
+        "SHA256":  "F1F901956F62925B2132B7AC783797AC9EF6703849395B48166C830E77A2194D"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Core\\Src\\stm32g0xx_hal_msp.c",
+        "Destination":  "Firmware\\DIO\\Core\\Src\\stm32g0xx_hal_msp.c",
+        "SHA256":  "72D18D6163F1471AD5EC678E63D031994CE23DEC89ADFE881E3976EAB02BC957"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Core\\Src\\stm32g0xx_hal_timebase_tim.c",
+        "Destination":  "Firmware\\DIO\\Core\\Src\\stm32g0xx_hal_timebase_tim.c",
+        "SHA256":  "6DB923DCA1DF8964A22C974715C93911C4EBA042B541CBD88F9EDA86E81392A1"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Core\\Src\\stm32g0xx_it.c",
+        "Destination":  "Firmware\\DIO\\Core\\Src\\stm32g0xx_it.c",
+        "SHA256":  "82664B535F99861A5CBCDE390B80D01B48ED941ADE8E55FF823E48552A399CF3"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Core\\Src\\syscalls.c",
+        "Destination":  "Firmware\\DIO\\Core\\Src\\syscalls.c",
+        "SHA256":  "2A18192FE02CBB0491F8FED0BC759DD7EC21547D53DC00D7EC35EFBB6E1BF002"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Core\\Src\\sysmem.c",
+        "Destination":  "Firmware\\DIO\\Core\\Src\\sysmem.c",
+        "SHA256":  "E00BE9CE9B834538F99984B02A5C6E3A1D10B50D763013FBA0AFDDA9996A6887"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Core\\Src\\system_stm32g0xx.c",
+        "Destination":  "Firmware\\DIO\\Core\\Src\\system_stm32g0xx.c",
+        "SHA256":  "AD0BB8C324F13407322F78D147DE73081086154ABDE43C347C202526B1B37D46"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Core\\Startup\\startup_stm32g0b1cbtx.s",
+        "Destination":  "Firmware\\DIO\\Core\\Startup\\startup_stm32g0b1cbtx.s",
+        "SHA256":  "7E90A20936234B4A3905AD5B290DDA5863FB5DD9C9B6DF9BB5B4BAE7936ACEDB"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\LICENSE.txt",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\LICENSE.txt",
+        "SHA256":  "E03BA41D7FAB20700769FE4118BAB50D800CB74F990353A05D2F5FFF1C228363"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Device\\ST\\STM32G0xx\\LICENSE.txt",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Device\\ST\\STM32G0xx\\LICENSE.txt",
+        "SHA256":  "D65CAD1327EB8DAE95D0AEAB71FB22505F99A3D7CD1CE2530D7D40C52AECE002"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Device\\ST\\STM32G0xx\\Include\\stm32g0b1xx.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Device\\ST\\STM32G0xx\\Include\\stm32g0b1xx.h",
+        "SHA256":  "B8C25F0E677EB57FF0E5FC04D658A7F4C30D566745361A84EED141BD710D0D47"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Device\\ST\\STM32G0xx\\Include\\stm32g0xx.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Device\\ST\\STM32G0xx\\Include\\stm32g0xx.h",
+        "SHA256":  "839759F4710A98C1B7616FAC2D382AFDA04491F711E66BD96D21479FB2D84860"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Device\\ST\\STM32G0xx\\Include\\system_stm32g0xx.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Device\\ST\\STM32G0xx\\Include\\system_stm32g0xx.h",
+        "SHA256":  "7B7C61C56EE6D594B19FD8A2C8E1C973E8A50197633159C93F2DC238E6D252F7"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\cmsis_armcc.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\cmsis_armcc.h",
+        "SHA256":  "E6BA28E21B5A3CD44D4E2D2981E37568F419E5DF693C8B58E87674FBDF28DEEB"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\cmsis_armclang.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\cmsis_armclang.h",
+        "SHA256":  "99B25AB977F383840994CB456AE3F259A5C9B036CB6A0D8C003B7CBBA4F6123A"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\cmsis_armclang_ltm.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\cmsis_armclang_ltm.h",
+        "SHA256":  "31622280A8296B67BDACE0539710A3CFBF828B71F88BD0D5CCC5D7D291AB3A9F"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\cmsis_compiler.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\cmsis_compiler.h",
+        "SHA256":  "869640702D811C4C63ABB52206715C891A93FD03BE954DF5AD40D378355AF3D6"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\cmsis_gcc.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\cmsis_gcc.h",
+        "SHA256":  "0837F98E834D6A529854C8C86336E9D99EB8E379BF1DEB964858D7863950F862"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\cmsis_iccarm.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\cmsis_iccarm.h",
+        "SHA256":  "A40C60D322903D410FE892C2ECCB92D82D8876DCE605FBB4CB563D52182AEB16"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\cmsis_version.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\cmsis_version.h",
+        "SHA256":  "DD03AF200B23BDD8D091FFA7BEB3D1A2C4FC5611557567BD57EC613205F6DF1F"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\core_armv81mml.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\core_armv81mml.h",
+        "SHA256":  "FB6FF226BC14B8730B3D5C5E49A32514DE811B485DC3F0543045FFFFD8787F85"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\core_armv8mbl.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\core_armv8mbl.h",
+        "SHA256":  "319FD8C698098A16F2775FE292B734C91AAEEC3FEEE418E515CC3A1761EDEC76"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\core_armv8mml.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\core_armv8mml.h",
+        "SHA256":  "1778FD691A0768DBEE4FBE537B3CC4D03FCFAB4AB9F60E31EC52605364F3DD36"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\core_cm0.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\core_cm0.h",
+        "SHA256":  "20300B57C02D5B7B34C7B58BF7009E81713A60F44CA2A338F67CB4B473F4F3C4"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\core_cm0plus.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\core_cm0plus.h",
+        "SHA256":  "4B79D5BF9F9165DDAE727C9F035F82FB0EA85CEEE2587B503D5D7BCD172D2DF9"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\core_cm1.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\core_cm1.h",
+        "SHA256":  "C243C4AFB291068FE7078D2911B2F0001E78A4D5466C26728611B06147D65C2B"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\core_cm23.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\core_cm23.h",
+        "SHA256":  "009F762A79B693F7F82EFC9298A33A14765C06DBD4CB2BF5C9B4FFBB6F7E56FF"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\core_cm3.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\core_cm3.h",
+        "SHA256":  "EFEFEF85CD419652F5B7C1074EDE2F5C24DA943528C5156DE8D2A194DE1888DC"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\core_cm33.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\core_cm33.h",
+        "SHA256":  "3E50058F0D08B8D8897FEC65E636E2F96635D1F8BCEF37D2DEC289E834539548"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\core_cm35p.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\core_cm35p.h",
+        "SHA256":  "32DBDE7EDB75784B23411639FA8CB8ECD3A3DA26F923530B9AE606E010FCAE57"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\core_cm4.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\core_cm4.h",
+        "SHA256":  "CDC0C5AB9BA0F24C065E891D26C3E686ED04106700CE6A572CC7E83E71965B59"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\core_cm7.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\core_cm7.h",
+        "SHA256":  "FF629C5BF98A8CAADF360D0BCC48E1042FEFA19995F7B64855D5E81E4C2E81CB"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\core_sc000.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\core_sc000.h",
+        "SHA256":  "E306205844323C8FE4CC3E5433C91ED34D9D5055ED11ECEEF03401FDFB0C3600"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\core_sc300.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\core_sc300.h",
+        "SHA256":  "CDDD97BB6172B5CDAD96A48445124A6D97A449546F5617E48F03847CBC4A09A4"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\mpu_armv7.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\mpu_armv7.h",
+        "SHA256":  "E504A7D47DFDB3D61DFAE3CF08D27BA9BC69AA4B2B81CA568EFDAFD65D6ABDCC"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\mpu_armv8.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\mpu_armv8.h",
+        "SHA256":  "95A05E406C38CB770621F07AC066B8C89B90874A50559EC9B10C9587B6049503"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\CMSIS\\Include\\tz_context.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\CMSIS\\Include\\tz_context.h",
+        "SHA256":  "7FCC21FC190F6FD970390E9CAAA6A86D72FD10F9EDF4EFAB36F12AECF1A8BAA0"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\LICENSE.txt",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\LICENSE.txt",
+        "SHA256":  "BDC7B0F98DB4846279336431024C49A01D578A2EA1D19EC68797BBE33E718D2D"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal.h",
+        "SHA256":  "83E6B6A8D6B8F39163F2E210195409F48FB0D81486AE862F4887327C58811259"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_cortex.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_cortex.h",
+        "SHA256":  "1E0F7404C012F41D999E92A10A8E3439FBF2D412F0A5483E1E08C54307A112DA"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_def.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_def.h",
+        "SHA256":  "67C7397B58BE9B98E88F8B0AB75D614A5C2EA77F3016F199C6ED7F1B749FDB75"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_dma.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_dma.h",
+        "SHA256":  "9A83B18631B88E6E2F408BA1BFA8E313458C7F89ADA2AA818F44DF8A54481EC2"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_dma_ex.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_dma_ex.h",
+        "SHA256":  "063F42FAC826D470ADBB8FFCC1A07350EBB668DE151E6F5004723A01F488B1F5"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_exti.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_exti.h",
+        "SHA256":  "23AE1377EE01E6793F42CC9C9086C50E01E01EEE841FAE18EB6BE5339CB727B8"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_flash.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_flash.h",
+        "SHA256":  "88031865438703F764496217EC015C399D2BF72E8854B86DEB6F116390F2DE5A"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_flash_ex.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_flash_ex.h",
+        "SHA256":  "50F5DF97A06DE1CBB4BC9A7860CE26772527B73125B5E9197FADED4D081B98D9"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_gpio.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_gpio.h",
+        "SHA256":  "5F3DF82E217023BC50D38C9BC53D61290E29AA73BFAAE4BB7616A689ADACCAF6"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_gpio_ex.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_gpio_ex.h",
+        "SHA256":  "6CBBA7EC5F8EB6575D55A33F9B6E85F356F08664317C5143D8E39795CDC427B7"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_pwr.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_pwr.h",
+        "SHA256":  "7C1CE4838F7F32E05FCF590E5904E9DA0B7A02E452391491EE34D954D3A00287"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_pwr_ex.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_pwr_ex.h",
+        "SHA256":  "236593E52BC527416EF7D78335AD317BA3D8DC1248A7873AF0B246DC54B77C9E"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_rcc.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_rcc.h",
+        "SHA256":  "042290BACEBC0D5E9E6D679466FD570E4F2ED3FC7183A579DB55B687F816112A"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_rcc_ex.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_rcc_ex.h",
+        "SHA256":  "74F9E934AA2F841CD63C1BABD47F5787D413A0B19F81F37042739CE72A429BB9"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_tim.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_tim.h",
+        "SHA256":  "8029BDBA0CA73903876134451C51B5CCE1E457C317D816933703E1965D38D974"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_tim_ex.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_tim_ex.h",
+        "SHA256":  "73EA1810F7B82852AD768C77CF9113D9AAB392E35A79B42F1B64864EB9053691"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_uart.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_uart.h",
+        "SHA256":  "B22AB2C0BCE654738876232E1CAFBB9ABE355AEE7CBB0E2590BE97646A02DC9A"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_uart_ex.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_hal_uart_ex.h",
+        "SHA256":  "F1DA006E2853DD669E252983033CF2EDE7F251F23C5BFA74B1895BF5331C1C89"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_bus.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_bus.h",
+        "SHA256":  "069287885B47D76251B466240E949DB431D93DF5ECFDC4692E95F86F4C4E92CB"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_cortex.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_cortex.h",
+        "SHA256":  "831D41353BBC4B603A0B80E66875CFDF755E355248A6200BC038C6399D56AAD1"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_crs.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_crs.h",
+        "SHA256":  "57F280DF98863737A4319ECC637A7C18214F8634FBF2BE9477F44079845E4926"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_dma.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_dma.h",
+        "SHA256":  "61A5B6B5C0B72090D064EC9BDA8E34FAED9D43453A19A250145A3C5B7BBAAED8"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_dmamux.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_dmamux.h",
+        "SHA256":  "CB6733E513AF3231D3F607A9024771D7AC4A3608AA16430DC706C4A507DCA108"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_exti.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_exti.h",
+        "SHA256":  "BF202ADF3193BD00CDF8B461774300F7FAC5EA0D1E7F3A82300A6A9D87096C7C"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_gpio.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_gpio.h",
+        "SHA256":  "CFD71CFCA8D0E7D2CB068D29C76B9A5819F651B4102DC2659DC58135296CEBE9"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_lpuart.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_lpuart.h",
+        "SHA256":  "0D806BDC380A4E249FD9EB49F83ADBAAE5C29706B0AF59C7A95356CED805D913"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_pwr.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_pwr.h",
+        "SHA256":  "20384B36837D9AA40450B284ABDEF8039DF9799F1A72E5C37EF230782199A1FB"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_rcc.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_rcc.h",
+        "SHA256":  "992D9CDB26F59E191AE2F87E388DF23D46D944A80C9E9C56620CF16FD22E4F34"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_system.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_system.h",
+        "SHA256":  "6D893EE708C9C54F1AEF7FF6856825B2A8D50C390A65F76B6E838DC62B058C96"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_tim.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_tim.h",
+        "SHA256":  "98FE45F03899B93A1703439307AFBD9051237900A71C948182E39973D6F7654A"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_usart.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_usart.h",
+        "SHA256":  "70E53BC7579F8335784852D79925E1CD33DFF6932792EEC30DF7A1289B6BBD73"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_utils.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\stm32g0xx_ll_utils.h",
+        "SHA256":  "B8E19F4355D8B1D70AA64E1F777DDAC6B5AD588B32D9F439B956817A7FEE6C17"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\Legacy\\stm32_hal_legacy.h",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Inc\\Legacy\\stm32_hal_legacy.h",
+        "SHA256":  "883D8F5FB1DBA5837C5A035A1C914E229AFB8600B3748BB495FF036A83F19D82"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal.c",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal.c",
+        "SHA256":  "059E85D7289A2C7EAD8616102F80C4B2294E25E0E06B275590CED1C9C54C4929"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_cortex.c",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_cortex.c",
+        "SHA256":  "4407B24482EBA0DFC66685E116BD99600AFB4B09DC06AD8C9338E836C730BA60"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_dma.c",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_dma.c",
+        "SHA256":  "AF071589C67D84F35FCFC71E4311FDC98D9C32E4A1E416B082BFAA81196D0255"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_dma_ex.c",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_dma_ex.c",
+        "SHA256":  "0731B53A219089B71AB45892D50D7D45BDDE4D7BECB2A577D46E7736F6DA8C85"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_exti.c",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_exti.c",
+        "SHA256":  "A301BBDA29446874A933254CE8D94C586AAC4F7BFC6477B7A585B41C0CCE40D9"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_flash.c",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_flash.c",
+        "SHA256":  "911482295FA2FB78B8BB0B7BA0E59CDF3B62EB77A0DD1F81B63FC652FC2720D4"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_flash_ex.c",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_flash_ex.c",
+        "SHA256":  "EADCF9113FC05DBA8C4CA185FB5756DDC0D4DC7A40D6C55727243758281E7026"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_gpio.c",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_gpio.c",
+        "SHA256":  "2C1D43FAC08775C41B85E475F7E07BE3C63918A255C4C0C70244AEFBAF272326"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_pwr.c",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_pwr.c",
+        "SHA256":  "BDF6CB2867EF2B44CB20FB804BA3C7BC28E1217042B08BB2E4731AAC94ED9505"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_pwr_ex.c",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_pwr_ex.c",
+        "SHA256":  "FC25C149930E475A234DF308E5FD5C8B13BDF3D58A0E468BB68EEC0E814DE416"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_rcc.c",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_rcc.c",
+        "SHA256":  "C4C98946953EF33AAA432001AFAAF66FFAFEF26D0E5D9D33903BE57856A57017"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_rcc_ex.c",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_rcc_ex.c",
+        "SHA256":  "04AB34689155848394E5AE1CE6D3B8704FC253478B36DDCB7315CE9D1F3A6EFE"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_tim.c",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_tim.c",
+        "SHA256":  "8604639FCEE865AEAE09D6DA04D0673071D615BF430F877179F8F0D2F93D9D58"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_tim_ex.c",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_tim_ex.c",
+        "SHA256":  "7A5837E1C5FB23D980B9BEE4E427D9696E4061D5B1695B98C1A5B2BE5CB7CCB0"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_uart.c",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_uart.c",
+        "SHA256":  "EDF7A33CA4583D91D3813EC65810051EB99042362E92EF6BD66E9E954B1183E3"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_uart_ex.c",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_hal_uart_ex.c",
+        "SHA256":  "6D3D6A9CC202EA8EBEF57CE0F0E19132FF5CE9FC8207A29C1740209FE364B796"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_ll_rcc.c",
+        "Destination":  "Firmware\\DIO\\Drivers\\STM32G0xx_HAL_Driver\\Src\\stm32g0xx_ll_rcc.c",
+        "SHA256":  "99C5901DEAE55C739FA32D45A66A1C62A014C62D9929220F26D8AB8EECD81D31"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\croutine.c",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\croutine.c",
+        "SHA256":  "E31CD1C9C280C919A92EDC28885E9BEBCE589D4CFAB71CEFAB832A73683200FB"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\event_groups.c",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\event_groups.c",
+        "SHA256":  "A72063C3977FAD098A87A5430E04E9FC5B892D703E01FBE09EA907F67AACF20E"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\LICENSE",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\LICENSE",
+        "SHA256":  "49678287E48228D68AF25ED82841491552B0646E31A8080165758FA72B67105A"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\list.c",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\list.c",
+        "SHA256":  "E735517F308FAD5DD77D03B6858C16BDBC937BB9D0754735849FC7799EBE2B59"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\queue.c",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\queue.c",
+        "SHA256":  "06A153C1CE111213AF32DFC8797BD2E5C7819E264DFA338B4049F058DC1EDB11"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\stream_buffer.c",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\stream_buffer.c",
+        "SHA256":  "4376714FECAD0F72DC4C8B45236591A7E0FFE24DD018382F56E8B0DFC2230B28"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\tasks.c",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\tasks.c",
+        "SHA256":  "8CB1EABE18F130B2B8980E880847F773FB12A4071C763D26C51624223B32A3A4"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\timers.c",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\timers.c",
+        "SHA256":  "0D16405E621A2C4B003B5F0324B9713CD4865364133DF6F742F482A6B2DBC773"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2\\cmsis_os.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2\\cmsis_os.h",
+        "SHA256":  "9F18B2E616411DEF39B415994B7FBE8E782A185E045C894AD2645C1AB7E83100"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2\\cmsis_os2.c",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2\\cmsis_os2.c",
+        "SHA256":  "0DD9EC29EB5862C4520EEDE87B05E063A4C80223555140C0187E80F97AE9E8AA"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2\\cmsis_os2.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2\\cmsis_os2.h",
+        "SHA256":  "F116A1A3F842194AABBBEDDF3D0F9F345AB7D35D4DE7BE0F04AF289F9B1FDFC8"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2\\freertos_mpool.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2\\freertos_mpool.h",
+        "SHA256":  "EED1C836ED2F0CDE7D41A93DA7E7E208C539D59162E872351526E1DDBD56B1B3"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2\\freertos_os2.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2\\freertos_os2.h",
+        "SHA256":  "3DDB74193DAF32483CAEE33E31A3EF0D40703E909E0E41E896839CCF37EDCFFC"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\atomic.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\atomic.h",
+        "SHA256":  "B74AB6F4AAE9A397565ADB5F14C9D8E33B9F782A2E35F77535AF751413AC68DE"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\croutine.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\croutine.h",
+        "SHA256":  "8DF4C5EEC7EB30262F09B7C47FC2EB0534A27721293B0D260A3398846494F9AC"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\deprecated_definitions.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\deprecated_definitions.h",
+        "SHA256":  "382F8A7A0E00240FB69911DFF8D8515248BEB9DADFE77C22C4E5544F49CC76EB"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\event_groups.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\event_groups.h",
+        "SHA256":  "3B9CBD64DB721C4317544700FFF4E42AC68D989F71B7D610B31087BB19175839"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\FreeRTOS.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\FreeRTOS.h",
+        "SHA256":  "B7A81501C3F4FF9537DF5C9A5E0231F37638CDC8324965AE10064128FDED840F"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\list.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\list.h",
+        "SHA256":  "F9B239F168976F7B167E054FA72616826F55AE4D74D76B87C9E70B2DF079363F"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\message_buffer.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\message_buffer.h",
+        "SHA256":  "504A77558F13B66FD1EEC5ADF4D81E274F0B54C12880424833C24F577BE0800A"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\mpu_prototypes.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\mpu_prototypes.h",
+        "SHA256":  "3FAFD21399EF619A55B2F8112750D750685C8AE1CB458363D21EE37A105AC6E7"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\mpu_wrappers.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\mpu_wrappers.h",
+        "SHA256":  "C1FC47ACDB79EFB0FB8A0FB8A169AE4423FDC3A6D820B2F81D49E8E077C1ED48"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\portable.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\portable.h",
+        "SHA256":  "39795C8DDED505F24F53646ECD8192251851C74F366D2A5B0AAE3FBFA68C191B"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\projdefs.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\projdefs.h",
+        "SHA256":  "399814721D9735E91D74CA07BE3974EDB20639ACB46A6792230FF9F61F67B353"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\queue.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\queue.h",
+        "SHA256":  "39D58A203F1B67FDB1099293914A2AF9722D223586CFC5FF06E230E047919DEA"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\semphr.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\semphr.h",
+        "SHA256":  "B9B2FF28A0C80FA21443690BB28DE64C8B9451CCCD57E484DE0BCF02FC367575"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\StackMacros.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\StackMacros.h",
+        "SHA256":  "C27D1653D2F7F34292387CAB8A8B074426CC1EF73AEAA27663D56BA634F7F8AB"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\stack_macros.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\stack_macros.h",
+        "SHA256":  "7D1D30B6C9AE34BEBB26B14402F78A59A35AE826F460A1AD28534C9590B32151"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\stream_buffer.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\stream_buffer.h",
+        "SHA256":  "0607FCCA1927BA782A29A3814481D69DB3569E6E53A68EBF2C01F5598A3AF2B8"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\task.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\task.h",
+        "SHA256":  "830990F7B17B8E0CE3BDB0A7475D2CDC7D659EAFFF16B88A855C84C06A7A2A3E"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\timers.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include\\timers.h",
+        "SHA256":  "7FA62F648014533CE5BD8DA1775DDD814CBF208F9AF7C748A40BB8B50A8E8912"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\GCC\\ARM_CM0\\port.c",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\GCC\\ARM_CM0\\port.c",
+        "SHA256":  "4FF3922A0D064B557E1B4CB2943D622C958AE70ACCEC55FE1DFE5FCFFA3AD0CA"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\GCC\\ARM_CM0\\portmacro.h",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\GCC\\ARM_CM0\\portmacro.h",
+        "SHA256":  "228298ED432502733C5DAB84C2C0AB1FE9B4643F791500D3C1270D1C2CD5DEC3"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\MemMang\\heap_4.c",
+        "Destination":  "Firmware\\DIO\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\MemMang\\heap_4.c",
+        "SHA256":  "C697B88E48E9906A19CABEF187E5797A5A45009144F9E473262752C86A5D2C50"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\User\\Application\\a_application.c",
+        "Destination":  "Firmware\\DIO\\User\\Application\\a_application.c",
+        "SHA256":  "1479E5593A523C1F51DC67375037C5314D90F28F78F8F30C6C666C59F33E6731"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\User\\Application\\a_application.h",
+        "Destination":  "Firmware\\DIO\\User\\Application\\a_application.h",
+        "SHA256":  "2887466E5389E500779D06509637363C378FBFE6A16EDEBC32CCE8083E9F3A14"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\User\\Application\\a_dio.c",
+        "Destination":  "Firmware\\DIO\\User\\Application\\a_dio.c",
+        "SHA256":  "CAAB65E3DA5EEAB1C35074D7736606F70AC7BECD4D8193A579FE1BC2C3A852E7"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\User\\Application\\a_dio.h",
+        "Destination":  "Firmware\\DIO\\User\\Application\\a_dio.h",
+        "SHA256":  "FCDD20D2B8D626A4F326275B3602BC8B839D291397164301010070DD7A2A010D"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\User\\Application\\a_modbus_slave.c",
+        "Destination":  "Firmware\\DIO\\User\\Application\\a_modbus_slave.c",
+        "SHA256":  "81CC8A9977163BD6AF52462D16E10AAD352F72526E8940D91852795F5152587B"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\User\\Application\\a_modbus_slave.h",
+        "Destination":  "Firmware\\DIO\\User\\Application\\a_modbus_slave.h",
+        "SHA256":  "0433BDDB904704BF365DAA6488FB3B9BEB9EE47291484FFAFE1B49E6C38F4ABD"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\User\\Application\\m_datablock.c",
+        "Destination":  "Firmware\\DIO\\User\\Application\\m_datablock.c",
+        "SHA256":  "45652AD76CECF2F7647FECA80F1AC3BB615E389197120F7B10DD7B88D8AF99AF"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\User\\Application\\m_datablock.h",
+        "Destination":  "Firmware\\DIO\\User\\Application\\m_datablock.h",
+        "SHA256":  "6A91A8830920F6E66914A262894E2073B319B88E50020978686D822B82B315CA"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\User\\Application\\m_modbus.c",
+        "Destination":  "Firmware\\DIO\\User\\Application\\m_modbus.c",
+        "SHA256":  "DFDA2088628A6D6783763371BCFD5303291809270C15D9088607936E96A6DA72"
+    },
+    {
+        "Source":  "sub\\mxc-hif1-dio\\interface_sub\\User\\Application\\m_modbus.h",
+        "Destination":  "Firmware\\DIO\\User\\Application\\m_modbus.h",
+        "SHA256":  "8DB14F70CAD4811BF06446BF1B6D1AD844CF7541D09515228A92987FE25DCD73"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Shared\\bootloader_shared.c",
+        "Destination":  "Firmware\\Shared\\bootloader_shared.c",
+        "SHA256":  "46C41E9F423382F491FD552176CB1187FAA9798A623A771EA98E076D9CE82F5B"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Shared\\bootloader_shared.h",
+        "Destination":  "Firmware\\Shared\\bootloader_shared.h",
+        "SHA256":  "82049999A4ED4A12FF8674B9AE865285BFD44DCB00761D3682A2B18D66A435D7"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Tools\\FirmwareUpdater\\BootProtocol.cs",
+        "Destination":  "PC\\FirmwareUpdaterReference\\BootProtocol.cs",
+        "SHA256":  "076EA8B02E1B7E1B306EC219C919CCD4ECE06754814A1EB7BCCE84A1D7AA689D"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Tools\\FirmwareUpdater\\FirmwareUpdater.csproj",
+        "Destination":  "PC\\FirmwareUpdaterReference\\FirmwareUpdater.csproj",
+        "SHA256":  "514F82FFF0FAC2FC987E3D120F2AFDCB76578D8B6801691965D15B92833DC127"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Tools\\FirmwareUpdater\\FirmwareUpdater.csproj.user",
+        "Destination":  "PC\\FirmwareUpdaterReference\\FirmwareUpdater.csproj.user",
+        "SHA256":  "A3A75DCB9582075EA138B266E7B24B7A0A376162FA78DB512D2C157148593673"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Tools\\FirmwareUpdater\\FirmwareUpdater.slnx",
+        "Destination":  "PC\\FirmwareUpdaterReference\\FirmwareUpdater.slnx",
+        "SHA256":  "11D9AA23F6E41B9E60CB0B81911040FBF16C63628E048141F02CD4211569CDFC"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Tools\\FirmwareUpdater\\MainForm.cs",
+        "Destination":  "PC\\FirmwareUpdaterReference\\MainForm.cs",
+        "SHA256":  "E85A09162DBC87919BB65ADFD79259E2D6BCF328F7E7EBBEB41A246EEDFD0895"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Tools\\FirmwareUpdater\\Program.cs",
+        "Destination":  "PC\\FirmwareUpdaterReference\\Program.cs",
+        "SHA256":  "07ABB915DABE98F73740EB9ACA2C468C08C0ED5EFBD7F9D68E1C7A50F71B6D18"
+    },
+    {
+        "Source":  "main\\mxc-hif1\\IF_Controller\\Tools\\FirmwareUpdater\\UpdateService.cs",
+        "Destination":  "PC\\FirmwareUpdaterReference\\UpdateService.cs",
+        "SHA256":  "38CBE7054FD9FB8BED0F6BD773B14FE060B0A616F67F2BAE650B1344990FA2DC"
+    }
+]

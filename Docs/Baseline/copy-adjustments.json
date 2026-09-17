@@ -1,0 +1,8 @@
+[
+    {
+        "Destination":  "Firmware\\Main\\.cproject",
+        "BeforeSHA256":  "EEB856C3B62EFF1926AE09C90F1844361A67CF01852596417A368947912A3A0F",
+        "AfterSHA256":  "5772886B142348147CDF2761FE2C1877D817865F576906A1483B9BEDDC00A548",
+        "Reason":  "Replace two external absolute Slot A/B linker paths with project-local workspace paths. No firmware source changes."
+    }
+]

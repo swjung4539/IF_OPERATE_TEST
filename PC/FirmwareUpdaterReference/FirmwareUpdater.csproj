@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>FirmwareUpdater</AssemblyName>
+    <RootNamespace>FirmwareUpdater</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- .NET Core/5+ 이상에서는 System.IO.Ports가 기본 포함이 아니라 NuGet 패키지로 별도 추가해야 한다. -->
+    <PackageReference Include="System.IO.Ports" Version="8.0.0" />
+  </ItemGroup>
+
+</Project>

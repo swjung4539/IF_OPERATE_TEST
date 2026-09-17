@@ -1,0 +1,224 @@
+{
+  "Passed": true,
+  "DeviceAccess": false,
+  "Checks": [
+    {
+      "Screenshot": "01-home",
+      "Width": 1296,
+      "Height": 889
+    },
+    {
+      "Check": "TEST entry opens board selection",
+      "Passed": true
+    },
+    {
+      "Screenshot": "02-boards",
+      "Width": 1296,
+      "Height": 889
+    },
+    {
+      "Check": "MAIN navigation",
+      "Passed": true
+    },
+    {
+      "Check": "No fabricated switch value before receive",
+      "Passed": true
+    },
+    {
+      "Check": "No real connection in stage 2",
+      "Passed": true
+    },
+    {
+      "Screenshot": "03-main-switch-waiting",
+      "Width": 1296,
+      "Height": 889
+    },
+    {
+      "Check": "Rotary example is displayed",
+      "Passed": true
+    },
+    {
+      "Screenshot": "04-main-switch-example",
+      "Width": 1296,
+      "Height": 889
+    },
+    {
+      "Check": "Disconnected display clears old reading",
+      "Passed": true
+    },
+    {
+      "Screenshot": "05-main-switch-disconnected",
+      "Width": 1296,
+      "Height": 889
+    },
+    {
+      "Check": "No relay commands in stage 2",
+      "Passed": true
+    },
+    {
+      "Screenshot": "06-fault-waiting",
+      "Width": 1296,
+      "Height": 889
+    },
+    {
+      "Check": "Relay response is not a continuity verdict",
+      "Passed": true
+    },
+    {
+      "Screenshot": "07-fault-close-example",
+      "Width": 1296,
+      "Height": 889
+    },
+    {
+      "Check": "OPEN response",
+      "Passed": true
+    },
+    {
+      "Screenshot": "08-fault-no-response-example",
+      "Width": 1296,
+      "Height": 889
+    },
+    {
+      "Check": "No update without transport",
+      "Passed": true
+    },
+    {
+      "Screenshot": "09-main-firmware",
+      "Width": 1296,
+      "Height": 889
+    },
+    {
+      "Check": "Multiple HEX files require explicit selection",
+      "Passed": true
+    },
+    {
+      "Check": "Folder selection updates selected HEX",
+      "Passed": true
+    },
+    {
+      "Screenshot": "10-firmware-selected",
+      "Width": 1296,
+      "Height": 889
+    },
+    {
+      "Check": "Busy state locks file selection",
+      "Passed": true
+    },
+    {
+      "Screenshot": "11-firmware-upload-example",
+      "Width": 1296,
+      "Height": 889
+    },
+    {
+      "Check": "Verification progress state",
+      "Passed": true
+    },
+    {
+      "Check": "Exact latest-version wording",
+      "Passed": true
+    },
+    {
+      "Screenshot": "12-firmware-latest-example",
+      "Width": 1296,
+      "Height": 889
+    },
+    {
+      "Check": "Exact success wording",
+      "Passed": true
+    },
+    {
+      "Screenshot": "13-firmware-success-example",
+      "Width": 1296,
+      "Height": 889
+    },
+    {
+      "Screenshot": "14-firmware-failure-example",
+      "Width": 1296,
+      "Height": 889
+    },
+    {
+      "Check": "Non-HEX selection rejected",
+      "Passed": true
+    },
+    {
+      "Check": "Missing selection rejected",
+      "Passed": true
+    },
+    {
+      "Check": "Empty folder clears prior selection",
+      "Passed": true
+    },
+    {
+      "Check": "DIO navigation",
+      "Passed": true
+    },
+    {
+      "Check": "DIO excludes FAULT",
+      "Passed": true
+    },
+    {
+      "Screenshot": "15-dio-switch-waiting",
+      "Width": 1296,
+      "Height": 889
+    },
+    {
+      "Screenshot": "16-dio-switch-example",
+      "Width": 1296,
+      "Height": 889
+    },
+    {
+      "Check": "MAIN file does not leak into DIO",
+      "Passed": true
+    },
+    {
+      "Screenshot": "17-dio-firmware",
+      "Width": 1296,
+      "Height": 889
+    },
+    {
+      "Check": "Bootloader navigation",
+      "Passed": true
+    },
+    {
+      "Screenshot": "18-bootloader",
+      "Width": 1296,
+      "Height": 889
+    },
+    {
+      "Check": "Bootloader board selection",
+      "Passed": true
+    },
+    {
+      "Check": "Board change clears update selection",
+      "Passed": true
+    },
+    {
+      "Screenshot": "19-minimum-bootloader",
+      "Width": 1100,
+      "Height": 800
+    },
+    {
+      "Screenshot": "20-minimum-home",
+      "Width": 1100,
+      "Height": 800
+    },
+    {
+      "Screenshot": "21-minimum-main-switch",
+      "Width": 1100,
+      "Height": 800
+    },
+    {
+      "Screenshot": "22-minimum-fault",
+      "Width": 1100,
+      "Height": 800
+    },
+    {
+      "Check": "Navigation does not accumulate windows",
+      "Passed": true
+    },
+    {
+      "Check": "Excluded inspection labels absent",
+      "Passed": true
+    }
+  ]
+}

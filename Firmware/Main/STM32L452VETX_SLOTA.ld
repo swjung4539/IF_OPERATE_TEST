@@ -1,0 +1,204 @@
+/*
+******************************************************************************
+**
+** @file        : STM32L452VETX_SLOTA.ld
+**
+** @author      : STM32L452VETX_FLASH.ld를 기반으로 A/B 이중 슬롯 부트로더용으로 파생
+**
+** @brief       : Slot A 앱 빌드용 링커스크립트.
+**                Bootloader(0x08000000, 48KB)가 이 이미지를 0x0800C000에서
+**                실행하므로, FLASH의 ORIGIN/LENGTH만 STM32L452VETX_FLASH.ld와
+**                다르고 그 외 섹션 구성은 완전히 동일하다.
+**                (Shared/bootloader_shared.h의 BL_SLOT_A_BASE/BL_SLOT_SIZE와
+**                 반드시 일치해야 한다 - 값이 어긋나면 부트로더가 잘못된
+**                 주소로 점프하게 된다.)
+**
+******************************************************************************
+** @attention
+**
+** Copyright (c) 2026 STMicroelectronics.
+** All rights reserved.
+**
+** This software is licensed under terms that can be found in the LICENSE file
+** in the root directory of this software component.
+** If no LICENSE file comes with this software, it is provided AS-IS.
+**
+******************************************************************************
+*/
+
+/* Entry Point */
+ENTRY(Reset_Handler)
+
+/* Highest address of the user mode stack */
+_estack = ORIGIN(RAM) + LENGTH(RAM); /* end of "RAM" Ram type memory */
+
+_Min_Heap_Size = 0x200; /* required amount of heap */
+_Min_Stack_Size = 0x400; /* required amount of stack */
+
+/* Memories definition */
+MEMORY
+{
+  RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 128K - 16
+  NOINIT (xrw)    : ORIGIN = 0x20000000 + 128K - 16, LENGTH = 16
+  RAM2    (xrw)    : ORIGIN = 0x10000000,   LENGTH = 32K
+  FLASH    (rx)    : ORIGIN = 0x0800C000,   LENGTH = 224K
+}
+
+/* Sections */
+SECTIONS
+{
+
+  /* The startup code into "FLASH" Rom type memory */
+  .isr_vector :
+  {
+    . = ALIGN(4);
+    KEEP(*(.isr_vector)) /* Startup code */
+    . = ALIGN(4);
+  } >FLASH
+
+  /* The program code and other data into "FLASH" Rom type memory */
+  .text :
+  {
+    . = ALIGN(4);
+    *(.text)           /* .text sections (code) */
+    *(.text*)          /* .text* sections (code) */
+    *(.glue_7)         /* glue arm to thumb code */
+    *(.glue_7t)        /* glue thumb to arm code */
+    *(.eh_frame)
+
+    KEEP (*(.init))
+    KEEP (*(.fini))
+
+    . = ALIGN(4);
+    _etext = .;        /* define a global symbols at end of code */
+  } >FLASH
+
+  /* Constant data into "FLASH" Rom type memory */
+  .rodata :
+  {
+    . = ALIGN(4);
+    *(.rodata)         /* .rodata sections (constants, strings, etc.) */
+    *(.rodata*)        /* .rodata* sections (constants, strings, etc.) */
+    . = ALIGN(4);
+  } >FLASH
+
+  .ARM.extab (READONLY) : /* The "READONLY" keyword is only supported in GCC11 and later, remove it if using GCC10 or earlier. */
+  {
+    . = ALIGN(4);
+    *(.ARM.extab* .gnu.linkonce.armextab.*)
+    . = ALIGN(4);
+  } >FLASH
+
+  .ARM (READONLY) : /* The "READONLY" keyword is only supported in GCC11 and later, remove it if using GCC10 or earlier. */
+  {
+    . = ALIGN(4);
+    __exidx_start = .;
+    *(.ARM.exidx*)
+    __exidx_end = .;
+    . = ALIGN(4);
+  } >FLASH
+
+  .preinit_array (READONLY) : /* The "READONLY" keyword is only supported in GCC11 and later, remove it if using GCC10 or earlier. */
+  {
+    . = ALIGN(4);
+    PROVIDE_HIDDEN (__preinit_array_start = .);
+    KEEP (*(.preinit_array*))
+    PROVIDE_HIDDEN (__preinit_array_end = .);
+    . = ALIGN(4);
+  } >FLASH
+
+  .init_array (READONLY) : /* The "READONLY" keyword is only supported in GCC11 and later, remove it if using GCC10 or earlier. */
+  {
+    . = ALIGN(4);
+    PROVIDE_HIDDEN (__init_array_start = .);
+    KEEP (*(SORT(.init_array.*)))
+    KEEP (*(.init_array*))
+    PROVIDE_HIDDEN (__init_array_end = .);
+    . = ALIGN(4);
+  } >FLASH
+
+  .fini_array (READONLY) : /* The "READONLY" keyword is only supported in GCC11 and later, remove it if using GCC10 or earlier. */
+  {
+    . = ALIGN(4);
+    PROVIDE_HIDDEN (__fini_array_start = .);
+    KEEP (*(SORT(.fini_array.*)))
+    KEEP (*(.fini_array*))
+    PROVIDE_HIDDEN (__fini_array_end = .);
+    . = ALIGN(4);
+  } >FLASH
+
+  /* Used by the startup to initialize data */
+  _sidata = LOADADDR(.data);
+
+  /* Initialized data sections into "RAM" Ram type memory */
+  .data :
+  {
+    . = ALIGN(4);
+    _sdata = .;        /* create a global symbol at data start */
+    *(.data)           /* .data sections */
+    *(.data*)          /* .data* sections */
+    *(.RamFunc)        /* .RamFunc sections */
+    *(.RamFunc*)       /* .RamFunc* sections */
+
+    . = ALIGN(4);
+    _edata = .;        /* define a global symbol at data end */
+
+  } >RAM AT> FLASH
+
+  /* Uninitialized data section into "RAM" Ram type memory */
+  . = ALIGN(4);
+  .bss :
+  {
+    /* This is used by the startup in order to initialize the .bss section */
+    _sbss = .;         /* define a global symbol at bss start */
+    __bss_start__ = _sbss;
+    *(.bss)
+    *(.bss*)
+    *(COMMON)
+
+    . = ALIGN(4);
+    _ebss = .;         /* define a global symbol at bss end */
+    __bss_end__ = _ebss;
+  } >RAM
+
+  /* SharedMap storage into RAM2. SharedMap_Init() performs explicit initialization. */
+  .sharedmap_ram2 (NOLOAD) :
+  {
+    . = ALIGN(4);
+    __sharedmap_ram2_start__ = .;
+    KEEP(*(.sharedmap_ram2))
+    KEEP(*(.sharedmap_ram2*))
+    . = ALIGN(4);
+    __sharedmap_ram2_end__ = .;
+  } >RAM2
+
+  /* 부트로더<->앱 재부팅 신호. 소프트 리셋에도 값이 유지되도록 .bss 초기화 범위
+   * 밖(NOINIT 영역)에 배치한다. Bootloader 프로젝트의 STM32L452VETX_FLASH.ld와
+   * 완전히 동일한 섹션명/주소를 사용해야 두 펌웨어가 같은 신호를 주고받을 수 있다. */
+  .noinit_boot_flag (NOLOAD) :
+  {
+    . = ALIGN(4);
+    KEEP(*(.noinit_boot_flag))
+  } >NOINIT
+
+  /* User_heap_stack section, used to check that there is enough "RAM" Ram  type memory left */
+  ._user_heap_stack :
+  {
+    . = ALIGN(8);
+    PROVIDE ( end = . );
+    PROVIDE ( _end = . );
+    . = . + _Min_Heap_Size;
+    . = . + _Min_Stack_Size;
+    . = ALIGN(8);
+  } >RAM
+
+  /* Remove information from the compiler libraries */
+  /DISCARD/ :
+  {
+    libc.a ( * )
+    libm.a ( * )
+    libgcc.a ( * )
+  }
+
+  .ARM.attributes 0 : { *(.ARM.attributes) }
+}

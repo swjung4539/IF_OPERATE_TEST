@@ -1,0 +1,11 @@
+**/bin/
+**/obj/
+**/Debug/
+**/Release/
+**/build/
+**/.vs/
+.ide-workspace/
+.dio-build-workspace/
+.dotnet-home/
+Release/*
+!Release/README.md

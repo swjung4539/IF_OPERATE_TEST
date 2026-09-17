@@ -1,0 +1,10 @@
+﻿PATH 환경 변수에 'C:\Users\LAB\Desktop\MSC-HIFx\TestMode\.dotnet-home\.dotnet\tools'을(를) 추가하지 못했습니다. 'dotnet tool install'로 설치한 도구를 사용하려면 이 디렉터리를 PATH에 추가하세요.
+  복원할 프로젝트를 확인하는 중...
+  C:\Users\LAB\Desktop\MSC-HIFx\TestMode\PC\TestMode.App\TestMode.App.csproj을(를) 53밀리초 동안 복원했습니다.
+  TestMode.App -> C:\Users\LAB\Desktop\MSC-HIFx\TestMode\PC\TestMode.App\bin\Debug\net8.0-windows\TestMode.App.dll
+
+빌드했습니다.
+    경고 0개
+    오류 0개
+
+경과 시간: 00:00:02.73

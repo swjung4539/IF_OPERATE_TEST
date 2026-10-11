@@ -47,7 +47,8 @@ public class AppPanel : Panel
         GraphicsHelper.SetHighQuality(g);
         var state = _forcedState ?? (Enabled ? VisualState.Normal : VisualState.Disabled);
 
-        var rect = new Rectangle(0, 0, Width - 1, Height - 1);
+        // Keep the full anti-aliased border inside the client area.
+        var rect = new Rectangle(1, 1, Width - 3, Height - 3);
         using var path = GraphicsHelper.RoundedRect(rect, _cornerRadius);
         using (var b = new SolidBrush(BackColor)) g.FillPath(b, path);
 

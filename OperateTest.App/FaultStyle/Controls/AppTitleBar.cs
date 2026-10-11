@@ -48,16 +48,22 @@ public class AppTitleBar : Panel
         Controls.Add(_titleLabel);
 
         _closeBtn = new TitleBarButton(AppIcon.Close, isClose: true) { Size = new Size(46, 56) };
-        _maxBtn = new TitleBarButton(AppIcon.Plus /*placeholder, drawn as square below*/, isMax: true) { Size = new Size(46, 56), Enabled = false };
+        _maxBtn = new TitleBarButton(AppIcon.Plus /*placeholder, drawn as square below*/, isMax: true) { Size = new Size(46, 56) };
         _minBtn = new TitleBarButton(AppIcon.Plus, isMin: true) { Size = new Size(46, 56) };
         Controls.Add(_closeBtn);
         Controls.Add(_maxBtn);
         Controls.Add(_minBtn);
 
         _closeBtn.Click += (_, _) => FindForm()?.Close();
-        // 이 프로그램은 화면마다 고정 픽셀 좌표로 레이아웃을 짜는 설계라(Anchor/Dock 재배치 없음)
-        // 창 크기를 늘리면 레이아웃이 깨진다 — 최대화를 의도적으로 비활성화해 고정 크기를 유지한다.
         _minBtn.Click += (_, _) => { var f = FindForm(); if (f != null) f.WindowState = FormWindowState.Minimized; };
+        _maxBtn.Click += (_, _) =>
+        {
+            var f = FindForm();
+            if (f != null)
+                f.WindowState = f.WindowState == FormWindowState.Maximized
+                    ? FormWindowState.Normal
+                    : FormWindowState.Maximized;
+        };
 
         MouseDown += (_, e) => DragMove(e);
         _titleLabel.MouseDown += (_, e) => DragMove(e);
@@ -77,10 +83,6 @@ public class AppTitleBar : Panel
 
     private bool _closeConfirmHooked;
     private bool _suppressNextClose;
-    private Size _fixedClientSize;
-    private bool _fixedSizeCaptured;
-    private bool _enforcingSize;
-
     protected override void OnParentChanged(EventArgs e)
     {
         base.OnParentChanged(e);
@@ -89,14 +91,6 @@ public class AppTitleBar : Panel
         {
             _closeConfirmHooked = true;
             f.FormClosing += ConfirmClose;
-            f.Resize += EnforceFixedSize;
-            // 이 시점(생성자 초반, AppTitleBar가 막 추가된 직후)의 ClientSize를 그대로 기준으로 삼으면,
-            // 생성자 마지막에 ScreenFit(작은 화면에서 전체를 축소하는 로직)이 한 번 더 크기를 바꿀 때
-            // EnforceFixedSize가 그 축소를 "고정 크기 위반"으로 보고 즉시 원래(축소 전) 크기로 되돌려버린다.
-            // ScreenFit도 Load 시점에 적용되는데, 등록 순서에 따라 이 핸들러가 먼저 실행되면 여전히
-            // 축소 전 크기를 기준으로 잡을 위험이 있다 — Load보다 항상 나중에 발생하는 Shown 시점의
-            // 최종 크기를 기준으로 삼아 순서 문제를 아예 없앤다.
-            f.Shown += (_, _) => { _fixedClientSize = f.ClientSize; _fixedSizeCaptured = true; };
         }
     }
 
@@ -115,26 +109,6 @@ public class AppTitleBar : Panel
         var result = MessageBox.Show($"{FindForm()?.Text ?? _titleLabel.Text}를 종료하시겠습니까?", "종료 확인",
             MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
         if (result != DialogResult.OK) e.Cancel = true;
-    }
-
-    /// <summary>이 프로그램의 모든 화면은 고정 픽셀 좌표 레이아웃이라(Anchor/Dock 재배치 없음) 창
-    /// 크기가 설계값과 달라지면 컨트롤이 잘리거나 빈 공간이 생긴다. 최대화 버튼은 비활성화했지만
-    /// Windows Aero Snap(제목표시줄을 화면 가장자리로 드래그)이나 더블클릭으로도 상태가 바뀔 수 있어
-    /// 여기서 한 번 더 원래 크기로 되돌린다.</summary>
-    private void EnforceFixedSize(object? sender, EventArgs e)
-    {
-        if (_enforcingSize || !_fixedSizeCaptured || sender is not Form f) return;
-        // 최소화도 WindowState != Normal이라 이 가드에 걸려서, 최소화 버튼을 누르는 순간 Resize
-        // 이벤트가 뜨자마자 여기서 즉시 Normal로 되돌려 "최소화가 가끔 안 먹는다"는 원인이 됐다 —
-        // 이 가드는 최대화/Aero Snap만 막으면 되므로 최소화 상태는 그대로 둔다.
-        if (f.WindowState == FormWindowState.Minimized) return;
-        _enforcingSize = true;
-        try
-        {
-            if (f.WindowState != FormWindowState.Normal) f.WindowState = FormWindowState.Normal;
-            if (f.ClientSize != _fixedClientSize) f.ClientSize = _fixedClientSize;
-        }
-        finally { _enforcingSize = false; }
     }
 
     private void LayoutButtons()

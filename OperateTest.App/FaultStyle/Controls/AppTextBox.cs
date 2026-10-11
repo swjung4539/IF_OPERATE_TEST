@@ -36,6 +36,12 @@ public class AppTextBox : Panel
         set => _inner.TextAlign = value;
     }
 
+    public void SetToolTip(ToolTip toolTip, string text)
+    {
+        toolTip.SetToolTip(this, text);
+        toolTip.SetToolTip(_inner, text);
+    }
+
     public bool HasError
     {
         get => _hasError;
@@ -51,10 +57,11 @@ public class AppTextBox : Panel
     public AppTextBox()
     {
         SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint |
-                  ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
+                  ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw |
+                  ControlStyles.Selectable, true);
         Size = new Size(220, Metrics.InputHeight);
         BackColor = Colors.Surface;
-        Padding = new Padding(10, 0, 10, 0);
+        Cursor = Cursors.IBeam;
 
         _inner = new TextBox
         {
@@ -62,7 +69,9 @@ public class AppTextBox : Panel
             Font = Fonts.Body,
             ForeColor = Colors.TextPrimary,
             BackColor = Colors.Surface,
-            Dock = DockStyle.Fill
+            Dock = DockStyle.None,
+            Cursor = Cursors.IBeam,
+            TabStop = true
         };
         _inner.GotFocus += (_, _) => Invalidate();
         _inner.LostFocus += (_, _) => Invalidate();
@@ -74,6 +83,7 @@ public class AppTextBox : Panel
             EnterPressed?.Invoke(this, EventArgs.Empty);
         };
         Controls.Add(_inner);
+        MouseDown += (_, _) => _inner.Focus();
     }
 
     private VisualState EffectiveState()
@@ -89,8 +99,12 @@ public class AppTextBox : Panel
     {
         base.OnResize(eventargs);
         if (_inner == null) return;
-        _inner.Location = new Point(Padding.Left, (Height - _inner.Height) / 2);
-        _inner.Width = Width - Padding.Left - Padding.Right;
+        const int horizontalInset = 12;
+        _inner.SetBounds(
+            horizontalInset,
+            Math.Max(1, (Height - _inner.PreferredHeight) / 2),
+            Math.Max(1, Width - horizontalInset * 2),
+            _inner.PreferredHeight);
     }
 
     protected override void OnEnabledChanged(EventArgs e)
@@ -116,7 +130,7 @@ public class AppTextBox : Panel
         };
         float width = state is VisualState.Focused or VisualState.Error ? 1.6f : 1f;
 
-        var rect = new Rectangle(0, 0, Width - 1, Height - 1);
+        var rect = new Rectangle(1, 1, Math.Max(1, Width - 3), Math.Max(1, Height - 3));
         using var path = GraphicsHelper.RoundedRect(rect, Metrics.InputRadius);
         using var bg = new SolidBrush(Enabled ? Colors.Surface : Colors.AppBackground);
         g.FillPath(bg, path);

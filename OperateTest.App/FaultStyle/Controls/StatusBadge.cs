@@ -15,6 +15,7 @@ public enum AppStatus
     Pass,
     Fail,
     ErrorState,
+    Stopped,
     NotRun,
     Unsupported
 }
@@ -48,6 +49,7 @@ public class StatusBadge : Control
         AppStatus.Pass => ("PASS", Colors.Success),
         AppStatus.Fail => ("FAIL", Colors.Danger),
         AppStatus.ErrorState => ("ERROR", Colors.Warning),
+        AppStatus.Stopped => ("STOP", Colors.TextMuted),
         AppStatus.Unsupported => ("미지원", Colors.Neutral),
         _ => ("미실행", Colors.Neutral)
     };

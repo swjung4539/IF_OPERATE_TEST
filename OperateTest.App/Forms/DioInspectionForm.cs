@@ -13,17 +13,20 @@ public sealed class DioInspectionForm : InspectionShellForm
     private readonly ISerialConnectionManager _connections;
     private readonly IDioLoopbackService _loopback;
     private readonly IDioIdSwitchReader _idReader;
+    private readonly InspectionSession _session;
     private CancellationTokenSource? _testCts;
     private byte? _activeSlaveId;
+    private ushort? _lastBaseline;
     private bool _testRunning;
     private bool _closing;
 
-    public DioInspectionForm(ISerialConnectionManager connections, IInspectionProtocolServices protocols, IDioIdSwitchReader idReader)
-        : base("DIO 보드 검사", "DO·DI 루프백 · ID DIP 스위치", Colors.Warning, showSettings: false)
+    public DioInspectionForm(ISerialConnectionManager connections, IInspectionProtocolServices protocols, IDioIdSwitchReader idReader, InspectionSession session)
+        : base("DIO 보드 검사", "DO·DI 루프백 · ID DIP 스위치", Colors.Warning, showSettings: false, session: session)
     {
         _connections = connections;
         _loopback = new DioLoopbackService(protocols);
         _idReader = idReader;
+        _session = session;
         Shown += (_, _) => Navigate("dashboard");
         FormClosing += OnClosing;
     }
@@ -38,8 +41,10 @@ public sealed class DioInspectionForm : InspectionShellForm
 
         switch (key)
         {
+            case "result": ShowPage(key, "최종 판정", "필수 검사 완료 여부와 DO 전체 OFF 안전 상태를 확인하고 최종 판정을 확정합니다.", new InspectionSummaryControl(_session)); break;
             case "settings": ShowPage(key, "MAIN UART4 연결", "DIO 루프백 명령을 전달할 MAIN UART4 포트를 연결합니다.", BuildSettingsPage()); break;
             case "test": ShowPage(key, "DIO 통신 검사", "DO 출력과 루프백된 DI 입력을 채널별로 판정합니다.", BuildTestPage()); break;
+            case "manual": ShowPage(key, "육안 및 전원 검사", "작업자가 직접 확인한 육안 상태와 전원 측정 결과를 입력합니다.", new ManualInspectionControl(_session)); break;
             case "fault-switch": ShowPage(key, "FAULT 및 스위치 검사", "DIO 보드는 ID DIP 스위치 검사 항목을 제공합니다.", BuildSwitchPage()); break;
             default: ShowPage("dashboard", "DIO 보드 검사 대시보드", "통신 연결과 루프백·ID 스위치 검사 준비 상태를 확인합니다.", BuildDashboard()); break;
         }
@@ -81,12 +86,13 @@ public sealed class DioInspectionForm : InspectionShellForm
 
         var quick = new AppPanel { Location = new Point(30, 438), Size = new Size(1192, 178) };
         quick.Controls.Add(Title("빠른 실행", 24, 20, 250));
-        quick.Controls.Add(Caption("MAIN UART4를 통해 루프백 검사를 실행하고, ID DIP는 ST-LINK 전용 창에서 확인합니다.", 24, 50, 900));
-        var mainLink = new AppButton { Variant = AppButtonVariant.OutlinePrimary, IconGlyph = AppIcon.Network, Text = "MAIN UART4 연결", Location = new Point(24, 96), Size = new Size(250, 48) };
-        var test = new AppButton { Variant = AppButtonVariant.Primary, IconGlyph = AppIcon.Play, Text = "루프백 검사 열기", Location = new Point(290, 96), Size = new Size(250, 48) };
-        var id = new AppButton { Variant = AppButtonVariant.Secondary, IconGlyph = AppIcon.Settings, Text = "ID 스위치 검사", Location = new Point(556, 96), Size = new Size(250, 48) };
-        mainLink.Click += (_, _) => Navigate("settings"); test.Click += (_, _) => Navigate("test"); id.Click += (_, _) => Navigate("fault-switch");
-        quick.Controls.Add(mainLink); quick.Controls.Add(test); quick.Controls.Add(id); page.Controls.Add(quick);
+        quick.Controls.Add(Caption("육안·전원 확인 후 루프백과 ID DIP 검사를 순서대로 진행하세요.", 24, 50, 900));
+        var manual = new AppButton { Variant = AppButtonVariant.Warning, IconGlyph = AppIcon.Clipboard, Text = "육안·전원 검사", Location = new Point(24, 96), Size = new Size(250, 48) };
+        var mainLink = new AppButton { Variant = AppButtonVariant.OutlinePrimary, IconGlyph = AppIcon.Network, Text = "MAIN UART4 연결", Location = new Point(290, 96), Size = new Size(250, 48) };
+        var test = new AppButton { Variant = AppButtonVariant.OutlinePrimary, IconGlyph = AppIcon.Play, Text = "루프백 검사", Location = new Point(556, 96), Size = new Size(250, 48) };
+        var id = new AppButton { Variant = AppButtonVariant.Secondary, IconGlyph = AppIcon.Settings, Text = "ID 스위치 검사", Location = new Point(822, 96), Size = new Size(250, 48) };
+        manual.Click += (_, _) => Navigate("manual"); mainLink.Click += (_, _) => Navigate("settings"); test.Click += (_, _) => Navigate("test"); id.Click += (_, _) => Navigate("fault-switch");
+        quick.Controls.Add(manual); quick.Controls.Add(mainLink); quick.Controls.Add(test); quick.Controls.Add(id); page.Controls.Add(quick);
         return page;
     }
 
@@ -133,7 +139,7 @@ public sealed class DioInspectionForm : InspectionShellForm
         var errorCard = Card(918, 116, 280, "ERROR", "0", AppIcon.Info, Colors.Warning);
         page.Controls.Add(totalCard); page.Controls.Add(passCard); page.Controls.Add(failCard); page.Controls.Add(errorCard);
 
-        var channels = new AppPanel { Location = new Point(30, 240), Size = new Size(800, 440) };
+        var channels = new AppPanel { Location = new Point(30, 240), Size = new Size(800, 434) };
         channels.Controls.Add(Title("DO → DI 채널 판정", 20, 16, 330));
         var current = new Label { Location = new Point(20, 48), Size = new Size(750, 25), Font = Fonts.ButtonText, ForeColor = Colors.TextPrimary, Text = "검사 대기" };
         var values = new Label { Location = new Point(20, 75), Size = new Size(750, 22), Font = Fonts.Caption, ForeColor = Colors.TextSecondary, Text = "Baseline: ----   현재 DI: ----   예상 변화: ----   실제 변화: ----" };
@@ -148,9 +154,10 @@ public sealed class DioInspectionForm : InspectionShellForm
         }
         channels.Controls.Add(grid); page.Controls.Add(channels);
 
-        var result = new AppPanel { Location = new Point(850, 240), Size = new Size(348, 440) };
+        var result = new AppPanel { Location = new Point(850, 240), Size = new Size(348, 434) };
         result.Controls.Add(Title("검사 결과", 20, 16, 240));
-        var summary = new Label { Location = new Point(20, 58), Size = new Size(308, 260), Font = Fonts.Body, ForeColor = Colors.TextSecondary, Text = "RS-485와 루프백 커넥터를 연결한 뒤 START를 누르세요.\n\nLED 점등은 검사자가 직접 확인합니다." };
+        const string initialGuide = "RS-485와 루프백 커넥터 연결 후\nSTART를 누르세요.\n\nLED 점등은 직접 확인합니다.";
+        var summary = new Label { Location = new Point(20, 58), Size = new Size(308, 260), Font = Fonts.Body, ForeColor = Colors.TextSecondary, Text = initialGuide };
         var runStatus = new Label { Location = new Point(20, 338), Size = new Size(308, 42), Font = Fonts.ButtonText, ForeColor = Colors.TextMuted, Text = "검사 대기" };
         var off = new AppButton { Variant = AppButtonVariant.OutlinePrimary, Text = "DO 전체 OFF", Location = new Point(20, 386), Size = new Size(150, 38) };
         result.Controls.Add(summary); result.Controls.Add(runStatus); result.Controls.Add(off); page.Controls.Add(result);
@@ -159,17 +166,31 @@ public sealed class DioInspectionForm : InspectionShellForm
         void UpdateCards() { totalCard.CardValue = total.ToString(); passCard.CardValue = passed.ToString(); failCard.CardValue = failed.ToString(); errorCard.CardValue = errors.ToString(); }
         void ResetUi()
         {
-            total = passed = failed = errors = 0; UpdateCards(); current.Text = "검사 대기"; runStatus.Text = "검사 대기"; summary.Text = "RS-485와 루프백 커넥터를 연결한 뒤 START를 누르세요.\n\nLED 점등은 검사자가 직접 확인합니다.";
+            total = passed = failed = errors = 0; UpdateCards(); current.Text = "검사 대기"; runStatus.Text = "검사 대기"; summary.Text = initialGuide;
+            _session.Results.DioInputPassed = null;
+            _session.Results.DioOutputPassed = null;
+            _session.Results.DioLoopbackStatus = InspectionExecutionStatus.NotRun;
+            _session.Results.DioSafetyStatus = DioSafetyStatus.NotChecked;
+            _lastBaseline = null;
             for (var i = 0; i < 16; i++) { labels[i].Text = $"DO{i + 1} → DI{i + 1}\n미실행"; labels[i].BackColor = Colors.SurfaceBlue; labels[i].ForeColor = Colors.TextMuted; }
         }
         async Task AllOff()
         {
+            if (!_connections.Get(ChannelDefinitions.Uart4.Key).IsConnected)
+            {
+                MessageBox.Show(this, "COMM 보드의 MAIN UART4 COM 포트를 먼저 연결하세요.", "통신 연결 필요", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             try
             {
                 var id = _activeSlaveId ?? await _loopback.FindSlaveIdAsync(); _activeSlaveId = id;
-                await _loopback.SetAllOutputsOffAsync(id); summary.Text = $"DIO 슬롯 {id}의 DO 전체 OFF 명령을 전송했습니다."; summary.ForeColor = Colors.Success;
+                _session.Results.DioSafetyStatus = DioSafetyStatus.Restoring;
+                var safety = await _loopback.EnsureAllOutputsOffAsync(id, _lastBaseline);
+                _session.Results.DioSafetyStatus = safety.Verified ? DioSafetyStatus.OffVerified : DioSafetyStatus.CommandSent;
+                summary.Text = safety.Detail;
+                summary.ForeColor = safety.Verified ? Colors.Success : Colors.Warning;
             }
-            catch (Exception ex) { summary.Text = $"전체 OFF 실패: {ex.Message}"; summary.ForeColor = Colors.Danger; }
+            catch (Exception ex) { _session.Results.DioSafetyStatus = DioSafetyStatus.Failed; summary.Text = $"전체 OFF 실패: {ex.Message}"; summary.ForeColor = Colors.Danger; }
         }
 
         off.Click += async (_, _) => await AllOff();
@@ -180,32 +201,64 @@ public sealed class DioInspectionForm : InspectionShellForm
             if (!enabled.IsOn) { MessageBox.Show(this, "루프백 검사 항목을 ON으로 설정하세요.", "DIO 검사", MessageBoxButtons.OK, MessageBoxIcon.Information); return; }
             if (!_connections.Get(ChannelDefinitions.Uart4.Key).IsConnected) { MessageBox.Show(this, "COMM 보드의 MAIN UART4 COM 포트를 먼저 연결하세요.", "DIO 검사", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
             if (!int.TryParse(repeatInput.TextValue, out var repeat) || repeat < 1) { repeatInput.HasError = true; MessageBox.Show(this, "반복 횟수는 1 이상의 숫자여야 합니다.", "입력 오류", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
-            repeatInput.HasError = false; _testCts?.Dispose(); _testCts = new CancellationTokenSource(); _testRunning = true;
+            repeatInput.HasError = false; _session.Results.InvalidateFinalization(); _testCts?.Dispose(); _testCts = new CancellationTokenSource(); _testRunning = true;
+            _session.Results.DioLoopbackStatus = InspectionExecutionStatus.Running;
+            _session.Results.DioSafetyStatus = DioSafetyStatus.NotChecked;
             start.Enabled = reset.Enabled = false; stop.Enabled = true; repeatInput.Enabled = forever.Enabled = enabled.Enabled = false;
             var round = 0;
             try
             {
+                _activeSlaveId = await _loopback.FindSlaveIdAsync(_testCts.Token);
                 while (!_testCts.IsCancellationRequested && (forever.IsOn || round < repeat))
                 {
                     round++; runStatus.Text = forever.IsOn ? $"반복 {round}회 실행 중" : $"{round}/{repeat}회 실행 중"; runStatus.ForeColor = Colors.Primary;
                     var progress = new Progress<DioLoopbackProgress>(value =>
                     {
+                        _lastBaseline = value.Baseline;
                         current.Text = value.Verdict == DioChannelVerdict.Running ? $"검사 중: DO {value.Channel} → DI {value.Channel}" : $"완료 {value.Completed}/16: DO {value.Channel} → DI {value.Channel}";
                         values.Text = $"Baseline: 0x{value.Baseline:X4}   현재 DI: 0x{value.Current:X4}   예상 변화: 0x{value.ExpectedChange:X4}   실제 변화: 0x{value.ActualChange:X4}";
                         var label = labels[value.Channel - 1]; label.Text = $"DO{value.Channel} → DI{value.Channel}\n{(value.Verdict == DioChannelVerdict.Pass ? "PASS" : value.Verdict == DioChannelVerdict.Fail ? "FAIL" : "검사 중")}";
                         label.BackColor = value.Verdict == DioChannelVerdict.Pass ? Colors.SuccessSurface : value.Verdict == DioChannelVerdict.Fail ? Colors.DangerSurface : Colors.SurfaceBlue;
                         label.ForeColor = value.Verdict == DioChannelVerdict.Pass ? Colors.Success : value.Verdict == DioChannelVerdict.Fail ? Colors.Danger : Colors.Primary;
                     });
-                    var response = await _loopback.RunAsync(progress, _testCts.Token); _activeSlaveId = response.SlaveId; total++;
+                    var response = await _loopback.RunAsync(progress, _testCts.Token); _activeSlaveId = response.SlaveId; _lastBaseline = response.Baseline; total++;
                     if (response.Passed) passed++; else failed++; UpdateCards();
                     summary.Text = $"DIO 슬롯 {response.SlaveId}\n\n{response.Detail}\n\n전체 ON: {(response.AllOnPassed ? "정상" : "실패")}\n전체 OFF 복귀: {(response.OutputsCleared ? "정상" : "실패")}";
                     summary.ForeColor = response.Passed ? Colors.Success : Colors.Danger;
                 }
+                _testCts.Token.ThrowIfCancellationRequested();
                 runStatus.Text = $"검사 완료 · 총 {round}회 반복"; runStatus.ForeColor = failed == 0 && errors == 0 ? Colors.Success : Colors.Danger;
+                if (round > 0)
+                {
+                    var passedAll = failed == 0 && errors == 0;
+                    _session.Results.DioInputPassed = passedAll;
+                    _session.Results.DioOutputPassed = passedAll;
+                    _session.Results.DioLoopbackStatus = passedAll ? InspectionExecutionStatus.Pass : InspectionExecutionStatus.Fail;
+                }
             }
-            catch (OperationCanceledException) { runStatus.Text = "사용자에 의해 중지됨"; runStatus.ForeColor = Colors.TextMuted; }
-            catch (Exception ex) { total++; errors++; UpdateCards(); summary.Text = $"검사 오류\n\n{ex.Message}"; summary.ForeColor = Colors.Warning; runStatus.Text = "검사 오류"; }
-            finally { _testRunning = false; start.Enabled = reset.Enabled = true; stop.Enabled = false; repeatInput.Enabled = forever.Enabled = enabled.Enabled = true; }
+            catch (OperationCanceledException) { _session.Results.DioInputPassed = null; _session.Results.DioOutputPassed = null; _session.Results.DioLoopbackStatus = InspectionExecutionStatus.Stopped; runStatus.Text = "사용자에 의해 중지됨"; runStatus.ForeColor = Colors.TextMuted; }
+            catch (Exception ex) { _session.Results.DioInputPassed = null; _session.Results.DioOutputPassed = null; _session.Results.DioLoopbackStatus = InspectionExecutionStatus.Error; total++; errors++; UpdateCards(); summary.Text = $"검사 오류\n\n{ex.Message}"; summary.ForeColor = Colors.Warning; runStatus.Text = "검사 오류"; }
+            finally
+            {
+                if (_connections.Get(ChannelDefinitions.Uart4.Key).IsConnected && _activeSlaveId.HasValue)
+                {
+                    try
+                    {
+                        _session.Results.DioSafetyStatus = DioSafetyStatus.Restoring;
+                        var safety = await _loopback.EnsureAllOutputsOffAsync(_activeSlaveId.Value, _lastBaseline, CancellationToken.None);
+                        _session.Results.DioSafetyStatus = safety.Verified ? DioSafetyStatus.OffVerified : DioSafetyStatus.CommandSent;
+                        summary.Text += $"\n\n안전 종료: {safety.Detail}";
+                    }
+                    catch (Exception ex)
+                    {
+                        _session.Results.DioSafetyStatus = DioSafetyStatus.Failed;
+                        summary.Text += $"\n\n안전 종료 실패: {ex.Message}";
+                        summary.ForeColor = Colors.Danger;
+                    }
+                }
+                new InspectionCheckpointService().TrySave(_session);
+                _testRunning = false; start.Enabled = reset.Enabled = true; stop.Enabled = false; repeatInput.Enabled = forever.Enabled = enabled.Enabled = true;
+            }
         };
         return page;
     }
@@ -221,7 +274,7 @@ public sealed class DioInspectionForm : InspectionShellForm
         row.Controls.Add(new Label { Location = new Point(84, 45), Size = new Size(650, 22), Font = Fonts.Caption, ForeColor = Colors.TextSecondary, Text = "ID_SET1·ID_SET2 물리 상태를 ST-LINK로 읽어 ID 1~4로 표시합니다." });
         row.Controls.Add(new Label { Location = new Point(780, 31), Size = new Size(160, 26), Font = Fonts.Caption, ForeColor = Colors.Warning, TextAlign = ContentAlignment.MiddleCenter, Text = "ST-LINK 필요" });
         var open = new AppButton { Variant = AppButtonVariant.OutlinePrimary, IconGlyph = AppIcon.FolderOpen, Text = "열기", Location = new Point(984, 23), Size = new Size(130, 44) };
-        open.Click += (_, _) => { using var form = new DioIdSwitchInspectionForm(_idReader); form.ShowDialog(this); };
+        open.Click += (_, _) => { using var form = new DioIdSwitchInspectionForm(_idReader, _session); form.ShowDialog(this); };
         row.Controls.Add(open); card.Controls.Add(row); page.Controls.Add(card); return page;
     }
 
@@ -230,7 +283,16 @@ public sealed class DioInspectionForm : InspectionShellForm
         if (_closing) return;
         if (!_testRunning) { _closing = true; return; }
         e.Cancel = true; _testCts?.Cancel();
-        try { if (_connections.Get(ChannelDefinitions.Uart4.Key).IsConnected && _activeSlaveId.HasValue) await _loopback.SetAllOutputsOffAsync(_activeSlaveId.Value, CancellationToken.None); } catch { }
+        try
+        {
+            if (_connections.Get(ChannelDefinitions.Uart4.Key).IsConnected && _activeSlaveId.HasValue)
+            {
+                _session.Results.DioSafetyStatus = DioSafetyStatus.Restoring;
+                var safety = await _loopback.EnsureAllOutputsOffAsync(_activeSlaveId.Value, _lastBaseline, CancellationToken.None);
+                _session.Results.DioSafetyStatus = safety.Verified ? DioSafetyStatus.OffVerified : DioSafetyStatus.CommandSent;
+            }
+        }
+        catch { _session.Results.DioSafetyStatus = DioSafetyStatus.Failed; }
         _closing = true; Close();
     }
 

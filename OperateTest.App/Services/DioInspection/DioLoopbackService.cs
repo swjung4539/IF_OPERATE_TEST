@@ -25,10 +25,20 @@ public sealed record DioLoopbackResult(
     bool Passed,
     string Detail);
 
+public sealed record DioOutputSafetyResult(
+    bool CommandSent,
+    bool Verified,
+    ushort? CurrentInput,
+    string Detail);
+
 public interface IDioLoopbackService
 {
     Task<byte> FindSlaveIdAsync(CancellationToken ct = default);
     Task SetAllOutputsOffAsync(byte dioSlot, CancellationToken ct = default);
+    Task<DioOutputSafetyResult> EnsureAllOutputsOffAsync(
+        byte dioSlot,
+        ushort? expectedInput,
+        CancellationToken ct = default);
     Task<DioLoopbackResult> RunAsync(
         IProgress<DioLoopbackProgress>? progress = null,
         CancellationToken ct = default);
@@ -68,6 +78,26 @@ public sealed class DioLoopbackService : IDioLoopbackService
         await _master.WriteMultipleRegistersAsync(
             WriteDioGroupId, WriteAddress(dioSlot), [0x0000], TimeoutMs, ct).ConfigureAwait(false);
         await Task.Delay(80, ct).ConfigureAwait(false);
+    }
+
+    public async Task<DioOutputSafetyResult> EnsureAllOutputsOffAsync(
+        byte dioSlot,
+        ushort? expectedInput,
+        CancellationToken ct = default)
+    {
+        await SetAllOutputsOffAsync(dioSlot, ct).ConfigureAwait(false);
+        if (!expectedInput.HasValue)
+            return new DioOutputSafetyResult(true, false, null, "DO 전체 OFF 명령을 전송했지만 기준 DI 값이 없어 복귀 여부는 확인하지 못했습니다.");
+
+        var current = await ReadStableInputAsync(dioSlot, ct).ConfigureAwait(false);
+        var verified = current == expectedInput.Value;
+        return new DioOutputSafetyResult(
+            true,
+            verified,
+            current,
+            verified
+                ? "DO 전체 OFF 후 DI가 초기 상태로 복귀했습니다."
+                : $"DO 전체 OFF 후 DI가 초기 상태로 복귀하지 않았습니다. (기준 0x{expectedInput:X4}, 현재 0x{current:X4})");
     }
 
     public async Task<DioLoopbackResult> RunAsync(

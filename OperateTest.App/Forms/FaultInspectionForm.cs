@@ -1,3 +1,4 @@
+using OperateTest.App.Models;
 using OperateTest.App.Services;
 using OperateTest.App.Services.CommInspection;
 using TestEmulator.Controls;
@@ -8,6 +9,7 @@ namespace OperateTest.App.Forms;
 public sealed class FaultInspectionForm : Form
 {
     private readonly ICommEmulationHost _host;
+    private readonly InspectionSession? _session;
     private readonly CancellationTokenSource _lifetime = new();
     private CancellationTokenSource? _operation;
     private readonly Label _status = new();
@@ -17,15 +19,18 @@ public sealed class FaultInspectionForm : Form
     private readonly AppButton _close;
     private readonly AppButton _confirmClose;
     private readonly AppButton _finish;
+    private readonly AppButton _fail;
     private readonly AppCard _stageCard;
     private readonly AppCard _faultCard;
     private bool _openConfirmed;
     private bool _closing;
 
-    public FaultInspectionForm(ISerialConnectionManager connections, IInspectionProtocolServices protocols, ICommEmulationHost? host = null)
+    public FaultInspectionForm(ISerialConnectionManager connections, IInspectionProtocolServices protocols, ICommEmulationHost? host = null, InspectionSession? session = null)
     {
         _host = host ?? new CommEmulationHost(connections, protocols);
+        _session = session;
         Text = "FAULT 접점 검사";
+        AutoScaleMode = AutoScaleMode.None;
         StartPosition = FormStartPosition.CenterParent;
         ClientSize = new Size(1180, 720);
         BackColor = Colors.AppBackground;
@@ -50,9 +55,11 @@ public sealed class FaultInspectionForm : Form
         _confirmOpen = Step("3", "TB18 개방 확인", 200);
         _close = Step("4", "CLOSE (NORMAL)", 254);
         _confirmClose = Step("5", "TB18 도통 확인", 308);
-        _finish = new AppButton { Variant = AppButtonVariant.Secondary, IconGlyph = AppIcon.Refresh, Text = "검사 종료 · 정상 복구", Location = new Point(24, 364), Size = new Size(472, 40) };
+        _fail = new AppButton { Variant = AppButtonVariant.Danger, IconGlyph = AppIcon.Warning, Text = "FAIL 판정", Location = new Point(24, 364), Size = new Size(224, 40) };
+        _finish = new AppButton { Variant = AppButtonVariant.Secondary, IconGlyph = AppIcon.Refresh, Text = "검사 종료 · 정상 복구", Location = new Point(260, 364), Size = new Size(236, 40) };
         _open.Enabled = _confirmOpen.Enabled = _close.Enabled = _confirmClose.Enabled = _finish.Enabled = false;
-        steps.Controls.Add(_prepare); steps.Controls.Add(_open); steps.Controls.Add(_confirmOpen); steps.Controls.Add(_close); steps.Controls.Add(_confirmClose); steps.Controls.Add(_finish);
+        _fail.Enabled = false;
+        steps.Controls.Add(_prepare); steps.Controls.Add(_open); steps.Controls.Add(_confirmOpen); steps.Controls.Add(_close); steps.Controls.Add(_confirmClose); steps.Controls.Add(_fail); steps.Controls.Add(_finish);
         Controls.Add(steps);
 
         var measurement = new AppPanel { Location = new Point(574, 240), Size = new Size(558, 420) };
@@ -70,6 +77,7 @@ public sealed class FaultInspectionForm : Form
         _close.Click += async (_, _) => await CloseAsync();
         _confirmClose.Click += (_, _) => ConfirmClose();
         _finish.Click += async (_, _) => await FinishAsync();
+        _fail.Click += async (_, _) => await MarkFailedAsync();
         FormClosing += OnClosing;
     }
 
@@ -77,16 +85,23 @@ public sealed class FaultInspectionForm : Form
 
     private async Task PrepareAsync()
     {
+        if (_session is not null)
+        {
+            _session.Results.InvalidateFinalization();
+            _session.Results.FaultPassed = null;
+            _session.Results.FaultStatus = InspectionExecutionStatus.Running;
+            new InspectionCheckpointService().TrySave(_session);
+        }
         SetBusy(); ResetOperation(); ShowState("정상 통신 확인 중", "NORMAL", Colors.Primary);
         try
         {
             await _host.PrepareNormalAsync(_operation!.Token);
             ShowState("정상 통신 준비 완료", "NORMAL", Colors.Success);
             _status.Text = "정상 통신이 유지되고 있습니다.\nTB18 도통 상태를 확인한 뒤 OPEN (FAULT)를 누르세요.";
-            _open.Enabled = _finish.Enabled = true;
+            _open.Enabled = _finish.Enabled = _fail.Enabled = true;
         }
-        catch (OperationCanceledException) { ResetButtons(); }
-        catch (Exception ex) { _status.Text = $"정상 통신 준비 실패\n{ex.Message}"; _status.ForeColor = Colors.Danger; await _host.StopAsync(); ResetButtons(); }
+        catch (OperationCanceledException) { if (_session is not null) { _session.Results.FaultStatus = InspectionExecutionStatus.Stopped; new InspectionCheckpointService().TrySave(_session); } ResetButtons(); }
+        catch (Exception ex) { if (_session is not null) { _session.Results.FaultStatus = InspectionExecutionStatus.Error; new InspectionCheckpointService().TrySave(_session); } _status.Text = $"정상 통신 준비 실패\n{ex.Message}"; _status.ForeColor = Colors.Danger; await _host.StopAsync(); ResetButtons(); }
     }
 
     private async Task OpenAsync()
@@ -96,9 +111,10 @@ public sealed class FaultInspectionForm : Form
         {
             await _host.InduceSlaveFaultAsync(_operation?.Token ?? _lifetime.Token);
             ShowState("OPEN 측정 대기", "OPEN", Colors.Danger); _status.Text = "테스터로 TB18-1과 TB18-2가 개방됐는지 확인하세요."; _status.ForeColor = Colors.Danger;
-            _confirmOpen.Enabled = _finish.Enabled = true;
+            _confirmOpen.Enabled = _finish.Enabled = _fail.Enabled = true;
         }
-        catch (Exception ex) when (ex is not OperationCanceledException) { _status.Text = $"FAULT 유도 실패\n{ex.Message}"; _status.ForeColor = Colors.Danger; _open.Enabled = _finish.Enabled = true; }
+        catch (OperationCanceledException) { if (_session is not null) _session.Results.FaultStatus = InspectionExecutionStatus.Stopped; }
+        catch (Exception ex) when (ex is not OperationCanceledException) { if (_session is not null) { _session.Results.FaultPassed = null; _session.Results.FaultStatus = InspectionExecutionStatus.Error; new InspectionCheckpointService().TrySave(_session); } _status.Text = $"FAULT 유도 실패\n{ex.Message}"; _status.ForeColor = Colors.Danger; _open.Enabled = _finish.Enabled = true; }
     }
 
     private void ConfirmOpen()
@@ -113,14 +129,21 @@ public sealed class FaultInspectionForm : Form
         try
         {
             await _host.RestoreNormalAsync(_operation?.Token ?? _lifetime.Token);
-            ShowState("CLOSE 측정 대기", "NORMAL", Colors.Primary); _status.Text = "테스터로 TB18-1과 TB18-2가 도통되는지 확인하세요."; _confirmClose.Enabled = _finish.Enabled = true;
+            ShowState("CLOSE 측정 대기", "NORMAL", Colors.Primary); _status.Text = "테스터로 TB18-1과 TB18-2가 도통되는지 확인하세요."; _confirmClose.Enabled = _finish.Enabled = _fail.Enabled = true;
         }
-        catch (Exception ex) when (ex is not OperationCanceledException) { _status.Text = $"정상 복구 실패\n{ex.Message}"; _status.ForeColor = Colors.Danger; _close.Enabled = _finish.Enabled = true; }
+        catch (OperationCanceledException) { if (_session is not null) _session.Results.FaultStatus = InspectionExecutionStatus.Stopped; }
+        catch (Exception ex) when (ex is not OperationCanceledException) { if (_session is not null) { _session.Results.FaultPassed = null; _session.Results.FaultStatus = InspectionExecutionStatus.Error; new InspectionCheckpointService().TrySave(_session); } _status.Text = $"정상 복구 실패\n{ex.Message}"; _status.ForeColor = Colors.Danger; _close.Enabled = _finish.Enabled = true; }
     }
 
     private void ConfirmClose()
     {
         _confirmClose.Enabled = false; _finish.Enabled = true;
+        if (_session is not null)
+        {
+            _session.Results.FaultPassed = _openConfirmed;
+            _session.Results.FaultStatus = _openConfirmed ? InspectionExecutionStatus.Pass : InspectionExecutionStatus.Fail;
+            new InspectionCheckpointService().TrySave(_session);
+        }
         ShowState(_openConfirmed ? "접점 검사 완료" : "OPEN 확인 필요", "NORMAL", _openConfirmed ? Colors.Success : Colors.Danger);
         _status.Text = _openConfirmed ? "FAULT OPEN / NORMAL CLOSE 접점 검사 정상" : "CLOSE는 확인했지만 OPEN 확인이 완료되지 않았습니다.";
         _status.ForeColor = _openConfirmed ? Colors.Success : Colors.Danger;
@@ -133,6 +156,33 @@ public sealed class FaultInspectionForm : Form
         ShowState("검사 종료", "NORMAL", Colors.TextMuted); _status.Text = "통신 에뮬레이션을 종료하고 Heating ID20 응답을 정상 상태로 복구했습니다."; ResetButtons();
     }
 
+    private async Task MarkFailedAsync()
+    {
+        if (MessageBox.Show(this, "FAULT 접점 검사를 FAIL로 판정하고 출력을 정상 복구하시겠습니까?", "FAIL 판정 확인", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
+        if (_session is not null)
+        {
+            _session.Results.InvalidateFinalization();
+            _session.Results.FaultPassed = false;
+            _session.Results.FaultStatus = InspectionExecutionStatus.Fail;
+            new InspectionCheckpointService().TrySave(_session);
+        }
+        SetBusy();
+        try
+        {
+            await _host.StopAsync(restoreNormal: true);
+            ShowState("검사자 FAIL 판정", "NORMAL", Colors.Danger);
+            _status.Text = "FAULT 접점 검사 결과를 FAIL로 저장하고 통신 상태를 정상 복구했습니다.";
+            _status.ForeColor = Colors.Danger;
+        }
+        catch (Exception ex)
+        {
+            if (_session is not null) _session.Results.FaultStatus = InspectionExecutionStatus.Error;
+            _status.Text = $"FAIL 판정 후 정상 복구 오류\n{ex.Message}";
+            _status.ForeColor = Colors.Danger;
+        }
+        ResetButtons();
+    }
+
     private void ShowState(string stage, string fault, Color color)
     {
         _stageCard.CardValue = stage; _stageCard.ValueColor = color; _faultCard.CardValue = fault; _faultCard.ValueColor = color;
@@ -142,12 +192,15 @@ public sealed class FaultInspectionForm : Form
     {
         _operation?.Cancel(); _operation?.Dispose(); _operation = CancellationTokenSource.CreateLinkedTokenSource(_lifetime.Token);
     }
-    private void SetBusy() => _prepare.Enabled = _open.Enabled = _confirmOpen.Enabled = _close.Enabled = _confirmClose.Enabled = _finish.Enabled = false;
-    private void ResetButtons() { _openConfirmed = false; _prepare.Enabled = true; _open.Enabled = _confirmOpen.Enabled = _close.Enabled = _confirmClose.Enabled = _finish.Enabled = false; }
+    private void SetBusy() => _prepare.Enabled = _open.Enabled = _confirmOpen.Enabled = _close.Enabled = _confirmClose.Enabled = _fail.Enabled = _finish.Enabled = false;
+    private void ResetButtons() { _openConfirmed = false; _prepare.Enabled = true; _open.Enabled = _confirmOpen.Enabled = _close.Enabled = _confirmClose.Enabled = _fail.Enabled = _finish.Enabled = false; }
 
     private async void OnClosing(object? sender, FormClosingEventArgs e)
     {
         if (_closing) return; e.Cancel = true; _operation?.Cancel();
+        if (_session is not null && _session.Results.FaultStatus == InspectionExecutionStatus.Running)
+            _session.Results.FaultStatus = InspectionExecutionStatus.Stopped;
+        if (_session is not null) new InspectionCheckpointService().TrySave(_session);
         try { await _host.StopAsync(restoreNormal: true); } catch { }
         _lifetime.Cancel(); _closing = true; Close();
     }

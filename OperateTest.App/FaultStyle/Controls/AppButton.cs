@@ -8,6 +8,7 @@ namespace TestEmulator.Controls;
 public enum AppButtonVariant
 {
     Primary,
+    Warning,
     Secondary,
     Danger,
     OutlinePrimary,
@@ -37,10 +38,10 @@ public class AppButton : Control
     {
         SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint |
                   ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw |
-                  ControlStyles.SupportsTransparentBackColor, true);
+                  ControlStyles.Selectable, true);
         Cursor = Cursors.Hand;
         Size = new Size(140, Metrics.ButtonHeight);
-        BackColor = Color.Transparent;
+        BackColor = Colors.Surface;
         Font = Fonts.ButtonText;
     }
 
@@ -71,6 +72,13 @@ public class AppButton : Control
                 VisualState.Pressed => (Colors.PrimaryPressed, Colors.PrimaryPressed, Color.White),
                 VisualState.Hover => (Colors.PrimaryHover, Colors.PrimaryHover, Color.White),
                 _ => (Colors.Primary, Colors.Primary, Color.White)
+            },
+            AppButtonVariant.Warning => state switch
+            {
+                VisualState.Disabled => (Colors.WarningSurface, Colors.WarningSurface, Colors.TextMuted),
+                VisualState.Pressed => (ControlPaint.Dark(Colors.Warning, 0.15f), ControlPaint.Dark(Colors.Warning, 0.15f), Color.White),
+                VisualState.Hover => (ControlPaint.Light(Colors.Warning, 0.05f), Colors.Warning, Color.White),
+                _ => (Colors.Warning, Colors.Warning, Color.White)
             },
             AppButtonVariant.Danger => state switch
             {
@@ -108,10 +116,11 @@ public class AppButton : Control
     {
         var g = e.Graphics;
         GraphicsHelper.SetHighQuality(g);
+        g.Clear(Parent?.BackColor ?? Colors.AppBackground);
         var state = EffectiveState();
         var (fill, border, text) = Palette(state);
 
-        var rect = new Rectangle(1, 1, Width - 3, Height - 3);
+        var rect = new Rectangle(2, 2, Math.Max(1, Width - 5), Math.Max(1, Height - 5));
         using var path = GraphicsHelper.RoundedRect(rect, Metrics.ButtonRadius);
 
         if (fill != Color.Transparent)
@@ -120,17 +129,21 @@ public class AppButton : Control
             g.FillPath(b, path);
         }
 
-        if (Variant is AppButtonVariant.OutlinePrimary or AppButtonVariant.Secondary || (Variant == AppButtonVariant.Danger && state == VisualState.Disabled))
+        if (Variant != AppButtonVariant.Icon)
         {
-            using var p = new Pen(border, 1.5f);
+            using var p = new Pen(border, Variant is AppButtonVariant.OutlinePrimary or AppButtonVariant.Secondary ? 1.5f : 1f);
             g.DrawPath(p, path);
         }
 
         if (state == VisualState.Focused)
         {
-            var focusRect = new Rectangle(rect.X - 2, rect.Y - 2, rect.Width + 4, rect.Height + 4);
-            using var fp = new Pen(Colors.Primary, 2f);
-            using var focusPath = GraphicsHelper.RoundedRect(focusRect, Metrics.ButtonRadius + 2);
+            // Keep the focus ring inside the client area so its edges are not clipped.
+            var focusRect = Rectangle.Inflate(rect, -3, -3);
+            var focusColor = Variant is AppButtonVariant.Primary or AppButtonVariant.Warning or AppButtonVariant.Danger
+                ? Color.FromArgb(210, Color.White)
+                : Colors.Primary;
+            using var fp = new Pen(focusColor, 1.5f) { DashStyle = DashStyle.Dot };
+            using var focusPath = GraphicsHelper.RoundedRect(focusRect, Metrics.ButtonRadius - 1);
             g.DrawPath(fp, focusPath);
         }
 

@@ -1,3 +1,5 @@
+using OperateTest.App.Models;
+using OperateTest.App.Services;
 using TestEmulator.Controls;
 using TestEmulator.Theme;
 
@@ -5,50 +7,80 @@ namespace OperateTest.App.Forms;
 
 public abstract class InspectionShellForm : Form
 {
-    private readonly Panel _content = new() { Dock = DockStyle.Fill, BackColor = Colors.AppBackground };
+    private readonly Panel _content = new BufferedPanel { Dock = DockStyle.Fill, BackColor = Colors.AppBackground };
     private readonly Label _pageTitle = new();
     private readonly Label _pageSubtitle = new();
     private readonly Dictionary<string, SideMenuButton> _menus = new();
     private readonly Label _connectionSummary = new();
+    private readonly string _sessionPrefix;
+    private readonly InspectionSession? _session;
+    private readonly InspectionCheckpointService _checkpoints = new();
 
-    protected InspectionShellForm(string boardTitle, string boardSubtitle, Color accent, bool showSettings = true)
+    protected InspectionShellForm(string boardTitle, string boardSubtitle, Color accent, bool showSettings = true, InspectionSession? session = null)
     {
+        _session = session;
+        _sessionPrefix = session is null ? string.Empty : $"{session.SerialNumber} · {session.Inspector}";
         Text = boardTitle;
+        AutoScaleMode = AutoScaleMode.None;
         StartPosition = FormStartPosition.CenterParent;
-        MinimumSize = new Size(1280, 800);
-        ClientSize = new Size(1600, 900);
+        MinimumSize = new Size(1460, 800);
+        ClientSize = new Size(1500, 860);
+        WindowState = FormWindowState.Normal;
         BackColor = Colors.AppBackground;
         Font = Fonts.Body;
+        SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true);
 
         var top = new Panel { Dock = DockStyle.Top, Height = 72, BackColor = Colors.Surface };
         top.Controls.Add(new Panel { Dock = DockStyle.Bottom, Height = 1, BackColor = Colors.Divider });
         top.Controls.Add(new IconBlock { Icon = AppIcon.Clipboard, Accent = accent, Location = new Point(18, 17), Size = new Size(38, 38) });
         top.Controls.Add(new Label { Location = new Point(70, 14), Size = new Size(520, 30), Font = Fonts.CardTitle, ForeColor = Colors.TextPrimary, Text = boardTitle });
         top.Controls.Add(new Label { Location = new Point(72, 43), Size = new Size(650, 20), Font = Fonts.Caption, ForeColor = Colors.TextSecondary, Text = boardSubtitle });
-        _connectionSummary.Location = new Point(1040, 21);
-        _connectionSummary.Size = new Size(500, 28);
-        _connectionSummary.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        _connectionSummary.Dock = DockStyle.Right;
+        _connectionSummary.Width = 500;
+        _connectionSummary.Padding = new Padding(0, 0, 24, 0);
         _connectionSummary.Font = Fonts.Caption;
         _connectionSummary.ForeColor = Colors.TextSecondary;
         _connectionSummary.TextAlign = ContentAlignment.MiddleRight;
-        _connectionSummary.Text = "●  검사 준비 상태 확인";
+        _connectionSummary.Text = string.IsNullOrEmpty(_sessionPrefix)
+            ? "●  검사 준비 상태 확인"
+            : $"{_sessionPrefix}  |  ●  검사 준비 상태 확인";
         top.Controls.Add(_connectionSummary);
 
         var sidebar = new Panel { Dock = DockStyle.Left, Width = Metrics.SideMenuWidth, BackColor = Colors.Surface };
         sidebar.Controls.Add(new Panel { Dock = DockStyle.Right, Width = 1, BackColor = Colors.Divider });
-        var menuHost = new Panel { Dock = DockStyle.Top, Height = 288, Padding = new Padding(0, 8, 0, 0), BackColor = Colors.Surface };
-        AddMenu(menuHost, "fault-switch", "FAULT 및 스위치 검사", AppIcon.Settings);
-        AddMenu(menuHost, "test", "통신 검사", AppIcon.Check);
+        var menuHost = new Panel { Dock = DockStyle.Top, Height = 416, Padding = new Padding(0, 8, 0, 0), BackColor = Colors.Surface };
+        var isDio = session?.BoardType == InspectionBoardType.DigitalIo;
+        AddMenu(menuHost, "result", "최종 판정", AppIcon.Check);
+        AddMenu(menuHost, "fault-switch", isDio ? "ID DIP 스위치 검사" : "FAULT 및 스위치 검사", AppIcon.Settings);
+        AddMenu(menuHost, "test", isDio ? "DIO 입출력 검사" : "통신 검사", AppIcon.Check);
         if (showSettings) AddMenu(menuHost, "settings", "통신 설정", AppIcon.Network);
+        AddMenu(menuHost, "manual", "육안 및 전원 검사", AppIcon.Clipboard);
         AddMenu(menuHost, "dashboard", "대시보드", AppIcon.Home);
         sidebar.Controls.Add(menuHost);
-        var back = new AppButton { Variant = AppButtonVariant.Secondary, IconGlyph = AppIcon.ChevronLeft, Text = "검사 대상 선택", Dock = DockStyle.Fill };
+        var back = new AppButton { Variant = AppButtonVariant.Secondary, IconGlyph = AppIcon.ChevronLeft, Text = "검사 대상 선택", Location = new Point(16, 70), Size = new Size(Metrics.SideMenuWidth - 32, 50) };
         back.Click += (_, _) => Close();
-        var backWrap = new Panel { Dock = DockStyle.Bottom, Height = 74, Padding = new Padding(16, 12, 16, 12), BackColor = Colors.Surface };
-        backWrap.Controls.Add(back);
-        sidebar.Controls.Add(backWrap);
+        var saveCheckpoint = new AppButton { Variant = AppButtonVariant.OutlinePrimary, IconGlyph = AppIcon.Document, Text = "검사내용 임시 저장", Location = new Point(16, 10), Size = new Size(Metrics.SideMenuWidth - 32, 50), Enabled = session is not null };
+        saveCheckpoint.Click += (_, _) =>
+        {
+            if (_session is null) return;
+            try
+            {
+                var path = _checkpoints.Save(_session);
+                MessageBox.Show(this,
+                    $"현재 검사내용을 임시 저장했습니다.{Environment.NewLine}{Environment.NewLine}{path}{Environment.NewLine}{Environment.NewLine}최종 Excel 반영은 [최종 판정]에서 진행합니다.",
+                    "임시 저장 완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, $"검사내용을 임시 저장하지 못했습니다.{Environment.NewLine}{Environment.NewLine}{ex.Message}", "임시 저장 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        };
+        var bottomActions = new Panel { Dock = DockStyle.Bottom, Height = 132, BackColor = Colors.Surface };
+        bottomActions.Controls.Add(saveCheckpoint);
+        bottomActions.Controls.Add(back);
+        sidebar.Controls.Add(bottomActions);
 
-        var pageHeader = new Panel { Dock = DockStyle.Top, Height = 112, BackColor = Colors.AppBackground };
+        var pageHeader = new BufferedPanel { Dock = DockStyle.Top, Height = 112, BackColor = Colors.AppBackground };
         _pageTitle.Location = new Point(40, 24);
         _pageTitle.Size = new Size(900, 40);
         _pageTitle.Font = new Font("맑은 고딕", 22f, FontStyle.Bold);
@@ -60,12 +92,13 @@ public abstract class InspectionShellForm : Form
         pageHeader.Controls.Add(_pageTitle);
         pageHeader.Controls.Add(_pageSubtitle);
 
-        var main = new Panel { Dock = DockStyle.Fill, BackColor = Colors.AppBackground };
+        var main = new BufferedPanel { Dock = DockStyle.Fill, BackColor = Colors.AppBackground };
         main.Controls.Add(_content);
         main.Controls.Add(pageHeader);
         Controls.Add(main);
         Controls.Add(sidebar);
         Controls.Add(top);
+        FormClosing += (_, _) => { if (_session is not null) _checkpoints.TrySave(_session); };
     }
 
     private void AddMenu(Panel host, string key, string text, AppIcon icon)
@@ -78,23 +111,41 @@ public abstract class InspectionShellForm : Form
 
     protected void ShowPage(string key, string title, string subtitle, Control page)
     {
+        if (_session is not null) _checkpoints.TrySave(_session);
         foreach (var pair in _menus) pair.Value.IsSelected = pair.Key == key;
         _pageTitle.Text = title;
         _pageSubtitle.Text = subtitle;
-        _content.SuspendLayout();
-        _content.Controls.Clear();
+        page.Visible = false;
         page.Dock = DockStyle.Fill;
+        _content.SuspendLayout();
+        var previousPages = _content.Controls.Cast<Control>().ToArray();
+        _content.Controls.Clear();
         _content.Controls.Add(page);
-        _content.ResumeLayout();
+        _content.ResumeLayout(true);
+        page.Visible = true;
+        page.BringToFront();
+        _content.Invalidate(true);
+        foreach (var previous in previousPages) previous.Dispose();
     }
 
     protected void SetTopStatus(string text, Color color)
     {
-        _connectionSummary.Text = $"●  {text}";
+        _connectionSummary.Text = string.IsNullOrEmpty(_sessionPrefix)
+            ? $"●  {text}"
+            : $"{_sessionPrefix}  |  ●  {text}";
         _connectionSummary.ForeColor = color;
     }
 
     protected abstract void Navigate(string key);
+
+    private sealed class BufferedPanel : Panel
+    {
+        public BufferedPanel()
+        {
+            DoubleBuffered = true;
+            ResizeRedraw = true;
+        }
+    }
 
     private sealed class IconBlock : Control
     {

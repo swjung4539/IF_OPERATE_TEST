@@ -24,11 +24,26 @@ COMM/DIO 보드 수입검사용 독립 Windows Forms 프로그램입니다.
 - 전체 ON/OFF 및 baseline 복귀 검사
 - 취소·오류·종료 시 전체 OFF 시도
 
-## 빌드
+## 빌드 및 EXE 위치
+
+### 디버깅용
 
 ```powershell
-dotnet build .\OperateTest.sln --configuration Debug
+.\build-debug.cmd
 ```
+
+- 실행 파일: `artifacts\Debug\OperateTest.exe`
+- 개발 PC에서 디버깅할 때 사용하는 .NET 의존형 빌드입니다.
+
+### 배포용
+
+```powershell
+.\publish-deploy.cmd
+```
+
+- 배포 파일: `artifacts\Deploy\OperateTest.exe`
+- Windows 64비트용 단일 파일이며, 대상 PC에 .NET 8 Runtime이 없어도 실행됩니다.
+- 배포할 때는 `OperateTest.exe` 하나만 전달하면 됩니다.
 
 ## 실행
 

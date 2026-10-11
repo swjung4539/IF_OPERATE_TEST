@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using OperateTest.App.Forms;
 using OperateTest.App.Models;
 using OperateTest.App.Services;
 using TestEmulator.Controls;
@@ -55,7 +56,7 @@ public sealed class InspectionSummaryControl : Panel
         _nextBoard = new AppButton { Variant = AppButtonVariant.Primary, IconGlyph = AppIcon.ChevronRight, Text = "다음 보드 검사", Location = new Point(928, 76), Size = new Size(216, 42) };
         _openExcel.Click += (_, _) => OpenPath(_session.ResultPath);
         _openFolder.Click += (_, _) => OpenPath(Path.GetDirectoryName(_session.ResultPath)!);
-        _nextBoard.Click += (_, _) => FindForm()?.Close();
+        _nextBoard.Click += (_, _) => (FindForm() as InspectionShellForm)?.RequestNextBoard();
         info.Controls.Add(_openExcel); info.Controls.Add(_openFolder); info.Controls.Add(_nextBoard);
         Controls.Add(info);
         RefreshView();

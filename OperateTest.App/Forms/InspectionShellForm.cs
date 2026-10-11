@@ -7,6 +7,15 @@ namespace OperateTest.App.Forms;
 
 public abstract class InspectionShellForm : Form
 {
+    public bool ContinueWithNextBoard { get; private set; }
+
+    public void RequestNextBoard()
+    {
+        if (_session?.Results.WorkbookSavedAt is null) return;
+        ContinueWithNextBoard = true;
+        Close();
+    }
+
     private readonly Panel _content = new BufferedPanel { Dock = DockStyle.Fill, BackColor = Colors.AppBackground };
     private readonly Label _pageTitle = new();
     private readonly Label _pageSubtitle = new();

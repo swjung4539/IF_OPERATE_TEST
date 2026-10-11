@@ -118,17 +118,29 @@ public sealed class HomeForm : Form
         if (button != null) button.Width = width - 48;
     }
 
-    private void OpenChild(Form form) { using (form) form.ShowDialog(this); }
-
     private void BeginInspection(InspectionBoardType boardType)
     {
         using var setup = new InspectionSetupForm(boardType);
         if (setup.ShowDialog(this) != DialogResult.OK || setup.Session is null) return;
 
-        Form inspection = boardType == InspectionBoardType.Communication
-            ? new CommInspectionForm(_connections, _protocols, _rotaryReader, setup.Session)
-            : new DioInspectionForm(_connections, _protocols, _dioIdReader, setup.Session);
-        OpenChild(inspection);
+        var session = setup.Session;
+        while (true)
+        {
+            InspectionShellForm inspection = boardType == InspectionBoardType.Communication
+                ? new CommInspectionForm(_connections, _protocols, _rotaryReader, session)
+                : new DioInspectionForm(_connections, _protocols, _dioIdReader, session);
+            bool continueWithNextBoard;
+            using (inspection)
+            {
+                inspection.ShowDialog(this);
+                continueWithNextBoard = inspection.ContinueWithNextBoard;
+            }
+            if (!continueWithNextBoard) return;
+
+            using var nextBoard = new NextBoardSerialForm(session);
+            if (nextBoard.ShowDialog(this) != DialogResult.OK || nextBoard.Session is null) return;
+            session = nextBoard.Session;
+        }
     }
 
     private sealed class IconCircle : Control

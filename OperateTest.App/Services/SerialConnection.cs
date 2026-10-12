@@ -27,7 +27,8 @@ public sealed class SerialConnection : IDisposable
 
     public event EventHandler<SerialConnectionSnapshot>? StateChanged;
 
-    public async Task ConnectAsync(string portName, SerialConnectionOptions options, CancellationToken ct = default)
+    public async Task ConnectAsync(string portName, SerialConnectionOptions options,
+        Func<CancellationToken, Task>? verify = null, CancellationToken ct = default)
     {
         if (string.IsNullOrWhiteSpace(portName))
             throw new ArgumentException("COM 포트를 선택하세요.", nameof(portName));
@@ -50,6 +51,10 @@ public sealed class SerialConnection : IDisposable
                 options.DataBits,
                 options.Parity,
                 options.StopBits), ct).ConfigureAwait(false);
+
+            // A successfully opened COM port does not establish that the target device responds.
+            if (verify is not null)
+                await verify(ct).ConfigureAwait(false);
 
             lock (_sync)
             {
@@ -113,7 +118,8 @@ public sealed class SerialConnection : IDisposable
         IOException => "포트를 열 수 없습니다",
         ArgumentException => "포트 설정을 확인하세요",
         OperationCanceledException => "연결이 취소되었습니다",
-        _ => "연결 실패"
+        _ => ex.Message.StartsWith("장치 통신 확인 실패:", StringComparison.Ordinal)
+            ? "통신 연결 실패 · 장치 응답 없음" : "연결 실패"
     };
 
     private void RaiseStateChanged() =>

@@ -1,6 +1,7 @@
 using System.IO.Ports;
 using OperateTest.App.Models;
 using OperateTest.App.Services;
+using OperateTest.App.Services.CommInspection;
 using TestEmulator.Controls;
 using TestEmulator.Theme;
 
@@ -12,6 +13,7 @@ public sealed class ConnectionRow : UserControl
     private readonly ISerialConnectionManager _manager;
     private readonly SerialChannelDefinition _definition;
     private readonly SerialConnection _connection;
+    private readonly ICommInspectionService _inspection;
     private readonly AppComboBox _ports;
     private readonly AppComboBox _baudRates;
     private readonly AppComboBox _uartFormats;
@@ -20,11 +22,12 @@ public sealed class ConnectionRow : UserControl
     private readonly StatusDot _dot;
     private bool _operationRunning;
 
-    public ConnectionRow(ISerialConnectionManager manager, SerialChannelDefinition definition)
+    public ConnectionRow(ISerialConnectionManager manager, IInspectionProtocolServices protocols, SerialChannelDefinition definition)
     {
         _manager = manager;
         _definition = definition;
         _connection = manager.Get(definition.Key);
+        _inspection = new CommInspectionService(manager, protocols);
         Height = 66;
         BackColor = Colors.Surface;
 
@@ -83,7 +86,13 @@ public sealed class ConnectionRow : UserControl
                 return;
 
             var selectedDefinition = _definition with { Options = ReadOptions() };
-            await _manager.ConnectAsync(selectedDefinition, portName);
+            await _manager.ConnectVerifiedAsync(selectedDefinition, portName, async ct =>
+            {
+                var results = await _inspection.RunSelectedAsync([_definition.Key], ct: ct);
+                var result = results.Single();
+                if (result.Verdict != InspectionVerdict.Pass)
+                    throw new InvalidOperationException($"장치 통신 확인 실패: {result.Detail}");
+            });
         }
         catch (Exception ex)
         {
@@ -173,7 +182,12 @@ public sealed class ConnectionRow : UserControl
 
     private sealed class StatusDot : Control
     {
-        public Color DotColor { get; set; } = Colors.TextMuted;
+        private Color _dotColor = Colors.TextMuted;
+        public Color DotColor
+        {
+            get => _dotColor;
+            set { if (_dotColor == value) return; _dotColor = value; Invalidate(); }
+        }
 
         protected override void OnPaint(PaintEventArgs e)
         {

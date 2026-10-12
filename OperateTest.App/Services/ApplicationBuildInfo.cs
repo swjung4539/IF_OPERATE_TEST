@@ -6,7 +6,8 @@ namespace OperateTest.App.Services;
 public static class ApplicationBuildInfo
 {
     public static string Version { get; } = ResolveVersion();
-    public static string ExecutablePath => Environment.ProcessPath ?? typeof(ApplicationBuildInfo).Assembly.Location;
+    public static string ExecutablePath => Environment.ProcessPath
+        ?? Path.Combine(AppContext.BaseDirectory, "OperateTest.exe");
     public static DateTime BuildFileTime => File.Exists(ExecutablePath)
         ? File.GetLastWriteTime(ExecutablePath)
         : default;

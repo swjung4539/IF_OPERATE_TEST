@@ -21,8 +21,9 @@ public interface ICommEmulationHost
 
 public sealed class CommEmulationHost : ICommEmulationHost
 {
+    private static readonly TimeSpan HealthMaxAge = TimeSpan.FromSeconds(18);
     private static readonly string[] RequiredHealthKeys =
-        ["uart4", "dio", "heating-20", "heating-21", "heating-22", "gas-30", "gas-40", "gas-50", "gst"];
+        ["heating-20"];
     private readonly ISerialConnectionManager _connections;
     private readonly IInspectionProtocolServices _protocols;
     private readonly ConcurrentDictionary<string, DateTime> _lastSuccess = new();
@@ -47,10 +48,8 @@ public sealed class CommEmulationHost : ICommEmulationHost
         lock (_gate)
         {
             if (IsRunning) return Task.CompletedTask;
-            var disconnected = ChannelDefinitions.CommPortChannels
-                .Where(x => !_connections.Get(x.Key).IsConnected).Select(x => x.DisplayName).ToArray();
-            if (disconnected.Length > 0)
-                throw new InvalidOperationException($"먼저 COMM 포트를 연결하세요: {string.Join(", ", disconnected)}");
+            if (!_connections.Get(ChannelDefinitions.Heating.Key).IsConnected)
+                throw new InvalidOperationException("FAULT 유도에 필요한 Heating Jacket 포트를 연결하세요.");
 
             _lastSuccess.Clear();
             _workers.Clear();
@@ -58,16 +57,19 @@ public sealed class CommEmulationHost : ICommEmulationHost
             ct.ThrowIfCancellationRequested();
             _hostCts = new CancellationTokenSource();
             var token = _hostCts.Token;
-            _workers.Add(RunUart4Async(token));
+            if (_connections.Get(ChannelDefinitions.Uart4.Key).IsConnected)
+                _workers.Add(RunUart4Async(token));
             _workers.Add(RunModbusBusAsync(ChannelDefinitions.Heating.Key, ModbusSlaveBus.Usart2Heating,
                 [ModbusSlaveRegisterStore.CreateDefaultFor(ModbusSlaveBus.Usart2Heating, 20),
                  ModbusSlaveRegisterStore.CreateDefaultFor(ModbusSlaveBus.Usart2Heating, 21),
                  ModbusSlaveRegisterStore.CreateDefaultFor(ModbusSlaveBus.Usart2Heating, 22)], "heating", token));
-            _workers.Add(RunModbusBusAsync(ChannelDefinitions.Gas.Key, ModbusSlaveBus.Usart3Gas,
-                [ModbusSlaveRegisterStore.CreateDefaultFor(ModbusSlaveBus.Usart3Gas, 30, GasDetectorProfile.Std),
-                 ModbusSlaveRegisterStore.CreateDefaultFor(ModbusSlaveBus.Usart3Gas, 40, GasDetectorProfile.Std),
-                 ModbusSlaveRegisterStore.CreateDefaultFor(ModbusSlaveBus.Usart3Gas, 50, GasDetectorProfile.Tft)], "gas", token));
-            _workers.Add(RunGstAsync(token));
+            if (_connections.Get(ChannelDefinitions.Gas.Key).IsConnected)
+                _workers.Add(RunModbusBusAsync(ChannelDefinitions.Gas.Key, ModbusSlaveBus.Usart3Gas,
+                    [ModbusSlaveRegisterStore.CreateDefaultFor(ModbusSlaveBus.Usart3Gas, 30, GasDetectorProfile.Std),
+                     ModbusSlaveRegisterStore.CreateDefaultFor(ModbusSlaveBus.Usart3Gas, 40, GasDetectorProfile.Std),
+                     ModbusSlaveRegisterStore.CreateDefaultFor(ModbusSlaveBus.Usart3Gas, 50, GasDetectorProfile.Tft)], "gas", token));
+            if (_connections.Get(ChannelDefinitions.Backup.Key).IsConnected)
+                _workers.Add(RunGstAsync(token));
         }
         return Task.CompletedTask;
     }
@@ -75,18 +77,18 @@ public sealed class CommEmulationHost : ICommEmulationHost
     public async Task PrepareNormalAsync(CancellationToken ct = default)
     {
         await StartAsync(ct).ConfigureAwait(false);
-        await WaitUntilHealthyAsync(TimeSpan.FromSeconds(15), ct).ConfigureAwait(false);
+        await WaitUntilHealthyAsync(TimeSpan.FromSeconds(25), ct).ConfigureAwait(false);
         await Task.Delay(2300, ct).ConfigureAwait(false);
-        if (!AreAllLinksRecent(TimeSpan.FromMilliseconds(2100)))
-            throw new InvalidOperationException("정상 통신이 2초 동안 유지되지 않았습니다.");
+        if (!AreAllLinksRecent(HealthMaxAge))
+            throw new InvalidOperationException("Heating ID20 응답이 유지되지 않았습니다.");
     }
 
     public async Task InduceSlaveFaultAsync(CancellationToken ct = default)
     {
-        if (!IsRunning) throw new InvalidOperationException("먼저 정상 통신 준비를 실행하세요.");
+        if (!IsRunning) throw new InvalidOperationException("Heating ID20 응답 유지가 시작되지 않았습니다.");
         _lastSuppressedAt = DateTime.MinValue;
         _suppressHeating20 = true;
-        var deadline = DateTime.UtcNow.AddSeconds(6);
+        var deadline = DateTime.UtcNow.AddSeconds(20);
         while (_lastSuppressedAt == DateTime.MinValue)
         {
             ct.ThrowIfCancellationRequested();
@@ -102,7 +104,7 @@ public sealed class CommEmulationHost : ICommEmulationHost
         if (!IsRunning) throw new InvalidOperationException("통신 에뮬레이터가 실행 중이 아닙니다.");
         var resumedAt = DateTime.UtcNow;
         _suppressHeating20 = false;
-        var deadline = DateTime.UtcNow.AddSeconds(8);
+        var deadline = DateTime.UtcNow.AddSeconds(20);
         while (!_lastSuccess.TryGetValue("heating-20", out var at) || at < resumedAt)
         {
             ct.ThrowIfCancellationRequested();
@@ -111,8 +113,8 @@ public sealed class CommEmulationHost : ICommEmulationHost
             await Task.Delay(50, ct).ConfigureAwait(false);
         }
         await Task.Delay(2300, ct).ConfigureAwait(false);
-        if (!AreAllLinksRecent(TimeSpan.FromMilliseconds(2100)))
-            throw new InvalidOperationException("전체 정상 통신 복구가 유지되지 않았습니다.");
+        if (!AreAllLinksRecent(HealthMaxAge))
+            throw new InvalidOperationException("Heating ID20 정상 응답 복구가 유지되지 않았습니다.");
     }
 
     public async Task StopAsync(bool restoreNormal = true, CancellationToken ct = default)
@@ -151,8 +153,6 @@ public sealed class CommEmulationHost : ICommEmulationHost
             {
                 var read = await master.ReadHoldingRegistersAsync(4, 163, 1, 800, ct).ConfigureAwait(false);
                 MarkSuccess("uart4", $"UART4 MAIN 응답 정상 · HR163=0x{read.Registers[0]:X4}");
-                if ((read.Registers[0] & 1) != 0) MarkSuccess("dio", "DIO 내부 통신 정상");
-                else MarkError("dio", "DIO 내부 통신 이상");
                 await Task.Delay(250, ct).ConfigureAwait(false);
             }
             catch (OperationCanceledException) { return; }
@@ -208,14 +208,14 @@ public sealed class CommEmulationHost : ICommEmulationHost
     private async Task WaitUntilHealthyAsync(TimeSpan timeout, CancellationToken ct)
     {
         var deadline = DateTime.UtcNow + timeout;
-        while (!AreAllLinksRecent(TimeSpan.FromSeconds(2)))
+        while (!AreAllLinksRecent(HealthMaxAge))
         {
             ct.ThrowIfCancellationRequested();
             if (DateTime.UtcNow >= deadline)
             {
                 var missing = RequiredHealthKeys.Where(key =>
-                    !_lastSuccess.TryGetValue(key, out var at) || DateTime.UtcNow - at > TimeSpan.FromSeconds(2));
-                throw new InvalidOperationException($"정상 통신을 확인하지 못했습니다: {string.Join(", ", missing)}");
+                    !_lastSuccess.TryGetValue(key, out var at) || DateTime.UtcNow - at > HealthMaxAge);
+                throw new InvalidOperationException($"FAULT 유도에 필요한 응답을 확인하지 못했습니다: {string.Join(", ", missing)}");
             }
             await Task.Delay(100, ct).ConfigureAwait(false);
         }

@@ -25,7 +25,7 @@ public static class ChannelDefinitions
         new SerialConnectionOptions(115200));
 
     public static IReadOnlyList<SerialChannelDefinition> CommChannels { get; } =
-        [Uart4, DioSlave, Heating, Gas, Backup];
+        [Uart4, Heating, Gas, Backup];
 
     public static IReadOnlyList<SerialChannelDefinition> CommPortChannels { get; } =
         [Uart4, Heating, Gas, Backup];

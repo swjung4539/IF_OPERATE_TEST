@@ -9,6 +9,8 @@ public interface ISerialConnectionManager
     SerialConnection Get(string channelKey);
     ISerialPortService GetTransport(string channelKey);
     Task ConnectAsync(SerialChannelDefinition definition, string portName, CancellationToken ct = default);
+    Task ConnectVerifiedAsync(SerialChannelDefinition definition, string portName,
+        Func<CancellationToken, Task> verify, CancellationToken ct = default);
     Task DisconnectAsync(string channelKey, CancellationToken ct = default);
     Task DisconnectManyAsync(IEnumerable<string> channelKeys, CancellationToken ct = default);
     Task DisconnectAllAsync(CancellationToken ct = default);
@@ -49,7 +51,17 @@ public sealed class SerialConnectionManager : ISerialConnectionManager, IDisposa
             throw new InvalidOperationException($"{portName}은(는) 이미 다른 검사 경로에서 사용 중입니다.");
         }
 
-        await target.ConnectAsync(portName, definition.Options, ct).ConfigureAwait(false);
+        await target.ConnectAsync(portName, definition.Options, ct: ct).ConfigureAwait(false);
+    }
+
+    public async Task ConnectVerifiedAsync(SerialChannelDefinition definition, string portName,
+        Func<CancellationToken, Task> verify, CancellationToken ct = default)
+    {
+        var target = Get(definition.Key);
+        if (_connections.Values.Any(item => !ReferenceEquals(item, target) && item.IsConnected &&
+                string.Equals(item.PortName, portName, StringComparison.OrdinalIgnoreCase)))
+            throw new InvalidOperationException($"{portName}은(는) 이미 다른 검사 경로에서 사용 중입니다.");
+        await target.ConnectAsync(portName, definition.Options, verify, ct).ConfigureAwait(false);
     }
 
     public Task DisconnectAsync(string channelKey, CancellationToken ct = default) =>

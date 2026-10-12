@@ -85,8 +85,8 @@ public class AppCard : AppPanel
             ForeColor = Colors.TextSecondary,
             BackColor = Color.Transparent,
             TextAlign = ContentAlignment.MiddleLeft,
-            Location = new Point(72, 22),
-            Size = new Size(Width - 92, 22)
+            Location = new Point(72, 17),
+            Size = new Size(Width - 92, 29)
         };
         _value = new Label
         {
@@ -96,8 +96,8 @@ public class AppCard : AppPanel
             ForeColor = Colors.TextPrimary,
             BackColor = Color.Transparent,
             TextAlign = ContentAlignment.MiddleLeft,
-            Location = new Point(72, 46),
-            Size = new Size(Width - 92, 30)
+            Location = new Point(72, 45),
+            Size = new Size(Width - 92, 42)
         };
         Controls.Add(_label);
         Controls.Add(_value);
@@ -108,9 +108,9 @@ public class AppCard : AppPanel
         base.OnResize(eventargs);
         if (_label == null) return;
         int reserve = StatusDotColor.HasValue ? 112 : 92;
-        _label.Location = new Point(72, 22);
+        _label.Location = new Point(72, 17);
         _label.Width = Width - reserve;
-        _value.Location = new Point(72, 46);
+        _value.Location = new Point(72, 45);
         _value.Width = Width - reserve;
     }
 

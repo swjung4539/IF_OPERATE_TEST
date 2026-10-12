@@ -5,7 +5,6 @@ COMM/DIO 보드 수입검사용 독립 Windows Forms 프로그램입니다.
 ## COMM 보드 검사
 
 - UART4 MAIN Modbus 응답 검사
-- DIO 내부 통신 상태 검사(MAIN UART4 HR163 bit0)
 - USART2 Heating ID20·21·22 응답 검사
 - USART3 Gas ID30·40·50 STD/TFT 응답 검사
 - USART1 Backup GST 프레임 왕복 검사
@@ -17,9 +16,9 @@ COMM/DIO 보드 수입검사용 독립 Windows Forms 프로그램입니다.
 
 ## DIO 보드 검사
 
-- ST-LINK로 ID_SET1(PA0), ID_SET2(PC15) 및 ID 1~4 실시간 표시
-- RS-485 Slave ID 1~4 탐색
-- HR129 DO 제어 및 IR130 DI 읽기
+- ST-LINK로 ID_SET1(PA0), ID_SET2(PC15)의 ID 0~3 전 위치 확인
+- MAIN UART4를 통해 ID 0 보드의 첫 번째 DIO 경로 검사
+- MAIN 그룹 맵 HR1 DI 읽기 및 HR201 DO 쓰기
 - DO1~16 → DI1~16 walking-one 루프백
 - 전체 ON/OFF 및 baseline 복귀 검사
 - 취소·오류·종료 시 전체 OFF 시도
@@ -41,9 +40,9 @@ COMM/DIO 보드 수입검사용 독립 Windows Forms 프로그램입니다.
 .\publish-deploy.cmd
 ```
 
-- 배포 파일: `artifacts\Deploy\OperateTest.exe`
-- Windows 64비트용 단일 파일이며, 대상 PC에 .NET 8 Runtime이 없어도 실행됩니다.
-- 배포할 때는 `OperateTest.exe` 하나만 전달하면 됩니다.
+- 현재 작업 공간의 배포 파일: `artifacts\Deploy\OperateTest.exe`와 같은 폴더의 DLL·`runtimes` 디렉터리
+- 현재 패키지는 .NET 8 Desktop Runtime이 설치된 PC에서 폴더째 실행합니다.
+- `publish-deploy.cmd`는 필요한 런타임 패키지를 내려받을 수 있는 환경에서 독립 실행형 단일 파일을 다시 생성합니다.
 
 ## 실행
 

@@ -38,11 +38,11 @@ public sealed class HomeForm : Form
 
         var comm = BuildCard(150, Colors.Primary, Colors.SurfaceBlue, AppIcon.Network, "COMM 보드 검사",
             "MAIN 통신 경로와 로터리 스위치,\nFAULT 접점을 검사합니다.",
-            [(AppIcon.Network, "5개 통신 경로"), (AppIcon.Check, "통신 반복 검사"), (AppIcon.Settings, "로터리 0~F"), (AppIcon.Shield, "TB18 FAULT")],
+            [(AppIcon.Network, "4개 통신 경로"), (AppIcon.Check, "통신 반복 검사"), (AppIcon.Settings, "로터리 0~F"), (AppIcon.Shield, "TB18 FAULT")],
             "COMM 보드 검사 선택");
         var dio = BuildCard(826, Colors.Warning, Colors.WarningSurface, AppIcon.Server, "DIO 보드 검사",
             "DO·DI 루프백과 ID DIP 스위치\n상태를 검사합니다.",
-            [(AppIcon.Keyboard, "RS-485 연결"), (AppIcon.Swap, "16채널 루프백"), (AppIcon.Settings, "ID 1~4"), (AppIcon.Shield, "종료 시 OFF")],
+            [(AppIcon.Keyboard, "RS-485 연결"), (AppIcon.Swap, "16채널 루프백"), (AppIcon.Settings, "ID 0~3"), (AppIcon.Shield, "종료 시 OFF")],
             "DIO 보드 검사 선택");
         _commCard = comm.Card;
         _dioCard = dio.Card;
@@ -85,8 +85,8 @@ public sealed class HomeForm : Form
         var card = new AppPanel { Location = new Point(x, 260), Size = new Size(624, 420), BorderColor = accent, CornerRadius = 14 };
         var circle = new IconCircle { Icon = icon, Accent = accent, Surface = accentSurface, Location = new Point(24, 24), Size = new Size(90, 90) };
         card.Controls.Add(circle);
-        card.Controls.Add(new Label { Location = new Point(136, 30), Size = new Size(430, 34), Font = new Font("맑은 고딕", 18, FontStyle.Bold), ForeColor = accent, Text = title });
-        card.Controls.Add(new Label { Location = new Point(136, 69), Size = new Size(430, 52), Font = Fonts.Body, ForeColor = Colors.TextSecondary, Text = description });
+        card.Controls.Add(new Label { Location = new Point(136, 25), Size = new Size(430, 46), Font = new Font("맑은 고딕", 18, FontStyle.Bold), ForeColor = accent, Text = title });
+        card.Controls.Add(new Label { Location = new Point(136, 72), Size = new Size(430, 64), Font = Fonts.Body, ForeColor = Colors.TextSecondary, Text = description });
         card.Controls.Add(new Panel { Location = new Point(24, 150), Size = new Size(576, 1), BackColor = Colors.Divider });
 
         var tileWidth = 135;

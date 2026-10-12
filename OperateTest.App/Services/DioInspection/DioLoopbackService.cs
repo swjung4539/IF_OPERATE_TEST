@@ -48,9 +48,7 @@ public sealed class DioLoopbackService : IDioLoopbackService
 {
     private const byte ReadDioGroupId = 1;
     private const byte WriteDioGroupId = 5;
-    private const byte StatusGroupId = 4;
-    private const ushort StatusAddress = 163;
-    private const byte DefaultDioSlot = 1;
+    private const byte TargetDioId = 0;
     private const int TimeoutMs = 1000;
     private readonly IModbusMasterService _master;
 
@@ -61,16 +59,20 @@ public sealed class DioLoopbackService : IDioLoopbackService
 
     public async Task<byte> FindSlaveIdAsync(CancellationToken ct = default)
     {
-        var status = await _master.ReadHoldingRegistersAsync(
-            StatusGroupId, StatusAddress, 1, TimeoutMs, ct).ConfigureAwait(false);
-
-        if ((status.Registers[0] & 0x0001) == 0)
+        // The first MAIN DIO map entry belongs to the board configured as ID 0.
+        // This proves that MAIN answers its PLC group map. It does not prove
+        // that the downstream DIO board received a forwarded command.
+        try
+        {
+            await _master.ReadHoldingRegistersAsync(
+                ReadDioGroupId, ReadAddress(TargetDioId), 1, TimeoutMs, ct).ConfigureAwait(false);
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
             throw new InvalidOperationException(
-                "MAIN의 DIO 내부 통신 상태가 OFF입니다. DIO 전원과 MAIN↔DIO 연결을 확인하세요.");
-
-        await _master.ReadHoldingRegistersAsync(
-            ReadDioGroupId, ReadAddress(DefaultDioSlot), 1, TimeoutMs, ct).ConfigureAwait(false);
-        return DefaultDioSlot;
+                "MAIN의 DIO 입력 맵(HR1) 응답이 없습니다. MAIN UART4 연결을 확인하세요.", ex);
+        }
+        return TargetDioId;
     }
 
     public async Task SetAllOutputsOffAsync(byte dioSlot, CancellationToken ct = default)
@@ -89,8 +91,7 @@ public sealed class DioLoopbackService : IDioLoopbackService
         if (!expectedInput.HasValue)
             return new DioOutputSafetyResult(true, false, null, "DO 전체 OFF 명령을 전송했지만 기준 DI 값이 없어 복귀 여부는 확인하지 못했습니다.");
 
-        var current = await ReadStableInputAsync(dioSlot, ct).ConfigureAwait(false);
-        var verified = current == expectedInput.Value;
+        var (current, verified) = await WaitForInputAsync(dioSlot, expectedInput.Value, 0, ct).ConfigureAwait(false);
         return new DioOutputSafetyResult(
             true,
             verified,
@@ -124,14 +125,13 @@ public sealed class DioLoopbackService : IDioLoopbackService
                     expected, 0, "검사 중", results.Count, 16));
 
                 await WriteOutputAsync(slot, expected, ct).ConfigureAwait(false);
-                await Task.Delay(100, ct).ConfigureAwait(false);
-                var current = await ReadStableInputAsync(slot, ct).ConfigureAwait(false);
+                var (current, onSettled) = await WaitForInputAsync(slot, (ushort)(baseline ^ expected), expected, ct).ConfigureAwait(false);
                 var changed = (ushort)(current ^ baseline);
-                var pass = changed == expected;
+                var pass = onSettled && changed == expected;
 
                 await SetAllOutputsOffAsync(slot, ct).ConfigureAwait(false);
-                var returned = await ReadStableInputAsync(slot, ct).ConfigureAwait(false);
-                if (returned != baseline)
+                var (returned, offSettled) = await WaitForInputAsync(slot, baseline, 0, ct).ConfigureAwait(false);
+                if (!offSettled)
                     pass = false;
 
                 var detail = BuildChannelDetail(pass, expected, changed, returned == baseline);
@@ -142,15 +142,19 @@ public sealed class DioLoopbackService : IDioLoopbackService
                     results.Count + 1, 16);
                 results.Add(item);
                 progress?.Report(item);
+                if (channel == 1 && !onSettled && changed == 0)
+                    return new DioLoopbackResult(slot, baseline, results, false, offSettled, false,
+                        $"DO1 명령 후 DI1 변화가 없습니다. MAIN은 쓰기 ACK를 반환했지만 DIO 출력 반영은 확인되지 않았습니다. " +
+                        $"DI 기준 0x{baseline:X4}, 현재 0x{current:X4}. MAIN↔DIO 연결과 DIO 물리 ID 0(통신 ID 1)을 확인하세요.");
             }
 
             await WriteOutputAsync(slot, 0xFFFF, ct).ConfigureAwait(false);
-            await Task.Delay(120, ct).ConfigureAwait(false);
-            var allOnInput = await ReadStableInputAsync(slot, ct).ConfigureAwait(false);
-            allOnPassed = (ushort)(allOnInput ^ baseline) == 0xFFFF;
+            var (_, allOnSettled) = await WaitForInputAsync(slot, (ushort)(baseline ^ 0xFFFF), 0xFFFF, ct).ConfigureAwait(false);
+            allOnPassed = allOnSettled;
 
             await SetAllOutputsOffAsync(slot, ct).ConfigureAwait(false);
-            outputsCleared = await ReadStableInputAsync(slot, ct).ConfigureAwait(false) == baseline;
+            var (_, allOffSettled) = await WaitForInputAsync(slot, baseline, 0, ct).ConfigureAwait(false);
+            outputsCleared = allOffSettled;
 
             var passed = results.All(x => x.Verdict == DioChannelVerdict.Pass)
                          && allOnPassed && outputsCleared;
@@ -206,11 +210,37 @@ public sealed class DioLoopbackService : IDioLoopbackService
         throw new InvalidOperationException("DI 값이 안정되지 않았습니다.");
     }
 
+    private async Task<(ushort Current, bool Matched)> WaitForInputAsync(byte dioSlot, ushort expected, ushort retryOutput, CancellationToken ct)
+    {
+        // MAIN acknowledges the PLC write before forwarding it to the DIO bus.
+        // Reissue an unchanged output if the first forwarding attempt was dropped.
+        var deadline = DateTime.UtcNow.AddSeconds(2);
+        var nextRetry = DateTime.UtcNow.AddMilliseconds(300);
+        ushort current = 0;
+        var matches = 0;
+        do
+        {
+            ct.ThrowIfCancellationRequested();
+            var read = await _master.ReadHoldingRegistersAsync(
+                ReadDioGroupId, ReadAddress(dioSlot), 1, TimeoutMs, ct).ConfigureAwait(false);
+            current = read.Registers[0];
+            matches = current == expected ? matches + 1 : 0;
+            if (matches >= 2) return (current, true);
+            if (DateTime.UtcNow >= nextRetry)
+            {
+                await WriteOutputAsync(dioSlot, retryOutput, ct).ConfigureAwait(false);
+                nextRetry = DateTime.UtcNow.AddMilliseconds(300);
+            }
+            await Task.Delay(40, ct).ConfigureAwait(false);
+        } while (DateTime.UtcNow < deadline);
+        return (current, false);
+    }
+
     private static ushort ReadAddress(byte dioSlot) =>
-        dioSlot == 2 ? (ushort)2 : (ushort)1;
+        dioSlot == TargetDioId ? (ushort)1 : throw new ArgumentOutOfRangeException(nameof(dioSlot), "ID 0 보드만 검사할 수 있습니다.");
 
     private static ushort WriteAddress(byte dioSlot) =>
-        dioSlot == 2 ? (ushort)202 : (ushort)201;
+        dioSlot == TargetDioId ? (ushort)201 : throw new ArgumentOutOfRangeException(nameof(dioSlot), "ID 0 보드만 검사할 수 있습니다.");
 
     private static string BuildChannelDetail(bool pass, ushort expected, ushort actual, bool returned)
     {

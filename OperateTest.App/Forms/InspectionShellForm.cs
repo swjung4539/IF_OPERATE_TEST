@@ -59,7 +59,7 @@ public abstract class InspectionShellForm : Form
         AddMenu(menuHost, "result", "최종 판정", AppIcon.Check);
         AddMenu(menuHost, "fault-switch", isDio ? "ID DIP 스위치 검사" : "FAULT 및 스위치 검사", AppIcon.Settings);
         AddMenu(menuHost, "test", isDio ? "DIO 입출력 검사" : "통신 검사", AppIcon.Check);
-        if (showSettings) AddMenu(menuHost, "settings", "통신 설정", AppIcon.Network);
+        if (showSettings) AddMenu(menuHost, "settings", isDio ? "UART4 통신 연결" : "통신 설정", AppIcon.Network);
         AddMenu(menuHost, "manual", "육안 및 전원 검사", AppIcon.Clipboard);
         AddMenu(menuHost, "dashboard", "대시보드", AppIcon.Home);
         sidebar.Controls.Add(menuHost);
@@ -94,17 +94,17 @@ public abstract class InspectionShellForm : Form
         bottomActions.Controls.Add(back);
         sidebar.Controls.Add(bottomActions);
 
-        var pageHeader = new BufferedPanel { Dock = DockStyle.Top, Height = 206, BackColor = Colors.AppBackground };
-        _pageTitle.Location = new Point(40, 16);
-        _pageTitle.Size = new Size(900, 40);
+        var pageHeader = new BufferedPanel { Dock = DockStyle.Top, Height = 232, BackColor = Colors.AppBackground };
+        _pageTitle.Location = new Point(30, 8);
+        _pageTitle.Size = new Size(900, 64);
         _pageTitle.Font = new Font("맑은 고딕", 22f, FontStyle.Bold);
         _pageTitle.ForeColor = Colors.TextPrimary;
-        _pageSubtitle.Location = new Point(42, 57);
-        _pageSubtitle.Size = new Size(1000, 25);
+        _pageSubtitle.Location = new Point(30, 72);
+        _pageSubtitle.Size = new Size(1000, 30);
         _pageSubtitle.Font = Fonts.Body;
         _pageSubtitle.ForeColor = Colors.TextSecondary;
-        _workflow.SetBounds(40, 88, 1110, 78);
-        _nextAction.SetBounds(40, 174, 1110, 22);
+        _workflow.SetBounds(30, 108, 1192, 78);
+        _nextAction.SetBounds(30, 194, 1192, 30);
         _nextAction.Font = Fonts.Caption;
         _nextAction.ForeColor = Colors.Primary;
         _nextAction.AutoEllipsis = true;
@@ -127,7 +127,13 @@ public abstract class InspectionShellForm : Form
 
     private void LayoutPageHeader(Control pageHeader)
     {
-        var contentWidth = Math.Max(_workflow.MinimumSize.Width, pageHeader.ClientSize.Width - 80);
+        var contentWidth = Math.Max(_workflow.MinimumSize.Width,
+            Math.Min(1184, pageHeader.ClientSize.Width - 80));
+        var left = Math.Max(40, (pageHeader.ClientSize.Width - contentWidth) / 2);
+        _pageTitle.Left = left;
+        _pageSubtitle.Left = left;
+        _workflow.Left = left;
+        _nextAction.Left = left;
         _pageTitle.Width = contentWidth;
         _pageSubtitle.Width = contentWidth;
         _workflow.Width = contentWidth;
@@ -172,14 +178,39 @@ public abstract class InspectionShellForm : Form
         _pageTitle.Text = title;
         _pageSubtitle.Text = subtitle;
         page.Visible = false;
-        page.Dock = DockStyle.Fill;
+        Control displayedPage = page;
+        if (page is Panel fixedPage && fixedPage.AutoScrollMinSize.Width == 1252)
+        {
+            var host = new BufferedPanel
+            {
+                Dock = DockStyle.Fill,
+                AutoScroll = true,
+                AutoScrollMinSize = new Size(1252, 710),
+                BackColor = Colors.AppBackground
+            };
+            fixedPage.Dock = DockStyle.None;
+            fixedPage.AutoScroll = false;
+            fixedPage.AutoScrollMinSize = Size.Empty;
+            fixedPage.Size = new Size(1252, 710);
+            host.Controls.Add(fixedPage);
+            host.Resize += (_, _) =>
+            {
+                fixedPage.SetBounds(Math.Max(0, (host.ClientSize.Width - 1252) / 2), 0,
+                    1252, Math.Max(710, host.ClientSize.Height));
+            };
+            displayedPage = host;
+        }
+        else
+        {
+            page.Dock = DockStyle.Fill;
+        }
         _content.SuspendLayout();
         var previousPages = _content.Controls.Cast<Control>().ToArray();
         _content.Controls.Clear();
-        _content.Controls.Add(page);
+        _content.Controls.Add(displayedPage);
         _content.ResumeLayout(true);
         page.Visible = true;
-        page.BringToFront();
+        displayedPage.BringToFront();
         _content.Invalidate(true);
         foreach (var previous in previousPages) previous.Dispose();
         RefreshWorkflow();

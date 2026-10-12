@@ -165,7 +165,7 @@ public sealed class StLinkDioIdSwitchReader : IDioIdSwitchReader
         var gpioC = await _memory.ReadWordAsync(GpioCIdrAddress, ct).ConfigureAwait(false);
         var set1 = (gpioA & (1U << 0)) != 0;
         var set2 = (gpioC & (1U << 15)) != 0;
-        var id = 1 + (set1 ? 1 : 0) + (set2 ? 2 : 0);
+        var id = (set1 ? 1 : 0) + (set2 ? 2 : 0);
         return new DioIdSwitchState(set1, set2, id, Path.GetFileName(CliPath) ?? "STM32_Programmer_CLI");
     }
 }

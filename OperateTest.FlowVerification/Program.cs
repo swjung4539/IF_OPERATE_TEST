@@ -7,6 +7,8 @@ using OperateTest.App.Services;
 using OperateTest.App.Services.StLink;
 using OperateTest.App.Services.Gst;
 using OperateTest.App.Services.Modbus;
+using OperateTest.App.Services.DioInspection;
+using OperateTest.App.Services.ModbusSlave;
 using OperateTest.App.Forms;
 using TestEmulator.Controls;
 using TestEmulator.Theme;
@@ -279,6 +281,15 @@ internal sealed class FlowVerifier
                 var forms = new Form[] { home, setup, completion, next, comm, dio, rotary, dip, fault };
                 foreach (var form in forms)
                     Equal(AutoScaleMode.Dpi, form.AutoScaleMode, $"{form.GetType().Name} DPI 자동 스케일");
+                var advanceDip = typeof(DioIdSwitchInspectionForm).GetMethod("AdvanceIfStable",
+                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
+                foreach (var id in new[] { 2, 0, 3, 1 })
+                {
+                    advanceDip.Invoke(dip, [id]);
+                    advanceDip.Invoke(dip, [id]);
+                }
+                True(session.Results.DipSwitchPassed == true,
+                    "DIP 스위치 ID 0~3을 변경하는 순서와 관계없이 모두 확인");
                 var commWorkflow = Descendants<WorkflowProgressBar>(comm).Single();
                 var dioWorkflow = Descendants<WorkflowProgressBar>(dio).Single();
                 Equal(5, commWorkflow.Steps.Count, "COMM 공통 5단계 진행 표시");
@@ -294,6 +305,25 @@ internal sealed class FlowVerifier
                     "COMM 진행 표시가 화면 폭을 넘지 않음");
                 True(dioWorkflow.Right <= dioWorkflow.Parent!.ClientSize.Width - 40,
                     "DIO 진행 표시가 화면 폭을 넘지 않음");
+
+                typeof(CommInspectionForm).GetMethod("Navigate",
+                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!
+                    .Invoke(comm, ["dashboard"]);
+                comm.ClientSize = new Size(1900, 1000);
+                comm.PerformLayout();
+                var dashboardHost = Descendants<Panel>(comm)
+                    .Single(panel => panel.AutoScrollMinSize.Width == 1252);
+                dashboardHost.PerformLayout();
+                var dashboardCanvas = dashboardHost.Controls.Cast<Control>().Single();
+                True(dashboardHost.ClientSize.Width > dashboardCanvas.Width,
+                    "전체 화면에서 COMM 대시보드 중앙 배치 공간 확보");
+                Equal((dashboardHost.ClientSize.Width - dashboardCanvas.Width) / 2,
+                    dashboardCanvas.Left, "전체 화면에서 COMM 대시보드 가로 중앙 배치");
+                var dashboardTitle = Descendants<Label>(comm)
+                    .Single(label => label.Text == "COMM 보드 검사 대시보드");
+                True(TextRenderer.MeasureText(dashboardTitle.Text, dashboardTitle.Font).Height
+                     <= dashboardTitle.ClientSize.Height,
+                    "COMM 대시보드 제목 글자 높이 확보");
 
                 using (var buttonHost = new Panel { Size = new Size(180, 70), BackColor = Color.White })
                 using (var dangerButton = new AppButton
@@ -328,6 +358,30 @@ internal sealed class FlowVerifier
                 True(completion.AutoScroll && completion.AutoScrollMinSize.Height >= 520, "검사 완료 창 축소 시 스크롤 접근");
                 True(next.AutoScroll && next.AutoScrollMinSize.Width >= 650, "다음 보드 창 축소 시 스크롤 접근");
                 True(rotary.AutoScroll && dip.AutoScroll && fault.AutoScroll, "전용 검사창 축소 시 스크롤 접근");
+                foreach (var inspectionForm in new Form[] { comm, dio, rotary, dip, fault })
+                {
+                    inspectionForm.CreateControl();
+                    foreach (var label in Descendants<Label>(inspectionForm)
+                                 .Where(label => label.Text.Contains('\n') && !label.AutoEllipsis))
+                    {
+                        var measured = TextRenderer.MeasureText(label.Text, label.Font,
+                            new Size(Math.Max(1, label.ClientSize.Width), int.MaxValue),
+                            TextFormatFlags.WordBreak | TextFormatFlags.NoPadding);
+                        True(measured.Height <= label.ClientSize.Height,
+                            $"{inspectionForm.GetType().Name} 여러 줄 안내 높이: {label.Text.Split('\n')[0]}");
+                    }
+                }
+                True(Descendants<SideMenuButton>(dio).Any(button => button.Text == "UART4 통신 연결"),
+                    "DIO 육안 검사 다음 UART4 통신 연결 메뉴 표시");
+                var faultStage = Descendants<AppCard>(fault)
+                    .Single(card => card.CardLabel == "현재 단계");
+                faultStage.CardValue = "OPEN 확인 대기";
+                var stageValue = faultStage.Controls.OfType<Label>()
+                    .Single(label => label.Text == "OPEN 확인 대기");
+                var stageTextSize = TextRenderer.MeasureText(stageValue.Text, stageValue.Font);
+                True(stageTextSize.Width <= stageValue.ClientSize.Width &&
+                     stageTextSize.Height <= stageValue.ClientSize.Height,
+                    "FAULT 단계 카드 글자 전체 표시");
 
                 foreach (var inspectionForm in new Form[] { rotary, dip })
                 {
@@ -372,7 +426,35 @@ internal sealed class FlowVerifier
             Equal(StopBits.One, item.Item1.Options.StopBits, $"{item.Item2} Stop bit 고정");
         }
         Equal(4, ChannelDefinitions.CommPortChannels.Count, "COMM 물리 COM 포트 4개 고정");
-        Equal(5, ChannelDefinitions.CommChannels.Count, "COMM 검사 경로 5개 고정");
+        Equal(4, ChannelDefinitions.CommChannels.Count, "COMM 검사 경로 4개 고정");
+        True(!ChannelDefinitions.CommChannels.Any(channel => channel.Key == ChannelDefinitions.DioSlave.Key),
+            "DIO 내부 통신을 COMM 검사에서 제외");
+        var dioReadAddress = typeof(DioLoopbackService).GetMethod("ReadAddress",
+            System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic)!;
+        var dioWriteAddress = typeof(DioLoopbackService).GetMethod("WriteAddress",
+            System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic)!;
+        Equal((ushort)1, (ushort)dioReadAddress.Invoke(null, [(byte)0])!, "ID 0 DIO 입력 맵 HR1 사용");
+        Equal((ushort)201, (ushort)dioWriteAddress.Invoke(null, [(byte)0])!, "ID 0 DIO 출력 맵 HR201 사용");
+        var dioMaster = new DioIdZeroMasterStub();
+        var dioService = new DioLoopbackService(new DioIdZeroProtocolStub(dioMaster));
+        Equal((byte)0, dioService.FindSlaveIdAsync().GetAwaiter().GetResult(),
+            "DIO 한 대 연결 시 HR163 조건 없이 ID 0 확인");
+        dioService.SetAllOutputsOffAsync(0).GetAwaiter().GetResult();
+        True(dioMaster.LastWrite.HasValue, "ID 0 출력 명령 전송");
+        Equal((byte)5, dioMaster.LastWrite!.Value.Group, "ID 0 출력 그룹 사용");
+        Equal((ushort)201, dioMaster.LastWrite.Value.Address, "ID 0 출력 주소 사용");
+        var delayedLoopback = dioService.RunAsync().GetAwaiter().GetResult();
+        True(delayedLoopback.Passed, "DO 변경 뒤 이전 DI가 세 차례 읽혀도 16채널 루프백 PASS");
+        Equal(16, delayedLoopback.Channels.Count, "지연된 DI의 전 채널 검사 완료");
+        var droppedMaster = new DioIdZeroMasterStub { DropFirstOnWrite = true };
+        var retriedLoopback = new DioLoopbackService(new DioIdZeroProtocolStub(droppedMaster))
+            .RunAsync().GetAwaiter().GetResult();
+        True(retriedLoopback.Passed, "MAIN ACK 후 첫 DIO 전달이 누락되어도 재전송으로 루프백 완료");
+        var silentMaster = new DioIdZeroMasterStub { NeverApplyOutput = true };
+        var silentLoopback = new DioLoopbackService(new DioIdZeroProtocolStub(silentMaster))
+            .RunAsync().GetAwaiter().GetResult();
+        True(!silentLoopback.Passed && silentLoopback.Channels.Count == 1,
+            "MAIN ACK만 있고 LED·DI 출력 반영이 없으면 첫 채널에서 중단");
     }
 
     private void VerifyWorkbookProfiles()
@@ -674,6 +756,68 @@ internal sealed class FlowVerifier
     {
         public DiskFullTestException() => HResult = unchecked((int)0x80070070);
     }
+}
+
+internal sealed class DioIdZeroProtocolStub(IModbusMasterService master) : IInspectionProtocolServices
+{
+    public IModbusMasterService GetModbusMaster(string channelKey) => master;
+    public IModbusSlaveEmulatorService CreateModbusSlaveEmulator(string channelKey,
+        ModbusSlaveRegisterStore primaryStore, IEnumerable<ModbusSlaveRegisterStore> busStores) =>
+        throw new NotSupportedException();
+    public IGstPeerService GetGstPeer(string channelKey) => throw new NotSupportedException();
+}
+
+internal sealed class DioIdZeroMasterStub : IModbusMasterService
+{
+    private ushort _visibleInput;
+    private ushort _pendingInput;
+    private int _staleReads;
+    private bool _droppedOnWrite;
+    public bool DropFirstOnWrite { get; init; }
+    public bool NeverApplyOutput { get; init; }
+    public (byte Group, ushort Address)? LastWrite { get; private set; }
+    public IReadOnlyList<ModbusTransaction> Transactions => [];
+    public event EventHandler<ModbusTransaction>? TransactionRecorded { add { } remove { } }
+    public void ClearTransactions() { }
+
+    public Task<ModbusReadResult> ReadHoldingRegistersAsync(byte slaveId, ushort startAddress,
+        ushort quantity, int timeoutMs, CancellationToken ct = default)
+    {
+        if (slaveId != 1 || startAddress != 1 || quantity != 1)
+            throw new InvalidOperationException($"ID 0 경로 이외의 읽기 요청: {slaveId}/{startAddress}");
+        if (_staleReads > 0) _staleReads--;
+        else _visibleInput = _pendingInput;
+        return Task.FromResult(new ModbusReadResult(slaveId, 3, startAddress, [_visibleInput], []));
+    }
+
+    public Task<ModbusWriteResult> WriteMultipleRegistersAsync(byte slaveId, ushort startAddress,
+        ushort[] values, int timeoutMs, CancellationToken ct = default)
+    {
+        LastWrite = (slaveId, startAddress);
+        if (NeverApplyOutput)
+            return Task.FromResult(new ModbusWriteResult(slaveId, 0x10, startAddress, (ushort)values.Length, []));
+        if (DropFirstOnWrite && !_droppedOnWrite && values[0] != 0)
+        {
+            _droppedOnWrite = true;
+            return Task.FromResult(new ModbusWriteResult(slaveId, 0x10, startAddress, (ushort)values.Length, []));
+        }
+        _pendingInput = values[0];
+        _staleReads = 3;
+        return Task.FromResult(new ModbusWriteResult(slaveId, 0x10, startAddress, (ushort)values.Length, []));
+    }
+
+    public Task<ModbusBitReadResult> ReadCoilsAsync(byte slaveId, ushort startAddress, ushort quantity,
+        int timeoutMs, CancellationToken ct = default) => throw new NotSupportedException();
+    public Task<ModbusBitReadResult> ReadDiscreteInputsAsync(byte slaveId, ushort startAddress, ushort quantity,
+        int timeoutMs, CancellationToken ct = default) => throw new NotSupportedException();
+    public Task<ModbusReadResult> ReadInputRegistersAsync(byte slaveId, ushort startAddress, ushort quantity,
+        int timeoutMs, CancellationToken ct = default) => throw new NotSupportedException();
+    public Task<ModbusWriteResult> WriteSingleCoilAsync(byte slaveId, ushort address, bool value,
+        int timeoutMs, CancellationToken ct = default) => throw new NotSupportedException();
+    public Task<ModbusWriteResult> WriteSingleRegisterAsync(byte slaveId, ushort address, ushort value,
+        int timeoutMs, CancellationToken ct = default) => throw new NotSupportedException();
+    public Task<ModbusWriteResult> WriteMultipleCoilsAsync(byte slaveId, ushort startAddress, bool[] values,
+        int timeoutMs, CancellationToken ct = default) => throw new NotSupportedException();
 }
 
 internal static class WorkbookFixture

@@ -4,7 +4,7 @@ public static class SafetyOperationService
 {
     public static readonly TimeSpan SerialDisconnectTimeout = TimeSpan.FromSeconds(4);
     public static readonly TimeSpan DioOutputOffTimeout = TimeSpan.FromSeconds(6);
-    public static readonly TimeSpan FaultRestoreTimeout = TimeSpan.FromSeconds(12);
+    public static readonly TimeSpan FaultRestoreTimeout = TimeSpan.FromSeconds(26);
 
     public static async Task RunWithTimeoutAsync(
         string operationName,

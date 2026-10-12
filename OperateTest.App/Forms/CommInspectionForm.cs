@@ -88,36 +88,34 @@ public sealed class CommInspectionForm : InspectionShellForm
         var uart4Connected = _connections.Get(ChannelDefinitions.Uart4.Key).IsConnected;
         var cardWidth = 286;
         page.Controls.Add(SummaryCard(30, 12, cardWidth, "COMM 포트", $"{connected} / 4 연결", AppIcon.Keyboard, connected == 4 ? Colors.Success : Colors.TextMuted));
-        page.Controls.Add(SummaryCard(332, 12, cardWidth, "통신 검사 경로", "5개", AppIcon.Network, Colors.Primary));
+        page.Controls.Add(SummaryCard(332, 12, cardWidth, "통신 검사 경로", "4개", AppIcon.Network, Colors.Primary));
         page.Controls.Add(SummaryCard(634, 12, cardWidth, "스위치 검사", "로터리 0~F", AppIcon.Settings, Colors.Primary));
         page.Controls.Add(SummaryCard(936, 12, cardWidth, "FAULT 검사", "TB18 접점", AppIcon.Shield, Colors.Danger));
 
         var topology = new AppPanel { Location = new Point(30, 136), Size = new Size(790, 280) };
         topology.Controls.Add(Title("시스템 통신 구성 및 상태", 24, 20, 420));
         topology.Controls.Add(Caption("COMM MAIN과 각 통신 경로의 검사 구성을 표시합니다.", 24, 50, 600));
-        var names = new[] { ("PC", AppIcon.Monitor), ("MAIN", AppIcon.Cpu), ("DIO", AppIcon.Server), ("Heating", AppIcon.Thermometer), ("Gas", AppIcon.Flame), ("Backup", AppIcon.Shield) };
+        var names = new[] { ("PC", AppIcon.Monitor), ("MAIN", AppIcon.Cpu), ("Heating", AppIcon.Thermometer), ("Gas", AppIcon.Flame), ("Backup", AppIcon.Shield) };
         for (var i = 0; i < names.Length; i++)
         {
-            var x = 24 + i * 123;
+            var x = 24 + i * 146;
             topology.Controls.Add(new CircleIcon { Icon = names[i].Item2, Location = new Point(x + 21, 105), Size = new Size(54, 54), Accent = Colors.Primary });
             topology.Controls.Add(new Label { Location = new Point(x, 169), Size = new Size(96, 23), Font = Fonts.ButtonText, ForeColor = Colors.TextPrimary, TextAlign = ContentAlignment.MiddleCenter, Text = names[i].Item1 });
             var channelConnected = i switch
             {
                 0 => true,
                 1 => uart4Connected,
-                2 => false,
-                3 => _connections.Get(ChannelDefinitions.Heating.Key).IsConnected,
-                4 => _connections.Get(ChannelDefinitions.Gas.Key).IsConnected,
-                5 => _connections.Get(ChannelDefinitions.Backup.Key).IsConnected,
+                2 => _connections.Get(ChannelDefinitions.Heating.Key).IsConnected,
+                3 => _connections.Get(ChannelDefinitions.Gas.Key).IsConnected,
+                4 => _connections.Get(ChannelDefinitions.Backup.Key).IsConnected,
                 _ => false
             };
             var responseKey = i switch
             {
                 1 => ChannelDefinitions.Uart4.Key,
-                2 => ChannelDefinitions.DioSlave.Key,
-                3 => ChannelDefinitions.Heating.Key,
-                4 => ChannelDefinitions.Gas.Key,
-                5 => ChannelDefinitions.Backup.Key,
+                2 => ChannelDefinitions.Heating.Key,
+                3 => ChannelDefinitions.Gas.Key,
+                4 => ChannelDefinitions.Backup.Key,
                 _ => string.Empty
             };
             var response = string.IsNullOrEmpty(responseKey)
@@ -125,10 +123,10 @@ public sealed class CommInspectionForm : InspectionShellForm
                 : DeviceResponseTracker.Get(_session.Results, responseKey);
             var nodeText = i == 0
                 ? "검사 프로그램"
-                : !channelConnected && i != 2
+                : !channelConnected
                     ? "포트 미연결"
                     : DeviceResponseTracker.StatusText(response);
-            topology.Controls.Add(new Label { Location = new Point(x, 201), Size = new Size(96, 38), Font = Fonts.Caption, ForeColor = ResponseColor(response.Status, channelConnected || i == 2), TextAlign = ContentAlignment.TopCenter, Text = nodeText, AutoEllipsis = true });
+            topology.Controls.Add(new Label { Location = new Point(x, 201), Size = new Size(96, 38), Font = Fonts.Caption, ForeColor = ResponseColor(response.Status, channelConnected), TextAlign = ContentAlignment.TopCenter, Text = nodeText, AutoEllipsis = true });
             if (i < names.Length - 1) topology.Controls.Add(new Panel { Location = new Point(x + 87, 131), Size = new Size(58, 1), BackColor = Colors.BorderStrong });
         }
         page.Controls.Add(topology);
@@ -138,7 +136,8 @@ public sealed class CommInspectionForm : InspectionShellForm
         AddReadyRow(recent, 72, "COMM 포트", connected == 4 ? "4/4 연결됨" : $"{connected}/4 연결", connected == 4);
         AddReadyRow(recent, 122, "ST-LINK", _rotaryReader.CliPath is null ? "CLI 없음" : "CLI 확인", _rotaryReader.CliPath is not null);
         AddReadyRow(recent, 172, "로터리 검사", "전용 창에서 실행", true);
-        AddReadyRow(recent, 222, "FAULT 접점", "전용 창에서 실행", true);
+        var heatingReady = _connections.Get(ChannelDefinitions.Heating.Key).IsConnected;
+        AddReadyRow(recent, 222, "FAULT 접점", heatingReady ? "Heating 준비됨" : "Heating 연결 필요", heatingReady);
         page.Controls.Add(recent);
 
         var quick = new AppPanel { Location = new Point(30, 438), Size = new Size(1192, 186) };
@@ -178,15 +177,14 @@ public sealed class CommInspectionForm : InspectionShellForm
         var y = 124;
         foreach (var definition in ChannelDefinitions.CommPortChannels)
         {
-            var row = new ConnectionRow(_connections, definition) { Location = new Point(24, y), Size = new Size(1138, 66) };
+            var row = new ConnectionRow(_connections, _protocols, definition) { Location = new Point(24, y), Size = new Size(1138, 66) };
             row.ConnectionStateChanged += (_, snapshot) =>
             {
-                if (snapshot.State != SerialConnectionState.Connected)
-                {
-                    DeviceResponseTracker.Update(_session.Results, definition.Key, DeviceResponseStatus.NotChecked, "포트 연결 후 응답 확인 필요");
-                    if (definition.Key == ChannelDefinitions.Uart4.Key)
-                        DeviceResponseTracker.Update(_session.Results, ChannelDefinitions.DioSlave.Key, DeviceResponseStatus.NotChecked, "MAIN UART4 연결 후 상태 맵 확인 필요");
-                }
+                DeviceResponseTracker.Update(_session.Results, definition.Key,
+                    snapshot.State == SerialConnectionState.Connected
+                        ? DeviceResponseStatus.Responding : DeviceResponseStatus.NotChecked,
+                    snapshot.State == SerialConnectionState.Connected
+                        ? "포트 연결 시 장치 응답 확인 완료" : "포트 연결 후 응답 확인 필요");
                 UpdateTopStatus();
                 RefreshWorkflow();
             };
@@ -199,7 +197,7 @@ public sealed class CommInspectionForm : InspectionShellForm
         var guide = new AppPanel { Location = new Point(30, 532), Size = new Size(1192, 126) };
         guide.Controls.Add(Title("연결 기준", 24, 18, 250));
         guide.Controls.Add(Caption("기본값: MAIN 115200 8-N-1 · Heating 19200 8-N-1 · Gas 9600 8-E-1 · Backup 115200 8-N-1", 24, 54, 1080));
-        guide.Controls.Add(Caption("DIO는 MAIN 내부 상태로 판정하고, Heating·Gas·Backup은 각 포트에서 실제 요청·응답을 확인합니다.", 24, 78, 1000));
+        guide.Controls.Add(Caption("포트 연결은 실제 장치 요청·응답이 확인된 경우에만 성공합니다. DIO는 COMM 통신 검사에서 제외합니다.", 24, 78, 1080));
         page.Controls.Add(guide);
         return page;
     }
@@ -378,12 +376,12 @@ public sealed class CommInspectionForm : InspectionShellForm
                 {
                     runStatus.Text = "검사 완료 · 정상 통신 유지 준비 중";
                     await _keepAliveHost.PrepareNormalAsync(_testCts.Token);
-                    runStatus.Text = $"검사 완료 · 총 {round}회 반복 · 정상 통신 유지 중";
+                    runStatus.Text = $"검사 완료 · PASS · {round}회 · 정상 통신 유지 중";
                     runStatus.ForeColor = Colors.Success;
                 }
                 else
                 {
-                    runStatus.Text = $"검사 완료 · 총 {round}회 반복";
+                    runStatus.Text = $"검사 완료 · {(runFailed == 0 && errors == 0 ? "PASS" : "FAIL")} · {round}회";
                     runStatus.ForeColor = runFailed == 0 && errors == 0 ? Colors.Success : Colors.Danger;
                 }
                 if (selected.Length == ChannelDefinitions.CommChannels.Count)
@@ -410,7 +408,7 @@ public sealed class CommInspectionForm : InspectionShellForm
                     verdicts[key].Status = AppStatus.Stopped;
                     DeviceResponseTracker.Update(_session.Results, key, DeviceResponseStatus.NotChecked, "검사 중단으로 응답 확인 미완료");
                 }
-                runStatus.Text = "사용자에 의해 중지됨";
+                runStatus.Text = "검사 중단 · 판정 없음";
                 runStatus.ForeColor = Colors.TextMuted;
             }
             catch (Exception ex)
@@ -423,7 +421,7 @@ public sealed class CommInspectionForm : InspectionShellForm
                     verdicts[key].Status = AppStatus.ErrorState;
                     DeviceResponseTracker.Update(_session.Results, key, DeviceResponseTracker.ClassifyFailure(ex.Message), ex.Message);
                 }
-                errors++; total++; UpdateMetrics(); runStatus.Text = $"검사 오류: {ex.Message}"; runStatus.ForeColor = Colors.Warning;
+                errors++; total++; UpdateMetrics(); runStatus.Text = $"검사 종료 · 오류: {ex.Message}"; runStatus.ForeColor = Colors.Warning;
             }
             finally
             {
@@ -484,9 +482,9 @@ public sealed class CommInspectionForm : InspectionShellForm
         card.Controls.Add(Title("검사 항목", 24, 20, 300));
         card.Controls.Add(Caption("열기 버튼을 누르면 해당 항목의 전용 검사창이 표시됩니다.", 24, 51, 650));
         var stLinkReady = _rotaryReader.CliPath is not null;
-        var portsReady = GetMissingRequiredConnections(ChannelDefinitions.CommPortChannels.Select(definition => definition.Key)).Length == 0;
+        var heatingReady = _connections.Get(ChannelDefinitions.Heating.Key).IsConnected;
         AddToolRow(card, 90, AppIcon.Settings, "로터리 스위치 검사", "ST-LINK로 PC0~PC3을 읽어 0~F 위치를 실시간 표시합니다.", stLinkReady ? "ST-LINK CLI 확인" : "STM32 Programmer 설치 필요", stLinkReady, () => { using var form = new RotaryInspectionForm(_rotaryReader, _session); form.ShowDialog(this); RefreshWorkflow(); });
-        AddToolRow(card, 190, AppIcon.Shield, "FAULT 접점 검사", "Heating ID20 응답 차단·복구 후 TB18 개방/도통을 검사자가 확인합니다.", portsReady ? "COMM 포트 준비됨" : "전체 COMM 포트 연결 필요", portsReady, OpenFaultInspection);
+        AddToolRow(card, 190, AppIcon.Shield, "FAULT 접점 검사", "Heating ID20 응답 차단·복구 후 TB18 개방/도통을 검사자가 확인합니다.", heatingReady ? "Heating 포트 준비됨" : "Heating 포트 연결 필요", heatingReady, OpenFaultInspection);
         page.Controls.Add(card);
         return page;
     }
@@ -494,14 +492,10 @@ public sealed class CommInspectionForm : InspectionShellForm
 
     private void OpenFaultInspection()
     {
-        var missingConnections = GetMissingRequiredConnections(
-            ChannelDefinitions.CommPortChannels.Select(definition => definition.Key));
-        if (missingConnections.Length > 0)
+        if (!_connections.Get(ChannelDefinitions.Heating.Key).IsConnected)
         {
-            var missingText = string.Join(Environment.NewLine,
-                missingConnections.Select(definition => $"• {definition.DisplayName}"));
             MessageBox.Show(this,
-                $"FAULT 검사에 필요한 통신 포트가 연결되지 않았습니다.{Environment.NewLine}{Environment.NewLine}{missingText}{Environment.NewLine}{Environment.NewLine}[통신 설정]에서 먼저 연결하세요.",
+                "FAULT OPEN/CLOSE 유도에 필요한 Heating Jacket 포트를 [통신 설정]에서 연결하세요.",
                 "통신 연결 필요", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
@@ -512,11 +506,7 @@ public sealed class CommInspectionForm : InspectionShellForm
 
     private SerialChannelDefinition[] GetMissingRequiredConnections(IEnumerable<string> selectedKeys)
     {
-        var connectionKeys = selectedKeys
-            .Select(key => key == ChannelDefinitions.DioSlave.Key
-                ? ChannelDefinitions.Uart4.Key
-                : key)
-            .Distinct(StringComparer.OrdinalIgnoreCase);
+        var connectionKeys = selectedKeys.Distinct(StringComparer.OrdinalIgnoreCase);
 
         return connectionKeys
             .Select(key => ChannelDefinitions.CommPortChannels.First(definition => definition.Key == key))
@@ -557,16 +547,15 @@ public sealed class CommInspectionForm : InspectionShellForm
         var connected = ChannelDefinitions.CommPortChannels.Count(x => _connections.Get(x.Key).IsConnected);
         var responding = ChannelDefinitions.CommChannels.Count(channel =>
         {
-            var portKey = channel.Key == ChannelDefinitions.DioSlave.Key ? ChannelDefinitions.Uart4.Key : channel.Key;
-            return _connections.Get(portKey).IsConnected
+            return _connections.Get(channel.Key).IsConnected
                    && DeviceResponseTracker.Get(_session.Results, channel.Key).Status == DeviceResponseStatus.Responding;
         });
         var text = connected < 4
-            ? $"포트 {connected}/4 연결 · 장치 응답 {responding}/5"
-            : responding == 5
-                ? "포트 4/4 연결 · 장치 응답 5/5 정상"
-                : $"포트 4/4 연결 · 장치 응답 {responding}/5 확인";
-        SetTopStatus(text, responding == 5 ? Colors.Success : connected == 4 ? Colors.Primary : Colors.TextMuted);
+            ? $"포트 {connected}/4 연결 · 장치 응답 {responding}/4"
+            : responding == 4
+                ? "포트 4/4 연결 · 장치 응답 4/4 정상"
+                : $"포트 4/4 연결 · 장치 응답 {responding}/4 확인";
+        SetTopStatus(text, responding == 4 ? Colors.Success : connected == 4 ? Colors.Primary : Colors.TextMuted);
     }
 
     private static Color ResponseColor(DeviceResponseStatus status, bool portAvailable) => !portAvailable

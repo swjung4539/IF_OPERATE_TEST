@@ -72,15 +72,9 @@ public sealed class CommInspectionService : ICommInspectionService
         IProgress<CommPathResult>? progress,
         CancellationToken ct)
     {
-        var connectionKey = definition.Key == ChannelDefinitions.DioSlave.Key
-            ? ChannelDefinitions.Uart4.Key
-            : definition.Key;
-
-        if (!_connections.Get(connectionKey).IsConnected)
+        if (_connections.GetTransport(definition.Key).State != Serial.SerialConnectionState.Connected)
             return Report(definition, InspectionVerdict.Fail,
-                definition.Key == ChannelDefinitions.DioSlave.Key
-                    ? "MAIN UART4 COM 포트가 연결되지 않았습니다."
-                    : "해당 COM 포트가 연결되지 않았습니다.",
+                "해당 COM 포트가 연결되지 않았습니다.",
                 progress);
 
         try
@@ -88,7 +82,6 @@ public sealed class CommInspectionService : ICommInspectionService
             return definition.Key switch
             {
                 "comm-uart4" => await RunUart4Async(definition, progress, ct).ConfigureAwait(false),
-                "comm-lpuart1" => await RunDioStatusAsync(definition, progress, ct).ConfigureAwait(false),
                 "comm-usart2" => await RunModbusSlaveAsync(
                     definition, ModbusSlaveBus.Usart2Heating, [20, 21, 22],
                     progress, ct).ConfigureAwait(false),
@@ -115,20 +108,6 @@ public sealed class CommInspectionService : ICommInspectionService
         var read = await ReadMainStatusAsync(ct).ConfigureAwait(false);
         return Report(definition, InspectionVerdict.Pass,
             $"MAIN UART4 정상 응답 · HR163=0x{read.Status:X4} · PLC HB {read.PlcHeartbeat}", progress);
-    }
-
-    private async Task<CommPathResult> RunDioStatusAsync(
-        SerialChannelDefinition definition,
-        IProgress<CommPathResult>? progress,
-        CancellationToken ct)
-    {
-        var read = await ReadMainStatusAsync(ct).ConfigureAwait(false);
-        var online = (read.Status & 0x0001) != 0;
-        return Report(definition,
-            online ? InspectionVerdict.Pass : InspectionVerdict.Fail,
-            online ? "DIO 내부 통신 정상 · HR163 bit0=1"
-                   : "DIO 내부 통신 이상 · HR163 bit0=0",
-            progress);
     }
 
     private async Task<(ushort Status, ushort PlcHeartbeat)> ReadMainStatusAsync(CancellationToken ct)

@@ -120,7 +120,9 @@ public class AppButton : Control
         var state = EffectiveState();
         var (fill, border, text) = Palette(state);
 
-        var rect = new Rectangle(2, 2, Math.Max(1, Width - 5), Math.Max(1, Height - 5));
+        // Keep a single anti-aliasing margin. A larger bottom margin made filled
+        // buttons look clipped, especially on high-DPI displays.
+        var rect = new Rectangle(1, 1, Math.Max(1, Width - 3), Math.Max(1, Height - 3));
         using var path = GraphicsHelper.RoundedRect(rect, Metrics.ButtonRadius);
 
         if (fill != Color.Transparent)
@@ -137,12 +139,13 @@ public class AppButton : Control
 
         if (state == VisualState.Focused)
         {
-            // Keep the focus ring inside the client area so its edges are not clipped.
-            var focusRect = Rectangle.Inflate(rect, -3, -3);
+            // A solid inner ring is easier to read than the dotted GDI focus cue and
+            // does not look like a broken border on danger buttons.
+            var focusRect = Rectangle.Inflate(rect, -4, -4);
             var focusColor = Variant is AppButtonVariant.Primary or AppButtonVariant.Warning or AppButtonVariant.Danger
                 ? Color.FromArgb(210, Color.White)
                 : Colors.Primary;
-            using var fp = new Pen(focusColor, 1.5f) { DashStyle = DashStyle.Dot };
+            using var fp = new Pen(focusColor, 1.5f) { DashStyle = DashStyle.Solid };
             using var focusPath = GraphicsHelper.RoundedRect(focusRect, Metrics.ButtonRadius - 1);
             g.DrawPath(fp, focusPath);
         }

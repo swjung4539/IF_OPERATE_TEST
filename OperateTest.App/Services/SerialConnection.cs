@@ -59,15 +59,18 @@ public sealed class SerialConnection : IDisposable
         }
         catch (Exception ex)
         {
+            Exception? cleanupError = null;
             try { await _transport.DisconnectAsync(CancellationToken.None).ConfigureAwait(false); }
-            catch { }
+            catch (Exception disconnectException) { cleanupError = disconnectException; }
 
             lock (_sync)
             {
                 State = UiConnectionState.Error;
-                Message = FriendlyMessage(ex);
+                Message = cleanupError is null ? FriendlyMessage(ex) : "연결 실패 · 포트 해제도 확인 필요";
             }
             RaiseStateChanged();
+            if (cleanupError is not null)
+                throw new AggregateException("포트 연결 실패 후 통신 포트를 정상 해제하지 못했습니다.", ex, cleanupError);
             throw;
         }
 

@@ -1,6 +1,7 @@
 using OperateTest.App.Models;
 using OperateTest.App.Services;
 using TestEmulator.Controls;
+using TestEmulator.Layout;
 using TestEmulator.Theme;
 
 namespace OperateTest.App.Forms;
@@ -9,6 +10,8 @@ public sealed class InspectionSetupForm : Form
 {
     private static readonly Dictionary<InspectionBoardType, SetupDefaults> LastSettings = [];
     private readonly InspectionBoardType _boardType;
+    private readonly bool _forceNewResultFile;
+    private readonly Guid? _previousSessionId;
     private readonly InspectionWorkbookService _workbooks = new();
     private readonly InspectionCheckpointService _checkpoints = new();
     private readonly AppTextBox _templatePath = new() { ReadOnly = true };
@@ -20,18 +23,19 @@ public sealed class InspectionSetupForm : Form
     private readonly AppButton _start = new();
     private readonly ToolTip _toolTip = new() { AutoPopDelay = 12000, InitialDelay = 400, ReshowDelay = 100 };
 
-    public InspectionSetupForm(InspectionBoardType boardType)
+    public InspectionSetupForm(InspectionBoardType boardType, bool forceNewResultFile = false, Guid? previousSessionId = null)
     {
         _boardType = boardType;
+        _forceNewResultFile = forceNewResultFile;
+        _previousSessionId = previousSessionId;
         var boardName = boardType == InspectionBoardType.Communication ? "COMM" : "DIO";
 
-        Text = $"{boardName} 검사 준비";
-        AutoScaleMode = AutoScaleMode.None;
+        Text = forceNewResultFile ? $"{boardName} 새 결과 문서" : $"{boardName} 검사 준비";
         StartPosition = FormStartPosition.CenterParent;
-        FormBorderStyle = FormBorderStyle.FixedDialog;
+        FormBorderStyle = FormBorderStyle.Sizable;
         MaximizeBox = false;
         MinimizeBox = false;
-        ClientSize = new Size(900, 660);
+        ResponsiveWindow.Configure(this, new Size(900, 660), new Size(760, 560), scrollWhenCompact: true);
         BackColor = Colors.AppBackground;
         Font = Fonts.Body;
 
@@ -39,13 +43,16 @@ public sealed class InspectionSetupForm : Form
         header.Controls.Add(new Label
         {
             Location = new Point(30, 18), Size = new Size(700, 34), Font = Fonts.PageTitle,
-            ForeColor = Colors.TextPrimary, Text = $"{boardName} 수입검사 준비"
+            ForeColor = Colors.TextPrimary,
+            Text = forceNewResultFile ? $"{boardName} 새 결과 문서 시작" : $"{boardName} 수입검사 준비"
         });
         header.Controls.Add(new Label
         {
             Location = new Point(32, 55), Size = new Size(810, 23), Font = Fonts.Caption,
             ForeColor = Colors.TextSecondary,
-            Text = "기준서 원본은 수정하지 않으며 결과용 사본에 검사 정보를 기록합니다."
+            Text = forceNewResultFile
+                ? "기존 결과는 유지하고 새 Excel 결과 문서를 생성합니다."
+                : "기준서 원본은 수정하지 않으며 결과용 사본에 검사 정보를 기록합니다."
         });
         Controls.Add(header);
 
@@ -88,7 +95,11 @@ public sealed class InspectionSetupForm : Form
             564, 278, 252));
 
         card.Controls.Add(SectionTitle("3. 결과 저장 폴더", 24, 316));
-        card.Controls.Add(Caption("동일 날짜·검사자 결과 파일이 있으면 다음 빈 행에 이어서 기록합니다.", 24, 345, 650));
+        card.Controls.Add(Caption(
+            forceNewResultFile
+                ? "기존 파일과 이름이 같으면 _02, _03 순번을 붙여 새 문서를 생성합니다."
+                : "동일 날짜·검사자 결과 파일이 있으면 다음 빈 행에 이어서 기록합니다.",
+            24, 345, 650));
         _outputDirectory.SetBounds(24, 375, 650, 38);
         var selectOutput = new AppButton
         {
@@ -130,46 +141,63 @@ public sealed class InspectionSetupForm : Form
 
     private void SelectTemplate()
     {
-        using var dialog = new OpenFileDialog
+        try
         {
-            Title = _boardType == InspectionBoardType.Communication
-                ? "COMM 수입검사 기준서 선택"
-                : "DIO 수입검사 기준서 선택",
-            Filter = "Excel 통합 문서 (*.xlsx)|*.xlsx",
-            CheckFileExists = true,
-            Multiselect = false
-        };
-        if (dialog.ShowDialog(this) != DialogResult.OK) return;
+            using var dialog = new OpenFileDialog
+            {
+                Title = _boardType == InspectionBoardType.Communication
+                    ? "COMM 수입검사 기준서 선택"
+                    : "DIO 수입검사 기준서 선택",
+                Filter = "Excel 통합 문서 (*.xlsx)|*.xlsx",
+                CheckFileExists = true,
+                Multiselect = false,
+                RestoreDirectory = true,
+                AutoUpgradeEnabled = false,
+                InitialDirectory = GetSafeInitialDirectory(_templatePath.TextValue)
+            };
+            if (dialog.ShowDialog(this) != DialogResult.OK) return;
 
-        _templatePath.TextValue = dialog.FileName;
-        _templatePath.SetToolTip(_toolTip, dialog.FileName);
-        if (string.IsNullOrWhiteSpace(_outputDirectory.TextValue))
-            _outputDirectory.TextValue = Path.Combine(Path.GetDirectoryName(dialog.FileName)!, "검사결과");
-        _outputDirectory.SetToolTip(_toolTip, _outputDirectory.TextValue);
+            _templatePath.TextValue = dialog.FileName;
+            _templatePath.SetToolTip(_toolTip, dialog.FileName);
+            if (string.IsNullOrWhiteSpace(_outputDirectory.TextValue))
+                _outputDirectory.TextValue = Path.Combine(Path.GetDirectoryName(dialog.FileName)!, "검사결과");
+            _outputDirectory.SetToolTip(_toolTip, _outputDirectory.TextValue);
 
-        var validation = _workbooks.Validate(dialog.FileName, _boardType);
-        _validationStatus.Text = validation.IsValid
-            ? $"지원하는 수입검사 기준서입니다. ({Path.GetFileName(dialog.FileName)})"
-            : validation.Message;
-        _validationStatus.ForeColor = validation.IsValid ? Colors.Success : Colors.Danger;
-        _templatePath.HasError = !validation.IsValid;
-        _start.Enabled = validation.IsValid;
+            var validation = _workbooks.Validate(dialog.FileName, _boardType);
+            _validationStatus.Text = validation.IsValid
+                ? $"지원하는 수입검사 기준서입니다. ({Path.GetFileName(dialog.FileName)})"
+                : validation.Message;
+            _validationStatus.ForeColor = validation.IsValid ? Colors.Success : Colors.Danger;
+            _templatePath.HasError = !validation.IsValid;
+            _start.Enabled = validation.IsValid;
+        }
+        catch (Exception ex)
+        {
+            ApplicationCrashReporter.ShowRecoverableError(this, "수입검사 기준서 파일 선택", ex);
+        }
     }
 
     private void SelectOutputDirectory()
     {
-        using var dialog = new FolderBrowserDialog
+        try
         {
-            Description = "검사 결과 Excel 파일을 저장할 폴더를 선택하세요.",
-            UseDescriptionForTitle = true,
-            ShowNewFolderButton = true
-        };
-        if (Directory.Exists(_outputDirectory.TextValue))
-            dialog.InitialDirectory = _outputDirectory.TextValue;
-        if (dialog.ShowDialog(this) == DialogResult.OK)
-        {
+            using var dialog = new FolderBrowserDialog
+            {
+                Description = "검사 결과 Excel 파일을 저장할 폴더를 선택하세요.",
+                UseDescriptionForTitle = true,
+                ShowNewFolderButton = true,
+                AutoUpgradeEnabled = false
+            };
+            if (Directory.Exists(_outputDirectory.TextValue))
+                dialog.InitialDirectory = _outputDirectory.TextValue;
+            if (dialog.ShowDialog(this) != DialogResult.OK) return;
+
             _outputDirectory.TextValue = dialog.SelectedPath;
             _outputDirectory.SetToolTip(_toolTip, dialog.SelectedPath);
+        }
+        catch (Exception ex)
+        {
+            ApplicationCrashReporter.ShowRecoverableError(this, "결과 저장 폴더 선택", ex);
         }
     }
 
@@ -194,7 +222,9 @@ public sealed class InspectionSetupForm : Form
                 _boardType,
                 _inspectionDate.Value.Date,
                 _inspector.TextValue,
-                _serial.TextValue);
+                _serial.TextValue,
+                _forceNewResultFile,
+                _previousSessionId);
             _checkpoints.Save(Session);
             RememberSettings(Session);
             MessageBox.Show(this,
@@ -215,18 +245,31 @@ public sealed class InspectionSetupForm : Form
 
     private void ResumeInspection()
     {
-        using var dialog = new OpenFileDialog
+        string checkpointPath;
+        try
         {
-            Title = $"{(_boardType == InspectionBoardType.Communication ? "COMM" : "DIO")} 중단 검사 체크포인트 선택",
-            Filter = "검사 체크포인트 (*.inspection.json)|*.inspection.json|JSON 파일 (*.json)|*.json",
-            CheckFileExists = true,
-            Multiselect = false
-        };
-        if (dialog.ShowDialog(this) != DialogResult.OK) return;
+            using var dialog = new OpenFileDialog
+            {
+                Title = $"{(_boardType == InspectionBoardType.Communication ? "COMM" : "DIO")} 중단 검사 체크포인트 선택",
+                Filter = "검사 체크포인트 (*.inspection.json)|*.inspection.json|JSON 파일 (*.json)|*.json",
+                CheckFileExists = true,
+                Multiselect = false,
+                RestoreDirectory = true,
+                AutoUpgradeEnabled = false,
+                InitialDirectory = GetSafeInitialDirectory(_outputDirectory.TextValue)
+            };
+            if (dialog.ShowDialog(this) != DialogResult.OK) return;
+            checkpointPath = dialog.FileName;
+        }
+        catch (Exception ex)
+        {
+            ApplicationCrashReporter.ShowRecoverableError(this, "중단 검사 파일 선택", ex);
+            return;
+        }
 
         try
         {
-            Session = _checkpoints.Load(dialog.FileName, _boardType);
+            Session = _checkpoints.Load(checkpointPath, _boardType);
             RememberSettings(Session);
             MessageBox.Show(this,
                 $"중단된 검사를 불러왔습니다.{Environment.NewLine}{Environment.NewLine}" +
@@ -261,6 +304,28 @@ public sealed class InspectionSetupForm : Form
         _validationStatus.ForeColor = validation.IsValid ? Colors.Success : Colors.Danger;
         _templatePath.HasError = !validation.IsValid;
         _start.Enabled = validation.IsValid;
+    }
+
+    private static string GetSafeInitialDirectory(string path)
+    {
+        try
+        {
+            if (File.Exists(path))
+            {
+                var directory = Path.GetDirectoryName(path);
+                if (!string.IsNullOrWhiteSpace(directory) && Directory.Exists(directory))
+                    return directory;
+            }
+
+            if (Directory.Exists(path)) return path;
+        }
+        catch
+        {
+            // 잘못되었거나 접근할 수 없는 이전 경로는 무시하고 로컬 문서 폴더를 사용한다.
+        }
+
+        var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        return Directory.Exists(documents) ? documents : AppContext.BaseDirectory;
     }
 
     private static void RememberSettings(InspectionSession session)

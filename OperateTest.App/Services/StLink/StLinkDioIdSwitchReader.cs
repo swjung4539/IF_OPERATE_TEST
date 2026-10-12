@@ -48,8 +48,11 @@ public sealed partial class StLinkMemoryReader
         }
         catch (OperationCanceledException)
         {
+            Exception? cleanupError = null;
             try { if (!process.HasExited) process.Kill(entireProcessTree: true); }
-            catch { }
+            catch (Exception ex) { cleanupError = ex; }
+            if (cleanupError is not null)
+                throw new InvalidOperationException("취소된 STM32 Programmer CLI 프로세스를 종료하지 못했습니다.", cleanupError);
             throw;
         }
 

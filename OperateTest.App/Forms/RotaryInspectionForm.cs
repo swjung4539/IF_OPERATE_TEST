@@ -2,6 +2,7 @@ using OperateTest.App.Models;
 using OperateTest.App.Services;
 using OperateTest.App.Services.StLink;
 using TestEmulator.Controls;
+using TestEmulator.Layout;
 using TestEmulator.Theme;
 
 namespace OperateTest.App.Forms;
@@ -21,6 +22,12 @@ public sealed class RotaryInspectionForm : Form
     private int _expectedPosition;
     private int? _lastPosition;
     private int _stableReads;
+    private readonly InspectionAuditService _audit = new();
+    private int _attempt;
+    private bool _attemptCompleted;
+    private Task? _monitorTask;
+    private bool _closing;
+    private bool _closeCleanupRunning;
 
     public RotaryInspectionForm(ICommRotaryReader reader, InspectionSession session)
     {
@@ -29,21 +36,24 @@ public sealed class RotaryInspectionForm : Form
         _session.Results.InvalidateFinalization();
         _session.Results.RotarySwitchPassed = null;
         _session.Results.RotaryStatus = InspectionExecutionStatus.Running;
+        _attempt = _audit.BeginAttempt(_session, "rotary_switch", "0~F 순차 위치 검사");
         new InspectionCheckpointService().TrySave(_session);
         Text = "로터리 스위치 검사";
-        AutoScaleMode = AutoScaleMode.None;
         StartPosition = FormStartPosition.CenterParent;
-        ClientSize = new Size(1080, 680);
+        ResponsiveWindow.Configure(this, new Size(1080, 680), new Size(860, 620), scrollWhenCompact: true);
         BackColor = Colors.AppBackground;
         Font = Fonts.Body;
 
         var header = new Panel { Dock = DockStyle.Top, Height = 92, BackColor = Colors.Surface };
         header.Controls.Add(new Label { Location = new Point(30, 17), Size = new Size(560, 34), Font = Fonts.PageTitle, ForeColor = Colors.TextPrimary, Text = "COMM 로터리 스위치 검사" });
-        header.Controls.Add(new Label { Location = new Point(32, 54), Size = new Size(700, 22), Font = Fonts.Caption, ForeColor = Colors.TextSecondary, Text = "ST-LINK로 PC0~PC3을 읽어 물리 스위치 위치를 실시간 표시합니다." });
+        header.Controls.Add(new Label { Location = new Point(32, 54), Size = new Size(650, 22), Font = Fonts.Caption, ForeColor = Colors.TextSecondary, Text = "ST-LINK로 PC0~PC3을 읽어 물리 스위치 위치를 실시간 표시합니다." });
         var reset = new AppButton { Variant = AppButtonVariant.OutlinePrimary, IconGlyph = AppIcon.Refresh, Text = "RESET", Location = new Point(884, 24), Size = new Size(150, 44) };
         var fail = new AppButton { Variant = AppButtonVariant.Danger, IconGlyph = AppIcon.Warning, Text = "FAIL 판정", Location = new Point(720, 24), Size = new Size(150, 44) };
         fail.Click += (_, _) => MarkFailed(); header.Controls.Add(fail);
-        reset.Click += (_, _) => ResetHistory(); header.Controls.Add(reset); Controls.Add(header);
+        reset.Click += (_, _) => ResetHistory(); header.Controls.Add(reset);
+        fail.BringToFront();
+        reset.BringToFront();
+        Controls.Add(header);
 
         var currentCard = new AppCard { Location = new Point(30, 116), Size = new Size(310, 100), CardLabel = "현재 위치", CardValue = "--", Icon = AppIcon.Settings, IconColor = Colors.Primary, IconSurfaceColor = Colors.SurfaceBlue, ValueColor = Colors.Primary };
         _seenCard.Location = new Point(356, 116); _seenCard.Size = new Size(310, 100); _seenCard.CardLabel = "확인한 위치"; _seenCard.CardValue = "0 / 16"; _seenCard.Icon = AppIcon.Check; _seenCard.IconColor = Colors.Success; _seenCard.IconSurfaceColor = Colors.SuccessSurface; _seenCard.ValueColor = Colors.Success;
@@ -82,14 +92,8 @@ public sealed class RotaryInspectionForm : Form
         guide.Controls.Add(new Label { Location = new Point(22, 300), Size = new Size(272, 58), Font = Fonts.Caption, ForeColor = Colors.Primary, BackColor = Colors.SurfaceBlue, TextAlign = ContentAlignment.MiddleCenter, Text = "0부터 F까지 순서대로 확인하며\n두 번 연속 같은 값이면 인정합니다." });
         Controls.Add(guide);
 
-        Shown += (_, _) => _ = MonitorAsync(currentCard, linkCard);
-        FormClosing += (_, _) =>
-        {
-            if (_session.Results.RotaryStatus == InspectionExecutionStatus.Running)
-                _session.Results.RotaryStatus = InspectionExecutionStatus.Stopped;
-            new InspectionCheckpointService().TrySave(_session);
-            _cts.Cancel();
-        };
+        Shown += (_, _) => _monitorTask = MonitorAsync(currentCard, linkCard);
+        FormClosing += OnClosing;
     }
 
     private async Task MonitorAsync(AppCard currentCard, AppCard linkCard)
@@ -123,10 +127,13 @@ public sealed class RotaryInspectionForm : Form
 
     private void ResetHistory()
     {
+        CompleteAttempt();
         _session.Results.InvalidateFinalization();
         _seen.Clear(); _expectedPosition = 0; _lastPosition = null; _stableReads = 0;
         _session.Results.RotarySwitchPassed = null;
         _session.Results.RotaryStatus = InspectionExecutionStatus.Running;
+        _attempt = _audit.BeginAttempt(_session, "rotary_switch", "검사 이력 초기화 후 재검사");
+        _attemptCompleted = false;
         new InspectionCheckpointService().TrySave(_session);
         _seenCard.CardValue = "0 / 16";
         foreach (var label in _positions) { label.BackColor = Colors.SurfaceBlue; label.ForeColor = Colors.TextMuted; }
@@ -174,6 +181,7 @@ public sealed class RotaryInspectionForm : Form
         {
             _session.Results.RotarySwitchPassed = true;
             _session.Results.RotaryStatus = InspectionExecutionStatus.Pass;
+            CompleteAttempt();
             _instruction.Text = "0~F 전 위치 확인 완료\n검사 결과 PASS";
             _instruction.ForeColor = Colors.Success;
             _instruction.BackColor = Colors.SuccessSurface;
@@ -195,12 +203,50 @@ public sealed class RotaryInspectionForm : Form
         _session.Results.InvalidateFinalization();
         _session.Results.RotarySwitchPassed = false;
         _session.Results.RotaryStatus = InspectionExecutionStatus.Fail;
+        CompleteAttempt();
         _instruction.Text = "검사자 FAIL 판정";
         _instruction.ForeColor = Colors.Danger;
         _instruction.BackColor = Colors.DangerSurface;
         _status.Text = "로터리 스위치 검사 · FAIL";
         _status.ForeColor = Colors.Danger;
         new InspectionCheckpointService().TrySave(_session);
+    }
+
+    private void CompleteAttempt()
+    {
+        if (_attemptCompleted || _attempt == 0) return;
+        _audit.CompleteAttempt(_session, "rotary_switch", _attempt, _session.Results.RotaryStatus, _status.Text);
+        _attemptCompleted = true;
+    }
+
+    private async void OnClosing(object? sender, FormClosingEventArgs e)
+    {
+        if (_closing) return;
+        e.Cancel = true;
+        if (_closeCleanupRunning) return;
+        _closeCleanupRunning = true;
+        if (_session.Results.RotaryStatus == InspectionExecutionStatus.Running)
+            _session.Results.RotaryStatus = InspectionExecutionStatus.Stopped;
+        CompleteAttempt();
+        _cts.Cancel();
+        try
+        {
+            if (_monitorTask is not null)
+                await SafetyOperationService.RunWithTimeoutAsync(
+                    "로터리 ST-LINK 감시 종료",
+                    SafetyOperationService.DioOutputOffTimeout,
+                    ct => _monitorTask.WaitAsync(ct));
+        }
+        catch (Exception ex)
+        {
+            _session.Results.RotaryStatus = InspectionExecutionStatus.Error;
+            new InspectionAuditService().TryRecord(_session, "safety_cleanup_failed", "rotary_switch", "error", ex.Message, ex);
+            MessageBox.Show(this, $"ST-LINK 읽기 작업을 종료하지 못했습니다.{Environment.NewLine}{Environment.NewLine}{ex.Message}",
+                "검사 종료 확인", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+        new InspectionCheckpointService().TrySave(_session);
+        _closing = true;
+        Close();
     }
 
     protected override void Dispose(bool disposing) { if (disposing) _cts.Dispose(); base.Dispose(disposing); }

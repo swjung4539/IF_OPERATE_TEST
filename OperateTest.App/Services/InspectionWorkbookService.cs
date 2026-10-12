@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using OperateTest.App.Models;
@@ -7,6 +8,7 @@ namespace OperateTest.App.Services;
 
 public sealed partial class InspectionWorkbookService
 {
+    public const string SupportedProfileVersion = "R01";
     private static readonly XNamespace SpreadsheetNs = "http://schemas.openxmlformats.org/spreadsheetml/2006/main";
     private static readonly XNamespace OfficeRelationshipNs = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
     private static readonly XNamespace PackageRelationshipNs = "http://schemas.openxmlformats.org/package/2006/relationships";
@@ -53,7 +55,15 @@ public sealed partial class InspectionWorkbookService
             if (!validFunctionHeaders)
                 return Invalid($"'{functionSheetName}' 시트의 검사 항목 위치가 지원하는 양식과 다릅니다.", package.Sheets.Keys);
 
-            return new WorkbookValidationResult(true, "지원하는 수입검사 기준서입니다.", package.Sheets.Keys.ToArray());
+            var profileError = ValidateR01Profile(package, boardType);
+            if (profileError is not null)
+                return Invalid(profileError, package.Sheets.Keys);
+
+            return new WorkbookValidationResult(
+                true,
+                $"지원하는 수입검사 기준서입니다. (양식 {SupportedProfileVersion})",
+                package.Sheets.Keys.ToArray(),
+                SupportedProfileVersion);
         }
         catch (InvalidDataException)
         {
@@ -79,7 +89,9 @@ public sealed partial class InspectionWorkbookService
         InspectionBoardType boardType,
         DateTime inspectionDate,
         string inspector,
-        string serialNumber)
+        string serialNumber,
+        bool forceNewResultFile = false,
+        Guid? previousSessionId = null)
     {
         var validation = Validate(templatePath, boardType);
         if (!validation.IsValid)
@@ -96,7 +108,9 @@ public sealed partial class InspectionWorkbookService
         var safeInspector = InvalidFileNameCharsRegex().Replace(inspector, "_");
         var resultName = $"수입검사결과_{boardName}_{inspectionDate:yyyyMMdd}_{safeInspector}.xlsx";
         var resultPath = Path.Combine(outputDirectory, resultName);
-        var sourcePath = File.Exists(resultPath) ? resultPath : templatePath;
+        if (forceNewResultFile)
+            resultPath = NextAvailableResultPath(resultPath);
+        var sourcePath = !forceNewResultFile && File.Exists(resultPath) ? resultPath : templatePath;
 
         if (File.Exists(resultPath))
         {
@@ -113,19 +127,11 @@ public sealed partial class InspectionWorkbookService
             using (var package = WorkbookPackage.OpenUpdate(tempPath))
             {
                 rowNumber = FindAvailableRow(package, boardType, serialNumber);
-                foreach (var sheetName in RequiredSheets(boardType))
-                {
-                    var sheet = package.LoadSheet(sheetName);
-                    SetInlineText(sheet, "I1", inspectionDate.ToString("yyyy.MM.dd"));
-                    SetInlineText(sheet, "K1", inspector);
-                    SetInlineText(sheet, $"A{rowNumber}", (rowNumber - 5).ToString());
-                    SetInlineText(sheet, $"B{rowNumber}", serialNumber);
-                    package.SaveSheet(sheetName, sheet);
-                }
+                WriteSessionIdentity(package, boardType, inspectionDate, inspector, serialNumber, rowNumber);
             }
 
             File.Move(tempPath, resultPath, true);
-            return new InspectionSession(
+            var session = new InspectionSession(
                 boardType,
                 Path.GetFullPath(templatePath),
                 Path.GetFullPath(resultPath),
@@ -133,12 +139,79 @@ public sealed partial class InspectionWorkbookService
                 inspector,
                 serialNumber,
                 rowNumber);
+            InitializeSessionMetadata(session, validation.ProfileVersion, previousSessionId);
+            new InspectionAuditService().TryRecord(session, "session_created", "setup", "ready", "검사 세션 및 Excel 기록 행 준비 완료");
+            return session;
         }
         catch
         {
             try { if (File.Exists(tempPath)) File.Delete(tempPath); } catch { }
             throw;
         }
+    }
+
+    public InspectionSession CreateNextSession(InspectionSession completedSession, string serialNumber)
+    {
+        if (!completedSession.Results.IsFinalized || !completedSession.Results.WorkbookSavedAt.HasValue)
+            throw new InvalidOperationException("현재 검사의 Excel 저장을 완료한 후 다음 보드 검사를 시작할 수 있습니다.");
+
+        var validation = Validate(completedSession.ResultPath, completedSession.BoardType);
+        if (!validation.IsValid)
+            throw new InvalidOperationException($"현재 결과 파일을 이어서 사용할 수 없습니다. {validation.Message}");
+
+        serialNumber = serialNumber.Trim().ToUpperInvariant();
+        ValidateInputs(completedSession.BoardType, completedSession.Inspector, serialNumber);
+
+        var directory = Path.GetDirectoryName(completedSession.ResultPath)
+            ?? throw new InvalidOperationException("결과 파일 경로를 확인할 수 없습니다.");
+        var tempPath = Path.Combine(directory, $".{Guid.NewGuid():N}.xlsx");
+        try
+        {
+            CopyWithSharedRead(completedSession.ResultPath, tempPath);
+            int rowNumber;
+            using (var package = WorkbookPackage.OpenUpdate(tempPath))
+            {
+                rowNumber = FindAvailableRow(package, completedSession.BoardType, serialNumber);
+                WriteSessionIdentity(
+                    package,
+                    completedSession.BoardType,
+                    completedSession.InspectionDate,
+                    completedSession.Inspector,
+                    serialNumber,
+                    rowNumber);
+            }
+
+            File.Move(tempPath, completedSession.ResultPath, true);
+            var session = new InspectionSession(
+                completedSession.BoardType,
+                completedSession.TemplatePath,
+                completedSession.ResultPath,
+                completedSession.InspectionDate,
+                completedSession.Inspector,
+                serialNumber,
+                rowNumber);
+            InitializeSessionMetadata(session, validation.ProfileVersion, completedSession.SessionId);
+            new InspectionAuditService().TryRecord(session, "session_created", "setup", "ready", "같은 Excel 문서에서 다음 보드 검사 시작");
+            return session;
+        }
+        catch
+        {
+            try { if (File.Exists(tempPath)) File.Delete(tempPath); } catch { }
+            throw;
+        }
+    }
+
+    public WorkbookUsage GetUsage(string resultPath, InspectionBoardType boardType)
+    {
+        var validation = Validate(resultPath, boardType);
+        if (!validation.IsValid)
+            throw new InvalidOperationException(validation.Message);
+
+        using var package = WorkbookPackage.OpenRead(resultPath);
+        var sheet = package.LoadSheet(RequiredSheets(boardType)[0]);
+        var used = Enumerable.Range(6, 30)
+            .Count(row => !string.IsNullOrWhiteSpace(package.CellText(sheet, $"B{row}")));
+        return new WorkbookUsage(used, 30);
     }
 
     public WorkbookValidationResult ValidateSessionTarget(InspectionSession session)
@@ -186,16 +259,108 @@ public sealed partial class InspectionWorkbookService
                 WritePowerResults(package, session);
                 WriteFunctionResults(package, session);
             }
+            VerifyFinalResultCells(tempPath, session);
             File.Move(tempPath, session.ResultPath, true);
+            VerifyFinalResultCells(session.ResultPath, session);
             session.Results.WorkbookSavedAt = DateTime.Now;
+            new InspectionAuditService().TryRecord(session, "excel_saved", "final_save", "success", "Excel 저장 및 셀 재검증 완료");
             new InspectionCheckpointService().TryDelete(session);
         }
-        catch
+        catch (Exception ex)
         {
             try { if (File.Exists(tempPath)) File.Delete(tempPath); } catch { }
+            new InspectionAuditService().TryRecord(session, "excel_save_failed", "final_save", "error", ex.Message, ex);
             throw;
         }
     }
+
+    private static void InitializeSessionMetadata(
+        InspectionSession session,
+        string profileVersion,
+        Guid? previousSessionId)
+    {
+        session.PreviousSessionId = previousSessionId;
+        session.StartedAt = DateTime.Now;
+        session.ApplicationVersion = ApplicationBuildInfo.Version;
+        session.TemplateProfileVersion = string.IsNullOrWhiteSpace(profileVersion)
+            ? SupportedProfileVersion
+            : profileVersion;
+        using var stream = File.OpenRead(session.TemplatePath);
+        session.TemplateSha256 = Convert.ToHexString(SHA256.HashData(stream));
+    }
+
+    private static void VerifyFinalResultCells(string path, InspectionSession session)
+    {
+        using var package = WorkbookPackage.OpenRead(path);
+        var row = session.RowNumber;
+
+        VerifyPassFailCells(package, "육안 검사", row,
+        [
+            ("missing", "D"), ("reversed", "E"), ("cold_joint", "F"),
+            ("wrong_part", "G"), ("foreign", "H"), ("solder_short", "I"), ("cleaning", "J")
+        ], session.Results.VisualItems, "육안검사");
+
+        var powerCells = session.BoardType == InspectionBoardType.Communication
+            ? new (string Key, string Column)[]
+            {
+                ("power_led", "D"), ("input_24v", "E"), ("tp1_5v", "F"),
+                ("tp2_3v3", "G"), ("c37_5v", "H"), ("c41_5v", "I")
+            }
+            :
+            [
+                ("power_led", "D"), ("input_24v", "E"),
+                ("c30_5v", "F"), ("tp3_3v3", "G")
+            ];
+        VerifyPassFailCells(package, "전원 검사", row, powerCells, session.Results.PowerItems, "전원검사");
+
+        var functionSheet = session.BoardType == InspectionBoardType.Communication
+            ? "통신 및 기타 검사"
+            : "DIO&스위치 검사";
+        var functionCells = session.BoardType == InspectionBoardType.Communication
+            ? new[]
+            {
+                ("D", RequiredResult(session.Results.CommunicationPassed, "통신 검사")),
+                ("F", RequiredResult(session.Results.FaultPassed, "FAULT 검사")),
+                ("H", RequiredResult(session.Results.RotarySwitchPassed, "로터리 스위치 검사"))
+            }
+            :
+            [
+                ("D", RequiredResult(session.Results.DioInputPassed, "Digital Input 검사")),
+                ("F", RequiredResult(session.Results.DioOutputPassed, "Digital Output 검사")),
+                ("H", RequiredResult(session.Results.DipSwitchPassed, "DIP Switch 검사"))
+            ];
+        var sheet = package.LoadSheet(functionSheet);
+        foreach (var item in functionCells)
+            VerifyCell(package, sheet, $"{item.Item1}{row}", PassFailCellText(item.Item2), functionSheet);
+
+        foreach (var sheetName in RequiredSheets(session.BoardType))
+        {
+            var identitySheet = package.LoadSheet(sheetName);
+            VerifyCell(package, identitySheet, $"B{row}", session.SerialNumber, sheetName);
+        }
+    }
+
+    private static void VerifyPassFailCells(
+        WorkbookPackage package,
+        string sheetName,
+        int row,
+        IEnumerable<(string Key, string Column)> cells,
+        IReadOnlyDictionary<string, InspectionItemResult> results,
+        string section)
+    {
+        var sheet = package.LoadSheet(sheetName);
+        foreach (var item in cells)
+            VerifyCell(package, sheet, $"{item.Column}{row}", PassFailCellText(RequiredResult(results, item.Key, section)), sheetName);
+    }
+
+    private static void VerifyCell(WorkbookPackage package, XDocument sheet, string cell, string expected, string sheetName)
+    {
+        var actual = package.CellText(sheet, cell).Trim();
+        if (!string.Equals(actual, expected, StringComparison.Ordinal))
+            throw new InvalidDataException($"Excel 저장 검증 실패: '{sheetName}'!{cell} 값이 예상 결과와 다릅니다.");
+    }
+
+    private static string PassFailCellText(bool passed) => passed ? "■ P / □ F" : "□ P / ■ F";
 
     private static void WriteVisualResults(WorkbookPackage package, InspectionSession session)
     {
@@ -277,7 +442,7 @@ public sealed partial class InspectionWorkbookService
         value ?? throw new InvalidOperationException($"{itemName} 결과가 없습니다.");
 
     private static void SetPassFail(XDocument sheet, string reference, bool passed) =>
-        SetInlineText(sheet, reference, passed ? "■ P / □ F" : "□ P / ■ F");
+        SetInlineText(sheet, reference, PassFailCellText(passed));
 
     private static string PassFailWord(bool passed) => passed ? "PASS" : "FAIL";
 
@@ -299,6 +464,41 @@ public sealed partial class InspectionWorkbookService
                 return row;
 
         throw new InvalidOperationException("결과 파일의 입력 가능한 행(1~30번)이 모두 사용되었습니다. 저장 폴더를 변경하거나 새 결과 파일을 사용하세요.");
+    }
+
+    private static void WriteSessionIdentity(
+        WorkbookPackage package,
+        InspectionBoardType boardType,
+        DateTime inspectionDate,
+        string inspector,
+        string serialNumber,
+        int rowNumber)
+    {
+        foreach (var sheetName in RequiredSheets(boardType))
+        {
+            var sheet = package.LoadSheet(sheetName);
+            SetInlineText(sheet, "I1", inspectionDate.ToString("yyyy.MM.dd"));
+            SetInlineText(sheet, "K1", inspector);
+            SetInlineText(sheet, $"A{rowNumber}", (rowNumber - 5).ToString());
+            SetInlineText(sheet, $"B{rowNumber}", serialNumber);
+            package.SaveSheet(sheetName, sheet);
+        }
+    }
+
+    private static string NextAvailableResultPath(string preferredPath)
+    {
+        if (!File.Exists(preferredPath)) return preferredPath;
+
+        var directory = Path.GetDirectoryName(preferredPath)!;
+        var baseName = Path.GetFileNameWithoutExtension(preferredPath);
+        var extension = Path.GetExtension(preferredPath);
+        for (var sequence = 2; sequence <= 999; sequence++)
+        {
+            var candidate = Path.Combine(directory, $"{baseName}_{sequence:00}{extension}");
+            if (!File.Exists(candidate)) return candidate;
+        }
+
+        throw new InvalidOperationException("새 결과 파일 이름을 만들 수 없습니다. 저장 폴더를 변경하세요.");
     }
 
     private static void ValidateInputs(InspectionBoardType boardType, string inspector, string serialNumber)
@@ -323,6 +523,61 @@ public sealed partial class InspectionWorkbookService
 
     private static bool ContainsText(WorkbookPackage package, XDocument sheet, string cell, string expected) =>
         package.CellText(sheet, cell).Contains(expected, StringComparison.OrdinalIgnoreCase);
+
+    private static string? ValidateR01Profile(WorkbookPackage package, InspectionBoardType boardType)
+    {
+        var visual = package.LoadSheet("육안 검사");
+        var expectedBoardTitle = boardType == InspectionBoardType.Communication ? "COMMUNICATION" : "DIGITAL I/O";
+        if (!ContainsText(package, visual, "A1", expectedBoardTitle))
+            return "'육안 검사' 시트의 보드 명칭이 지원하는 R01 양식과 다릅니다.";
+
+        var visualHeaders = new (string Cell, string Text)[]
+        {
+            ("D2", "육안검사"), ("D3", "미삽"), ("E3", "역삽"), ("F3", "냉땜"),
+            ("G3", "오삽"), ("H3", "이물질"), ("I3", "납쇼트"), ("J3", "세척"),
+            ("C4", "기준")
+        };
+        if (!MatchesCells(package, visual, visualHeaders))
+            return "'육안 검사' 시트의 R01 검사 항목 또는 기준 위치가 다릅니다.";
+
+        var power = package.LoadSheet("전원 검사");
+        var powerHeaders = boardType == InspectionBoardType.Communication
+            ? new (string Cell, string Text)[]
+            {
+                ("D2", "전원검사"), ("D3", "LED1"), ("E3", "C27"), ("F3", "TP1"),
+                ("G3", "TP2"), ("H3", "C37"), ("I3", "C41"), ("C4", "기준"),
+                ("E4", "23.5V~24.5V"), ("F4", "4.9V~5.1V"), ("G4", "3.2V~3.4V"),
+                ("H4", "4.9V~5.1V"), ("I4", "4.9V~5.1V")
+            }
+            :
+            [
+                ("D2", "전원검사"), ("D3", "LED35"), ("E3", "C27"), ("F3", "C30"),
+                ("G3", "TP3"), ("C4", "기준"), ("E4", "23.5V~24.5V"),
+                ("F4", "4.9V~5.1V"), ("G4", "3.2V~3.4V")
+            ];
+        if (!MatchesCells(package, power, powerHeaders))
+            return "'전원 검사' 시트의 R01 측정 위치 또는 판정 기준이 다릅니다.";
+
+        var functionSheetName = boardType == InspectionBoardType.Communication
+            ? "통신 및 기타 검사"
+            : "DIO&스위치 검사";
+        var function = package.LoadSheet(functionSheetName);
+        var commonFunctionHeaders = new (string Cell, string Text)[]
+        {
+            ("C3", "측정방법"), ("D3", "수입검사 프로그램"), ("C4", "기준"),
+            ("D4", "P /"), ("F4", "P /"), ("H4", "P /")
+        };
+        if (!MatchesCells(package, function, commonFunctionHeaders))
+            return $"'{functionSheetName}' 시트의 R01 측정방법 또는 기준 위치가 다릅니다.";
+
+        return null;
+    }
+
+    private static bool MatchesCells(
+        WorkbookPackage package,
+        XDocument sheet,
+        IEnumerable<(string Cell, string Text)> expected) =>
+        expected.All(item => ContainsText(package, sheet, item.Cell, item.Text));
 
     private static WorkbookValidationResult Invalid(string message, IEnumerable<string>? sheets = null) =>
         new(false, message, sheets?.ToArray() ?? []);

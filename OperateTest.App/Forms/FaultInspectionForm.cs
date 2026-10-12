@@ -2,6 +2,7 @@ using OperateTest.App.Models;
 using OperateTest.App.Services;
 using OperateTest.App.Services.CommInspection;
 using TestEmulator.Controls;
+using TestEmulator.Layout;
 using TestEmulator.Theme;
 
 namespace OperateTest.App.Forms;
@@ -24,15 +25,18 @@ public sealed class FaultInspectionForm : Form
     private readonly AppCard _faultCard;
     private bool _openConfirmed;
     private bool _closing;
+    private bool _closeCleanupRunning;
+    private readonly InspectionAuditService _audit = new();
+    private int _attempt;
+    private bool _attemptCompleted;
 
     public FaultInspectionForm(ISerialConnectionManager connections, IInspectionProtocolServices protocols, ICommEmulationHost? host = null, InspectionSession? session = null)
     {
         _host = host ?? new CommEmulationHost(connections, protocols);
         _session = session;
         Text = "FAULT 접점 검사";
-        AutoScaleMode = AutoScaleMode.None;
         StartPosition = FormStartPosition.CenterParent;
-        ClientSize = new Size(1180, 720);
+        ResponsiveWindow.Configure(this, new Size(1180, 720), new Size(920, 640), scrollWhenCompact: true);
         BackColor = Colors.AppBackground;
         Font = Fonts.Body;
 
@@ -87,9 +91,12 @@ public sealed class FaultInspectionForm : Form
     {
         if (_session is not null)
         {
+            if (_attempt > 0 && !_attemptCompleted) CompleteAttempt();
             _session.Results.InvalidateFinalization();
             _session.Results.FaultPassed = null;
             _session.Results.FaultStatus = InspectionExecutionStatus.Running;
+            _attempt = _audit.BeginAttempt(_session, "fault_contact", "FAULT OPEN/CLOSE 접점 검사");
+            _attemptCompleted = false;
             new InspectionCheckpointService().TrySave(_session);
         }
         SetBusy(); ResetOperation(); ShowState("정상 통신 확인 중", "NORMAL", Colors.Primary);
@@ -101,7 +108,7 @@ public sealed class FaultInspectionForm : Form
             _open.Enabled = _finish.Enabled = _fail.Enabled = true;
         }
         catch (OperationCanceledException) { if (_session is not null) { _session.Results.FaultStatus = InspectionExecutionStatus.Stopped; new InspectionCheckpointService().TrySave(_session); } ResetButtons(); }
-        catch (Exception ex) { if (_session is not null) { _session.Results.FaultStatus = InspectionExecutionStatus.Error; new InspectionCheckpointService().TrySave(_session); } _status.Text = $"정상 통신 준비 실패\n{ex.Message}"; _status.ForeColor = Colors.Danger; await _host.StopAsync(); ResetButtons(); }
+        catch (Exception ex) { if (_session is not null) { _session.Results.FaultStatus = InspectionExecutionStatus.Error; new InspectionCheckpointService().TrySave(_session); } _status.Text = $"정상 통신 준비 실패\n{ex.Message}"; _status.ForeColor = Colors.Danger; await TryRestoreAndStopAsync("정상 통신 준비 실패 후 정리", showMessage: false); ResetButtons(); }
     }
 
     private async Task OpenAsync()
@@ -128,7 +135,11 @@ public sealed class FaultInspectionForm : Form
         SetBusy(); ShowState("정상 통신 복구 중", "전환 중", Colors.Primary); _status.Text = "Heating ID20 응답 복구와 정상 통신 유지 여부를 확인하는 중...";
         try
         {
-            await _host.RestoreNormalAsync(_operation?.Token ?? _lifetime.Token);
+            await SafetyOperationService.RunWithTimeoutAsync(
+                "FAULT 정상 통신 복구",
+                SafetyOperationService.FaultRestoreTimeout,
+                ct => _host.RestoreNormalAsync(ct),
+                _operation?.Token ?? _lifetime.Token);
             ShowState("CLOSE 측정 대기", "NORMAL", Colors.Primary); _status.Text = "테스터로 TB18-1과 TB18-2가 도통되는지 확인하세요."; _confirmClose.Enabled = _finish.Enabled = _fail.Enabled = true;
         }
         catch (OperationCanceledException) { if (_session is not null) _session.Results.FaultStatus = InspectionExecutionStatus.Stopped; }
@@ -142,6 +153,7 @@ public sealed class FaultInspectionForm : Form
         {
             _session.Results.FaultPassed = _openConfirmed;
             _session.Results.FaultStatus = _openConfirmed ? InspectionExecutionStatus.Pass : InspectionExecutionStatus.Fail;
+            CompleteAttempt();
             new InspectionCheckpointService().TrySave(_session);
         }
         ShowState(_openConfirmed ? "접점 검사 완료" : "OPEN 확인 필요", "NORMAL", _openConfirmed ? Colors.Success : Colors.Danger);
@@ -152,8 +164,12 @@ public sealed class FaultInspectionForm : Form
     private async Task FinishAsync()
     {
         SetBusy(); ShowState("정상 복구 후 종료 중", "NORMAL", Colors.Primary);
-        await _host.StopAsync(restoreNormal: true);
-        ShowState("검사 종료", "NORMAL", Colors.TextMuted); _status.Text = "통신 에뮬레이션을 종료하고 Heating ID20 응답을 정상 상태로 복구했습니다."; ResetButtons();
+        if (await TryRestoreAndStopAsync("검사 종료", showMessage: true))
+        {
+            ShowState("검사 종료", "NORMAL", Colors.TextMuted);
+            _status.Text = "Heating ID20 정상 응답을 확인하고 통신 에뮬레이션을 종료했습니다.";
+        }
+        ResetButtons();
     }
 
     private async Task MarkFailedAsync()
@@ -164,15 +180,18 @@ public sealed class FaultInspectionForm : Form
             _session.Results.InvalidateFinalization();
             _session.Results.FaultPassed = false;
             _session.Results.FaultStatus = InspectionExecutionStatus.Fail;
+            CompleteAttempt();
             new InspectionCheckpointService().TrySave(_session);
         }
         SetBusy();
         try
         {
-            await _host.StopAsync(restoreNormal: true);
-            ShowState("검사자 FAIL 판정", "NORMAL", Colors.Danger);
-            _status.Text = "FAULT 접점 검사 결과를 FAIL로 저장하고 통신 상태를 정상 복구했습니다.";
-            _status.ForeColor = Colors.Danger;
+            if (await TryRestoreAndStopAsync("FAIL 판정 후 정상 복구", showMessage: true))
+            {
+                ShowState("검사자 FAIL 판정", "NORMAL", Colors.Danger);
+                _status.Text = "FAULT 접점 검사 결과를 FAIL로 저장하고 Heating ID20 정상 응답을 확인했습니다.";
+                _status.ForeColor = Colors.Danger;
+            }
         }
         catch (Exception ex)
         {
@@ -197,13 +216,70 @@ public sealed class FaultInspectionForm : Form
 
     private async void OnClosing(object? sender, FormClosingEventArgs e)
     {
-        if (_closing) return; e.Cancel = true; _operation?.Cancel();
+        if (_closing) return;
+        e.Cancel = true;
+        if (_closeCleanupRunning) return;
+        _closeCleanupRunning = true;
+        _operation?.Cancel();
         if (_session is not null && _session.Results.FaultStatus == InspectionExecutionStatus.Running)
             _session.Results.FaultStatus = InspectionExecutionStatus.Stopped;
+        CompleteAttempt();
         if (_session is not null) new InspectionCheckpointService().TrySave(_session);
-        try { await _host.StopAsync(restoreNormal: true); } catch { }
+        await TryRestoreAndStopAsync("창 닫기", showMessage: true);
         _lifetime.Cancel(); _closing = true; Close();
     }
 
     protected override void Dispose(bool disposing) { if (disposing) { _operation?.Dispose(); _lifetime.Dispose(); } base.Dispose(disposing); }
+
+    private void CompleteAttempt()
+    {
+        if (_session is null || _attemptCompleted || _attempt == 0) return;
+        _audit.CompleteAttempt(_session, "fault_contact", _attempt, _session.Results.FaultStatus, _status.Text);
+        _attemptCompleted = true;
+    }
+
+    private async Task<bool> TryRestoreAndStopAsync(string context, bool showMessage)
+    {
+        try
+        {
+            await SafetyOperationService.RunWithTimeoutAsync(
+                "FAULT 정상 복구 및 통신 종료",
+                SafetyOperationService.FaultRestoreTimeout,
+                async ct =>
+                {
+                    Exception? restoreError = null;
+                    try
+                    {
+                        if (_host.IsRunning && _host.FaultTargetSuppressed)
+                            await _host.RestoreNormalAsync(ct);
+                    }
+                    catch (Exception ex)
+                    {
+                        restoreError = ex;
+                    }
+
+                    await _host.StopAsync(restoreNormal: false, ct: ct);
+                    if (restoreError is not null) throw restoreError;
+                });
+            if (_session is not null)
+                _audit.TryRecord(_session, "safety_cleanup_completed", "fault_restore", "success", $"{context}: 정상 응답 복구 및 종료 완료");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            if (_session is not null)
+            {
+                _session.Results.FaultStatus = InspectionExecutionStatus.Error;
+                _audit.TryRecord(_session, "safety_cleanup_failed", "fault_restore", "error", $"{context}: {ex.Message}", ex);
+                new InspectionCheckpointService().TrySave(_session);
+            }
+            _status.Text = $"정상 복구 실패\n{ex.Message}\n보드 전원과 TB18 상태를 직접 확인하세요.";
+            _status.ForeColor = Colors.Danger;
+            if (showMessage)
+                MessageBox.Show(this,
+                    $"FAULT 정상 복구를 확인하지 못했습니다.{Environment.NewLine}{Environment.NewLine}{ex.Message}{Environment.NewLine}{Environment.NewLine}보드 전원과 TB18 접점 상태를 직접 확인하세요.",
+                    "FAULT 안전 종료 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return false;
+        }
+    }
 }

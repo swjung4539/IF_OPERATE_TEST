@@ -8,6 +8,7 @@ namespace OperateTest.App.Controls;
 
 public sealed class ConnectionRow : UserControl
 {
+    public event EventHandler<SerialConnectionSnapshot>? ConnectionStateChanged;
     private readonly ISerialConnectionManager _manager;
     private readonly SerialChannelDefinition _definition;
     private readonly SerialConnection _connection;
@@ -17,6 +18,7 @@ public sealed class ConnectionRow : UserControl
     private readonly AppButton _connectButton;
     private readonly Label _status;
     private readonly StatusDot _dot;
+    private bool _operationRunning;
 
     public ConnectionRow(ISerialConnectionManager manager, SerialChannelDefinition definition)
     {
@@ -66,6 +68,8 @@ public sealed class ConnectionRow : UserControl
 
     private async void ConnectButtonOnClick(object? sender, EventArgs e)
     {
+        if (_operationRunning) return;
+        _operationRunning = true;
         _connectButton.Enabled = false;
         try
         {
@@ -87,6 +91,7 @@ public sealed class ConnectionRow : UserControl
         }
         finally
         {
+            _operationRunning = false;
             _connectButton.Enabled = _connection.IsConnected || _ports.Items.Count > 0;
         }
     }
@@ -118,7 +123,9 @@ public sealed class ConnectionRow : UserControl
         _ports.Enabled = canEdit;
         _baudRates.Enabled = canEdit;
         _uartFormats.Enabled = canEdit;
-        _connectButton.Enabled = snapshot.State == SerialConnectionState.Connected || _ports.Items.Count > 0;
+        _connectButton.Enabled = !_operationRunning &&
+                                 (snapshot.State == SerialConnectionState.Connected || _ports.Items.Count > 0);
+        ConnectionStateChanged?.Invoke(this, snapshot);
         Invalidate();
     }
 

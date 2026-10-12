@@ -2,6 +2,7 @@ using OperateTest.App.Models;
 using OperateTest.App.Services;
 using OperateTest.App.Services.StLink;
 using TestEmulator.Controls;
+using TestEmulator.Layout;
 using TestEmulator.Theme;
 
 namespace OperateTest.App.Forms;
@@ -22,11 +23,9 @@ public sealed class HomeForm : Form
     {
         _connections = connections; _protocols = protocols; _dioIdReader = dioIdReader; _rotaryReader = rotaryReader;
         Text = "Operate Test";
-        AutoScaleMode = AutoScaleMode.None;
         FormBorderStyle = FormBorderStyle.None;
         StartPosition = FormStartPosition.CenterScreen;
-        MinimumSize = new Size(1080, 700);
-        ClientSize = new Size(1480, 820);
+        ResponsiveWindow.Configure(this, new Size(1480, 820), new Size(980, 650));
         WindowState = FormWindowState.Normal;
         BackColor = Colors.AppBackground;
         Font = Fonts.Body;
@@ -50,10 +49,35 @@ public sealed class HomeForm : Form
         comm.Button.Click += (_, _) => BeginInspection(InspectionBoardType.Communication);
         dio.Button.Click += (_, _) => BeginInspection(InspectionBoardType.DigitalIo);
 
-        _footerLabel = new Label { Location = new Point(0, 744), Size = new Size(1600, 28), Font = Fonts.Caption, ForeColor = Colors.TextSecondary, TextAlign = ContentAlignment.MiddleCenter, Text = "ⓘ  검사 대상을 선택하면 해당 보드의 대시보드가 열립니다." };
+        _footerLabel = new Label { Location = new Point(0, 744), Size = new Size(1600, 28), Font = Fonts.Caption, ForeColor = Colors.TextSecondary, TextAlign = ContentAlignment.MiddleCenter, Text = $"ⓘ  검사 대상을 선택하면 해당 보드의 대시보드가 열립니다.  ·  v{ApplicationBuildInfo.Version}" };
         Controls.Add(_footerLabel);
+        var diagnostics = new AppButton
+        {
+            Variant = AppButtonVariant.Secondary,
+            IconGlyph = AppIcon.Info,
+            Text = "버전·진단 정보",
+            Size = new Size(164, 38),
+            Location = new Point(ClientSize.Width - 184, 72),
+            Anchor = AnchorStyles.Top | AnchorStyles.Right
+        };
+        diagnostics.Click += (_, _) => ShowDiagnostics();
+        Controls.Add(diagnostics);
         Resize += (_, _) => LayoutHome();
         LayoutHome();
+    }
+
+    private void ShowDiagnostics()
+    {
+        var buildTime = ApplicationBuildInfo.BuildFileTime == default
+            ? "확인할 수 없음"
+            : ApplicationBuildInfo.BuildFileTime.ToString("yyyy-MM-dd HH:mm:ss");
+        MessageBox.Show(this,
+            $"프로그램 버전: {ApplicationBuildInfo.Version}{Environment.NewLine}" +
+            $"배포 파일 시각: {buildTime}{Environment.NewLine}" +
+            $"실행 파일: {ApplicationBuildInfo.ExecutablePath}{Environment.NewLine}" +
+            $"SHA-256: {ApplicationBuildInfo.ExecutableSha256}{Environment.NewLine}{Environment.NewLine}" +
+            "검사 감사 로그는 선택한 결과 Excel 폴더의 .inspection-logs 폴더에 저장됩니다.",
+            "버전 및 진단 정보", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
     private (AppPanel Card, AppButton Button) BuildCard(int x, Color accent, Color accentSurface, AppIcon icon, string title, string description, (AppIcon Icon, string Label)[] tiles, string buttonText)
@@ -83,8 +107,8 @@ public sealed class HomeForm : Form
         var cardGap = wideLayout ? 52 : 20;
         var cardsWidth = cardWidth * 2 + cardGap;
         var left = Math.Max(20, (ClientSize.Width - cardsWidth) / 2);
-        var titleY = Math.Max(82, 122 + (ClientSize.Height - 900) / 3);
-        var cardsY = titleY + 138;
+        var titleY = Math.Max(76, 112 + (ClientSize.Height - 820) / 4);
+        var cardsY = titleY + 112;
 
         LayoutChoiceCard(_commCard, cardWidth);
         LayoutChoiceCard(_dioCard, cardWidth);
@@ -92,7 +116,7 @@ public sealed class HomeForm : Form
         _subtitleLabel.SetBounds(0, titleY + 62, ClientSize.Width, 28);
         _commCard.Location = new Point(left, cardsY);
         _dioCard.Location = new Point(left + cardWidth + cardGap, cardsY);
-        _footerLabel.SetBounds(0, Math.Min(ClientSize.Height - 40, cardsY + 464), ClientSize.Width, 28);
+        _footerLabel.SetBounds(0, Math.Max(cardsY + 424, ClientSize.Height - 42), ClientSize.Width, 28);
     }
 
     private static void LayoutChoiceCard(AppPanel card, int width)
@@ -120,26 +144,70 @@ public sealed class HomeForm : Form
 
     private void BeginInspection(InspectionBoardType boardType)
     {
-        using var setup = new InspectionSetupForm(boardType);
-        if (setup.ShowDialog(this) != DialogResult.OK || setup.Session is null) return;
+        InspectionSession? session = null;
+        var forceNewResultFile = false;
+        Guid? previousSessionId = null;
 
-        var session = setup.Session;
         while (true)
         {
-            InspectionShellForm inspection = boardType == InspectionBoardType.Communication
+            if (session is null)
+            {
+                using var setup = new InspectionSetupForm(boardType, forceNewResultFile, previousSessionId);
+                if (setup.ShowDialog(this) != DialogResult.OK || setup.Session is null) return;
+                session = setup.Session;
+                forceNewResultFile = false;
+                previousSessionId = null;
+            }
+
+            using InspectionShellForm inspection = boardType == InspectionBoardType.Communication
                 ? new CommInspectionForm(_connections, _protocols, _rotaryReader, session)
                 : new DioInspectionForm(_connections, _protocols, _dioIdReader, session);
-            bool continueWithNextBoard;
-            using (inspection)
-            {
-                inspection.ShowDialog(this);
-                continueWithNextBoard = inspection.ContinueWithNextBoard;
-            }
-            if (!continueWithNextBoard) return;
+            inspection.ShowDialog(this);
 
-            using var nextBoard = new NextBoardSerialForm(session);
-            if (nextBoard.ShowDialog(this) != DialogResult.OK || nextBoard.Session is null) return;
-            session = nextBoard.Session;
+            switch (inspection.CompletionAction)
+            {
+                case InspectionContinuationAction.SameWorkbook:
+                    if (!TryPrepareNextBoard(session, out var nextSession)) return;
+                    session = nextSession;
+                    break;
+
+                case InspectionContinuationAction.NewWorkbook:
+                    previousSessionId = session.SessionId;
+                    session = null;
+                    forceNewResultFile = true;
+                    break;
+
+                default:
+                    return;
+            }
+        }
+    }
+
+    private bool TryPrepareNextBoard(InspectionSession completedSession, out InspectionSession? nextSession)
+    {
+        nextSession = null;
+        try
+        {
+            var usage = new InspectionWorkbookService().GetUsage(completedSession.ResultPath, completedSession.BoardType);
+            if (usage.IsFull)
+            {
+                MessageBox.Show(this,
+                    "현재 결과 문서의 입력 가능한 30개 행을 모두 사용했습니다. 새 문서로 검사를 시작하세요.",
+                    "결과 문서 사용 완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return false;
+            }
+
+            using var dialog = new NextBoardSetupForm(completedSession, usage);
+            if (dialog.ShowDialog(this) != DialogResult.OK || dialog.Session is null) return false;
+            nextSession = dialog.Session;
+            return true;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(this,
+                $"다음 보드 검사를 준비하지 못했습니다.{Environment.NewLine}{Environment.NewLine}{ex.Message}",
+                "다음 보드 준비 실패", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return false;
         }
     }
 

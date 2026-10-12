@@ -48,8 +48,8 @@ public class StatusBadge : Control
         AppStatus.Running => ("실행 중", Colors.Info),
         AppStatus.Pass => ("PASS", Colors.Success),
         AppStatus.Fail => ("FAIL", Colors.Danger),
-        AppStatus.ErrorState => ("ERROR", Colors.Warning),
-        AppStatus.Stopped => ("STOP", Colors.TextMuted),
+        AppStatus.ErrorState => ("오류", Colors.Warning),
+        AppStatus.Stopped => ("중단", Colors.TextMuted),
         AppStatus.Unsupported => ("미지원", Colors.Neutral),
         _ => ("미실행", Colors.Neutral)
     };

@@ -16,7 +16,7 @@ public interface ICommEmulationHost
     Task PrepareNormalAsync(CancellationToken ct = default);
     Task InduceSlaveFaultAsync(CancellationToken ct = default);
     Task RestoreNormalAsync(CancellationToken ct = default);
-    Task StopAsync(bool restoreNormal = true);
+    Task StopAsync(bool restoreNormal = true, CancellationToken ct = default);
 }
 
 public sealed class CommEmulationHost : ICommEmulationHost
@@ -115,7 +115,7 @@ public sealed class CommEmulationHost : ICommEmulationHost
             throw new InvalidOperationException("전체 정상 통신 복구가 유지되지 않았습니다.");
     }
 
-    public async Task StopAsync(bool restoreNormal = true)
+    public async Task StopAsync(bool restoreNormal = true, CancellationToken ct = default)
     {
         CancellationTokenSource? cts;
         Task[] workers;
@@ -123,16 +123,21 @@ public sealed class CommEmulationHost : ICommEmulationHost
         if (cts is null) return;
         _suppressHeating20 = false;
         cts.Cancel();
-        try { await Task.WhenAll(workers).ConfigureAwait(false); }
-        catch (OperationCanceledException) { }
-        catch { }
-        lock (_gate)
+        try
         {
-            if (ReferenceEquals(_hostCts, cts))
+            await Task.WhenAll(workers).WaitAsync(ct).ConfigureAwait(false);
+        }
+        catch (OperationCanceledException) when (!ct.IsCancellationRequested) { }
+        finally
+        {
+            lock (_gate)
             {
-                _workers.Clear();
-                _hostCts.Dispose();
-                _hostCts = null;
+                if (ReferenceEquals(_hostCts, cts))
+                {
+                    _workers.Clear();
+                    _hostCts.Dispose();
+                    _hostCts = null;
+                }
             }
         }
     }

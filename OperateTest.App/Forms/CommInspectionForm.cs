@@ -20,6 +20,8 @@ public sealed class CommInspectionForm : InspectionShellForm
     private readonly Queue<string> _recentCommLogs = [];
     private CancellationTokenSource? _testCts;
     private bool _testRunning;
+    private bool _closing;
+    private bool _closeCleanupRunning;
 
     public CommInspectionForm(ISerialConnectionManager connections, IInspectionProtocolServices protocols, ICommRotaryReader rotaryReader, InspectionSession session)
         : base("COMM 보드 검사", "통신 경로 · 로터리 스위치 · FAULT 접점", Colors.Primary, session: session)
@@ -30,8 +32,13 @@ public sealed class CommInspectionForm : InspectionShellForm
         _session = session;
         _inspection = new CommInspectionService(connections, protocols);
         _keepAliveHost = new CommEmulationHost(connections, protocols);
+        ConfigureConnectionReadiness(() =>
+        {
+            var connected = ChannelDefinitions.CommPortChannels.Count(channel => _connections.Get(channel.Key).IsConnected);
+            return (connected == ChannelDefinitions.CommPortChannels.Count, $"COMM 포트 {connected}/4");
+        });
         Shown += (_, _) => Navigate("dashboard");
-        FormClosing += (_, _) => { _testCts?.Cancel(); _keepAliveHost.StopAsync().GetAwaiter().GetResult(); };
+        FormClosing += OnClosing;
     }
 
     protected override void Navigate(string key)
@@ -45,7 +52,7 @@ public sealed class CommInspectionForm : InspectionShellForm
         switch (key)
         {
             case "result":
-                ShowPage(key, "최종 판정", "필수 검사 완료 여부를 확인하고 제품의 최종 PASS/FAIL을 확정합니다.", new InspectionSummaryControl(_session));
+                ShowPage(key, "최종 판정", "필수 검사 완료 여부를 확인하고 제품의 최종 PASS/FAIL을 확정합니다.", new InspectionSummaryControl(_session, RequestContinuation, RefreshWorkflow));
                 break;
             case "settings":
                 ShowPage(key, "COMM 통신 설정", "각 경로의 COM 포트와 통신 속도·UART 형식을 설정합니다.", BuildSettingsPage());
@@ -54,7 +61,7 @@ public sealed class CommInspectionForm : InspectionShellForm
                 ShowPage(key, "COMM 통신 검사", "검사할 경로를 선택하고 반복 조건을 설정한 뒤 실제 요청·응답을 확인합니다.", BuildTestPage());
                 break;
             case "manual":
-                ShowPage(key, "육안 및 전원 검사", "작업자가 직접 확인한 육안 상태와 전원 측정 결과를 입력합니다.", new ManualInspectionControl(_session));
+                ShowPage(key, "육안 및 전원 검사", "작업자가 직접 확인한 육안 상태와 전원 측정 결과를 입력합니다.", new ManualInspectionControl(_session, RefreshWorkflow));
                 break;
             case "fault-switch":
                 ShowPage(key, "FAULT 및 스위치 검사", "항목의 열기 버튼을 누르면 전용 검사창이 표시됩니다.", BuildToolsPage());
@@ -66,7 +73,13 @@ public sealed class CommInspectionForm : InspectionShellForm
         UpdateTopStatus();
     }
 
-    private Panel BasePage() => new() { Dock = DockStyle.Fill, AutoScroll = true, BackColor = Colors.AppBackground };
+    private Panel BasePage() => new()
+    {
+        Dock = DockStyle.Fill,
+        AutoScroll = true,
+        AutoScrollMinSize = new Size(1252, 710),
+        BackColor = Colors.AppBackground
+    };
 
     private Control BuildDashboard()
     {
@@ -98,8 +111,24 @@ public sealed class CommInspectionForm : InspectionShellForm
                 5 => _connections.Get(ChannelDefinitions.Backup.Key).IsConnected,
                 _ => false
             };
-            var nodeText = i == 0 ? "검사 프로그램" : i == 2 ? "● 상태 맵 판정" : channelConnected ? "● 연결됨" : "● 연결 안 됨";
-            topology.Controls.Add(new Label { Location = new Point(x, 201), Size = new Size(96, 21), Font = Fonts.Caption, ForeColor = channelConnected ? Colors.Success : Colors.TextMuted, TextAlign = ContentAlignment.MiddleCenter, Text = nodeText });
+            var responseKey = i switch
+            {
+                1 => ChannelDefinitions.Uart4.Key,
+                2 => ChannelDefinitions.DioSlave.Key,
+                3 => ChannelDefinitions.Heating.Key,
+                4 => ChannelDefinitions.Gas.Key,
+                5 => ChannelDefinitions.Backup.Key,
+                _ => string.Empty
+            };
+            var response = string.IsNullOrEmpty(responseKey)
+                ? new DeviceResponseState { Status = DeviceResponseStatus.Responding }
+                : DeviceResponseTracker.Get(_session.Results, responseKey);
+            var nodeText = i == 0
+                ? "검사 프로그램"
+                : !channelConnected && i != 2
+                    ? "포트 미연결"
+                    : DeviceResponseTracker.StatusText(response);
+            topology.Controls.Add(new Label { Location = new Point(x, 201), Size = new Size(96, 38), Font = Fonts.Caption, ForeColor = ResponseColor(response.Status, channelConnected || i == 2), TextAlign = ContentAlignment.TopCenter, Text = nodeText, AutoEllipsis = true });
             if (i < names.Length - 1) topology.Controls.Add(new Panel { Location = new Point(x + 87, 131), Size = new Size(58, 1), BackColor = Colors.BorderStrong });
         }
         page.Controls.Add(topology);
@@ -119,6 +148,8 @@ public sealed class CommInspectionForm : InspectionShellForm
         var settings = new AppButton { Variant = AppButtonVariant.OutlinePrimary, IconGlyph = AppIcon.Settings, Text = "통신 설정", Location = new Point(258, 99), Size = new Size(220, 48) };
         var test = new AppButton { Variant = AppButtonVariant.OutlinePrimary, IconGlyph = AppIcon.Play, Text = "통신 검사", Location = new Point(492, 99), Size = new Size(220, 48) };
         var tool = new AppButton { Variant = AppButtonVariant.Secondary, IconGlyph = AppIcon.Settings, Text = "FAULT 및 스위치", Location = new Point(726, 99), Size = new Size(250, 48) };
+        test.Enabled = connected == ChannelDefinitions.CommPortChannels.Count;
+        test.AccessibleDescription = test.Enabled ? "통신 검사 실행 화면 열기" : "COMM 포트 4개를 모두 연결한 후 사용할 수 있습니다.";
         manual.Click += (_, _) => Navigate("manual"); settings.Click += (_, _) => Navigate("settings"); test.Click += (_, _) => Navigate("test"); tool.Click += (_, _) => Navigate("fault-switch");
         quick.Controls.Add(manual); quick.Controls.Add(settings); quick.Controls.Add(test); quick.Controls.Add(tool);
         page.Controls.Add(quick);
@@ -148,6 +179,17 @@ public sealed class CommInspectionForm : InspectionShellForm
         foreach (var definition in ChannelDefinitions.CommPortChannels)
         {
             var row = new ConnectionRow(_connections, definition) { Location = new Point(24, y), Size = new Size(1138, 66) };
+            row.ConnectionStateChanged += (_, snapshot) =>
+            {
+                if (snapshot.State != SerialConnectionState.Connected)
+                {
+                    DeviceResponseTracker.Update(_session.Results, definition.Key, DeviceResponseStatus.NotChecked, "포트 연결 후 응답 확인 필요");
+                    if (definition.Key == ChannelDefinitions.Uart4.Key)
+                        DeviceResponseTracker.Update(_session.Results, ChannelDefinitions.DioSlave.Key, DeviceResponseStatus.NotChecked, "MAIN UART4 연결 후 상태 맵 확인 필요");
+                }
+                UpdateTopStatus();
+                RefreshWorkflow();
+            };
             _connectionRows.Add(row);
             main.Controls.Add(row);
             y += 68;
@@ -245,6 +287,8 @@ public sealed class CommInspectionForm : InspectionShellForm
             _session.Results.InvalidateFinalization();
             _session.Results.CommunicationPassed = null;
             _session.Results.CommunicationStatus = InspectionExecutionStatus.NotRun;
+            foreach (var key in ChannelDefinitions.CommChannels.Select(channel => channel.Key))
+                _session.Results.DeviceResponses.Remove(key);
             foreach (var key in counts.Keys.ToArray())
             {
                 Array.Clear(counts[key]); foreach (var label in countLabels[key]) label.Text = "0";
@@ -256,6 +300,7 @@ public sealed class CommInspectionForm : InspectionShellForm
         reset.Click += (_, _) => ResetResults();
         start.Click += async (_, _) =>
         {
+            if (_testRunning) return;
             var selected = toggles.Where(x => x.Value.IsOn).Select(x => x.Key).ToArray();
             if (selected.Length == 0) { MessageBox.Show(this, "검사할 통신 경로를 하나 이상 ON으로 설정하세요.", "통신 검사", MessageBoxButtons.OK, MessageBoxIcon.Information); return; }
             var missingConnections = GetMissingRequiredConnections(selected);
@@ -276,14 +321,23 @@ public sealed class CommInspectionForm : InspectionShellForm
             _session.Results.InvalidateFinalization();
             _testCts?.Dispose(); _testCts = new CancellationTokenSource(); _testRunning = true;
             _session.Results.CommunicationStatus = InspectionExecutionStatus.Running;
+            foreach (var key in selected)
+                DeviceResponseTracker.Update(_session.Results, key, DeviceResponseStatus.Checking, "장치 응답 확인 중");
+            RefreshWorkflow();
             start.Enabled = reset.Enabled = false; stop.Enabled = true; repeatInput.Enabled = forever.Enabled = false;
             foreach (var toggle in toggles.Values) toggle.Enabled = false;
             var round = 0;
             var runFailed = 0;
+            var audit = new InspectionAuditService();
+            var attempt = audit.BeginAttempt(_session, "communication", $"경로 {selected.Length}개, 반복 {repeat}회");
+            Exception? attemptException = null;
             IReadOnlyList<CommPathResult> lastRoundResults = [];
             try
             {
-                await _keepAliveHost.StopAsync();
+                await SafetyOperationService.RunWithTimeoutAsync(
+                    "COMM 정상 통신 유지 종료",
+                    SafetyOperationService.FaultRestoreTimeout,
+                    ct => _keepAliveHost.StopAsync(ct: ct));
                 while (!_testCts.IsCancellationRequested && (forever.IsOn || round < repeat))
                 {
                     round++; runStatus.Text = forever.IsOn ? $"반복 {round}회 실행 중" : $"{round}/{repeat}회 실행 중"; runStatus.ForeColor = Colors.Primary;
@@ -291,7 +345,18 @@ public sealed class CommInspectionForm : InspectionShellForm
                     var progress = new Progress<CommPathResult>(result =>
                     {
                         details[result.ChannelKey].Text = result.Detail;
-                        if (result.Verdict == InspectionVerdict.Running) return;
+                        if (result.Verdict == InspectionVerdict.Running)
+                        {
+                            DeviceResponseTracker.Update(_session.Results, result.ChannelKey, DeviceResponseStatus.Checking, result.Detail);
+                            return;
+                        }
+                        DeviceResponseTracker.Update(
+                            _session.Results,
+                            result.ChannelKey,
+                            result.Verdict == InspectionVerdict.Pass
+                                ? DeviceResponseStatus.Responding
+                                : DeviceResponseTracker.ClassifyFailure(result.Detail),
+                            result.Detail);
                         _recentCommLogs.Enqueue($"[{DateTime.Now:HH:mm:ss}] {result.DisplayName} · {result.Verdict}{Environment.NewLine}{result.Detail}");
                         while (_recentCommLogs.Count > 10) _recentCommLogs.Dequeue();
                         latest.Text = string.Join(Environment.NewLine + Environment.NewLine, _recentCommLogs.Reverse());
@@ -336,16 +401,80 @@ public sealed class CommInspectionForm : InspectionShellForm
                     _session.Results.CommunicationStatus = InspectionExecutionStatus.Stopped;
                 }
             }
-            catch (OperationCanceledException) { _session.Results.CommunicationPassed = null; _session.Results.CommunicationStatus = InspectionExecutionStatus.Stopped; foreach (var key in selected.Where(key => verdicts[key].Status == AppStatus.Running)) verdicts[key].Status = AppStatus.Stopped; runStatus.Text = "사용자에 의해 중지됨"; runStatus.ForeColor = Colors.TextMuted; }
-            catch (Exception ex) { _session.Results.CommunicationPassed = null; _session.Results.CommunicationStatus = InspectionExecutionStatus.Error; foreach (var key in selected.Where(key => verdicts[key].Status == AppStatus.Running)) verdicts[key].Status = AppStatus.ErrorState; errors++; total++; UpdateMetrics(); runStatus.Text = $"검사 오류: {ex.Message}"; runStatus.ForeColor = Colors.Warning; }
+            catch (OperationCanceledException)
+            {
+                _session.Results.CommunicationPassed = null;
+                _session.Results.CommunicationStatus = InspectionExecutionStatus.Stopped;
+                foreach (var key in selected.Where(key => verdicts[key].Status == AppStatus.Running))
+                {
+                    verdicts[key].Status = AppStatus.Stopped;
+                    DeviceResponseTracker.Update(_session.Results, key, DeviceResponseStatus.NotChecked, "검사 중단으로 응답 확인 미완료");
+                }
+                runStatus.Text = "사용자에 의해 중지됨";
+                runStatus.ForeColor = Colors.TextMuted;
+            }
+            catch (Exception ex)
+            {
+                attemptException = ex;
+                _session.Results.CommunicationPassed = null;
+                _session.Results.CommunicationStatus = InspectionExecutionStatus.Error;
+                foreach (var key in selected.Where(key => verdicts[key].Status == AppStatus.Running))
+                {
+                    verdicts[key].Status = AppStatus.ErrorState;
+                    DeviceResponseTracker.Update(_session.Results, key, DeviceResponseTracker.ClassifyFailure(ex.Message), ex.Message);
+                }
+                errors++; total++; UpdateMetrics(); runStatus.Text = $"검사 오류: {ex.Message}"; runStatus.ForeColor = Colors.Warning;
+            }
             finally
             {
+                audit.CompleteAttempt(_session, "communication", attempt, _session.Results.CommunicationStatus, runStatus.Text, attemptException);
                 new InspectionCheckpointService().TrySave(_session);
                 _testRunning = false; start.Enabled = reset.Enabled = true; stop.Enabled = false; repeatInput.Enabled = forever.Enabled = true;
                 foreach (var toggle in toggles.Values) toggle.Enabled = true;
+                UpdateTopStatus();
+                RefreshWorkflow();
             }
         };
         return page;
+    }
+
+    private async void OnClosing(object? sender, FormClosingEventArgs e)
+    {
+        if (_closing) return;
+        e.Cancel = true;
+        if (_closeCleanupRunning) return;
+        _closeCleanupRunning = true;
+        _testCts?.Cancel();
+        Exception? cleanupError = null;
+        try
+        {
+            await SafetyOperationService.RunWithTimeoutAsync(
+                "COMM 통신 안전 종료",
+                SafetyOperationService.FaultRestoreTimeout,
+                ct => _keepAliveHost.StopAsync(ct: ct));
+            new InspectionAuditService().TryRecord(
+                _session, "safety_cleanup_completed", "communication", "success", "COMM 통신 작업 및 정상 통신 유지 종료 완료");
+        }
+        catch (Exception ex)
+        {
+            cleanupError = ex;
+            _session.Results.CommunicationStatus = InspectionExecutionStatus.Error;
+            new InspectionAuditService().TryRecord(
+                _session, "safety_cleanup_failed", "communication", "error",
+                $"COMM 통신 종료 실패: {ex.Message}", ex);
+            new InspectionCheckpointService().TrySave(_session);
+        }
+
+        _closing = true;
+        if (cleanupError is not null)
+        {
+            MessageBox.Show(this,
+                $"COMM 통신을 정상 종료하지 못했습니다.{Environment.NewLine}{Environment.NewLine}" +
+                $"{cleanupError.Message}{Environment.NewLine}{Environment.NewLine}" +
+                "보드 전원과 통신 케이블 상태를 확인한 뒤 다시 검사하세요.",
+                "안전 종료 확인 필요", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+        Close();
     }
 
     private Control BuildToolsPage()
@@ -354,8 +483,10 @@ public sealed class CommInspectionForm : InspectionShellForm
         var card = new AppPanel { Location = new Point(30, 12), Size = new Size(1192, 330) };
         card.Controls.Add(Title("검사 항목", 24, 20, 300));
         card.Controls.Add(Caption("열기 버튼을 누르면 해당 항목의 전용 검사창이 표시됩니다.", 24, 51, 650));
-        AddToolRow(card, 90, AppIcon.Settings, "로터리 스위치 검사", "ST-LINK로 PC0~PC3을 읽어 0~F 위치를 실시간 표시합니다.", "ST-LINK 필요", () => { using var form = new RotaryInspectionForm(_rotaryReader, _session); form.ShowDialog(this); });
-        AddToolRow(card, 190, AppIcon.Shield, "FAULT 접점 검사", "Heating ID20 응답 차단·복구 후 TB18 개방/도통을 검사자가 확인합니다.", "전체 COMM 포트 연결 필요", OpenFaultInspection);
+        var stLinkReady = _rotaryReader.CliPath is not null;
+        var portsReady = GetMissingRequiredConnections(ChannelDefinitions.CommPortChannels.Select(definition => definition.Key)).Length == 0;
+        AddToolRow(card, 90, AppIcon.Settings, "로터리 스위치 검사", "ST-LINK로 PC0~PC3을 읽어 0~F 위치를 실시간 표시합니다.", stLinkReady ? "ST-LINK CLI 확인" : "STM32 Programmer 설치 필요", stLinkReady, () => { using var form = new RotaryInspectionForm(_rotaryReader, _session); form.ShowDialog(this); RefreshWorkflow(); });
+        AddToolRow(card, 190, AppIcon.Shield, "FAULT 접점 검사", "Heating ID20 응답 차단·복구 후 TB18 개방/도통을 검사자가 확인합니다.", portsReady ? "COMM 포트 준비됨" : "전체 COMM 포트 연결 필요", portsReady, OpenFaultInspection);
         page.Controls.Add(card);
         return page;
     }
@@ -376,6 +507,7 @@ public sealed class CommInspectionForm : InspectionShellForm
         }
         using var form = new FaultInspectionForm(_connections, _protocols, _keepAliveHost, _session);
         form.ShowDialog(this);
+        RefreshWorkflow();
     }
 
     private SerialChannelDefinition[] GetMissingRequiredConnections(IEnumerable<string> selectedKeys)
@@ -407,22 +539,46 @@ public sealed class CommInspectionForm : InspectionShellForm
         parent.Controls.Add(new Label { Location = new Point(72, y + 20), Size = new Size(230, 22), Font = Fonts.ButtonText, ForeColor = ok ? Colors.Success : Colors.TextMuted, Text = value });
     }
 
-    private static void AddToolRow(Control parent, int y, AppIcon icon, string title, string description, string requirement, Action open)
+    private static void AddToolRow(Control parent, int y, AppIcon icon, string title, string description, string requirement, bool enabled, Action open)
     {
         var row = new AppPanel { Location = new Point(24, y), Size = new Size(1142, 84), BackColor = Colors.Surface };
         row.Controls.Add(new CircleIcon { Icon = icon, Accent = Colors.Primary, Location = new Point(18, 18), Size = new Size(46, 46) });
         row.Controls.Add(new Label { Location = new Point(82, 14), Size = new Size(310, 24), Font = Fonts.ButtonText, ForeColor = Colors.TextPrimary, Text = title });
         row.Controls.Add(new Label { Location = new Point(82, 42), Size = new Size(640, 22), Font = Fonts.Caption, ForeColor = Colors.TextSecondary, Text = description });
-        row.Controls.Add(new Label { Location = new Point(770, 28), Size = new Size(180, 26), Font = Fonts.Caption, ForeColor = Colors.Primary, TextAlign = ContentAlignment.MiddleCenter, Text = requirement });
+        row.Controls.Add(new Label { Location = new Point(744, 20), Size = new Size(220, 44), Font = Fonts.Caption, ForeColor = enabled ? Colors.Success : Colors.Warning, TextAlign = ContentAlignment.MiddleCenter, Text = requirement });
         var button = new AppButton { Variant = AppButtonVariant.OutlinePrimary, IconGlyph = AppIcon.FolderOpen, Text = "열기", Location = new Point(984, 20), Size = new Size(130, 44) };
+        button.Enabled = enabled;
+        button.AccessibleDescription = enabled ? $"{title} 열기" : requirement;
         button.Click += (_, _) => open(); row.Controls.Add(button); parent.Controls.Add(row);
     }
 
     private void UpdateTopStatus()
     {
         var connected = ChannelDefinitions.CommPortChannels.Count(x => _connections.Get(x.Key).IsConnected);
-        SetTopStatus(connected == 4 ? "전체 COMM 포트 연결됨" : $"COMM 포트 {connected}/4 연결", connected == 4 ? Colors.Success : Colors.TextMuted);
+        var responding = ChannelDefinitions.CommChannels.Count(channel =>
+        {
+            var portKey = channel.Key == ChannelDefinitions.DioSlave.Key ? ChannelDefinitions.Uart4.Key : channel.Key;
+            return _connections.Get(portKey).IsConnected
+                   && DeviceResponseTracker.Get(_session.Results, channel.Key).Status == DeviceResponseStatus.Responding;
+        });
+        var text = connected < 4
+            ? $"포트 {connected}/4 연결 · 장치 응답 {responding}/5"
+            : responding == 5
+                ? "포트 4/4 연결 · 장치 응답 5/5 정상"
+                : $"포트 4/4 연결 · 장치 응답 {responding}/5 확인";
+        SetTopStatus(text, responding == 5 ? Colors.Success : connected == 4 ? Colors.Primary : Colors.TextMuted);
     }
+
+    private static Color ResponseColor(DeviceResponseStatus status, bool portAvailable) => !portAvailable
+        ? Colors.TextMuted
+        : status switch
+        {
+            DeviceResponseStatus.Responding => Colors.Success,
+            DeviceResponseStatus.NoResponse => Colors.Danger,
+            DeviceResponseStatus.ProtocolError => Colors.Warning,
+            DeviceResponseStatus.Checking => Colors.Primary,
+            _ => Colors.TextMuted
+        };
 
     protected override void Dispose(bool disposing)
     {

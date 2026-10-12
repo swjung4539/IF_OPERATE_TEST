@@ -1,7 +1,7 @@
 using System.Diagnostics;
-using OperateTest.App.Forms;
 using OperateTest.App.Models;
 using OperateTest.App.Services;
+using OperateTest.App.Forms;
 using TestEmulator.Controls;
 using TestEmulator.Theme;
 
@@ -10,6 +10,8 @@ namespace OperateTest.App.Controls;
 public sealed class InspectionSummaryControl : Panel
 {
     private readonly InspectionSession _session;
+    private readonly Action<InspectionContinuationAction>? _continuationRequested;
+    private readonly Action? _stateChanged;
     private readonly Panel _rows = new();
     private readonly Label _message = new();
     private readonly Label _overall = new();
@@ -18,11 +20,17 @@ public sealed class InspectionSummaryControl : Panel
     private readonly AppButton _openFolder;
     private readonly AppButton _nextBoard;
 
-    public InspectionSummaryControl(InspectionSession session)
+    public InspectionSummaryControl(
+        InspectionSession session,
+        Action<InspectionContinuationAction>? continuationRequested = null,
+        Action? stateChanged = null)
     {
         _session = session;
+        _continuationRequested = continuationRequested;
+        _stateChanged = stateChanged;
         Dock = DockStyle.Fill;
         AutoScroll = true;
+        AutoScrollMinSize = new Size(1252, 700);
         BackColor = Colors.AppBackground;
 
         var card = new AppPanel { Location = new Point(30, 12), Size = new Size(1192, 500) };
@@ -53,22 +61,17 @@ public sealed class InspectionSummaryControl : Panel
         info.Controls.Add(new Label { Location = new Point(24, 39), Size = new Size(1138, 25), Font = Fonts.Caption, ForeColor = Colors.TextSecondary, Text = session.ResultPath, AutoEllipsis = true });
         _openExcel = new AppButton { Variant = AppButtonVariant.OutlinePrimary, IconGlyph = AppIcon.FolderOpen, Text = "Excel 파일 열기", Location = new Point(520, 76), Size = new Size(190, 42) };
         _openFolder = new AppButton { Variant = AppButtonVariant.Secondary, IconGlyph = AppIcon.FolderOpen, Text = "저장 폴더 열기", Location = new Point(724, 76), Size = new Size(190, 42) };
-        _nextBoard = new AppButton { Variant = AppButtonVariant.Primary, IconGlyph = AppIcon.ChevronRight, Text = "다음 보드 검사", Location = new Point(928, 76), Size = new Size(216, 42) };
+        _nextBoard = new AppButton { Variant = AppButtonVariant.Primary, IconGlyph = AppIcon.ChevronRight, Text = "다음 작업 선택", Location = new Point(928, 76), Size = new Size(216, 42) };
         _openExcel.Click += (_, _) => OpenPath(_session.ResultPath);
         _openFolder.Click += (_, _) => OpenPath(Path.GetDirectoryName(_session.ResultPath)!);
-        _nextBoard.Click += (_, _) => (FindForm() as InspectionShellForm)?.RequestNextBoard();
+        _nextBoard.Click += (_, _) => ShowCompletionChoices();
         info.Controls.Add(_openExcel); info.Controls.Add(_openFolder); info.Controls.Add(_nextBoard);
         Controls.Add(info);
         RefreshView();
     }
 
     private IReadOnlyList<(string Name, InspectionExecutionStatus Status)> RequiredItems()
-    {
-        var r = _session.Results;
-        return _session.BoardType == InspectionBoardType.Communication
-            ? [("육안 및 전원 검사", r.ManualStatus), ("통신 검사", r.CommunicationStatus), ("로터리 스위치 검사", r.RotaryStatus), ("FAULT 접점 검사", r.FaultStatus)]
-            : [("육안 및 전원 검사", r.ManualStatus), ("DO-DI 루프백 검사", r.DioLoopbackStatus), ("ID DIP 스위치 검사", r.DipStatus), ("DO 전체 OFF 안전 확인", SafetyStatus(r.DioSafetyStatus))];
-    }
+        => InspectionWorkflowService.RequiredItems(_session);
 
     private void RefreshView()
     {
@@ -137,9 +140,8 @@ public sealed class InspectionSummaryControl : Panel
             new InspectionWorkbookService().SaveFinalResults(_session);
             _message.ForeColor = Colors.Success;
             RefreshView();
-            MessageBox.Show(this,
-                $"최종 판정과 검사 결과를 Excel 파일에 저장했습니다.{Environment.NewLine}{Environment.NewLine}{_session.ResultPath}",
-                "검사 결과 저장 완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            _stateChanged?.Invoke();
+            ShowCompletionChoices();
         }
         catch (Exception ex)
         {
@@ -151,19 +153,33 @@ public sealed class InspectionSummaryControl : Panel
             _overall.ForeColor = Colors.Danger;
             _message.Text = "Excel 파일을 닫은 뒤 다시 시도하세요.";
             _message.ForeColor = Colors.Danger;
+            _stateChanged?.Invoke();
             MessageBox.Show(this,
                 $"Excel 결과를 저장하지 못했습니다.{Environment.NewLine}{Environment.NewLine}{ex.Message}",
                 "검사 결과 저장 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
-    private static InspectionExecutionStatus SafetyStatus(DioSafetyStatus status) => status switch
+    private void ShowCompletionChoices()
     {
-        DioSafetyStatus.OffVerified => InspectionExecutionStatus.Pass,
-        DioSafetyStatus.Failed => InspectionExecutionStatus.Error,
-        DioSafetyStatus.Restoring => InspectionExecutionStatus.Running,
-        _ => InspectionExecutionStatus.NotRun
-    };
+        if (!_session.Results.IsFinalized || !_session.Results.WorkbookSavedAt.HasValue) return;
+
+        try
+        {
+            var usage = new InspectionWorkbookService().GetUsage(_session.ResultPath, _session.BoardType);
+            using var dialog = new InspectionCompletionForm(_session, usage);
+            if (dialog.ShowDialog(FindForm()) != DialogResult.OK
+                || dialog.SelectedAction == InspectionContinuationAction.None)
+                return;
+            _continuationRequested?.Invoke(dialog.SelectedAction);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(this,
+                $"결과 파일의 기록 현황을 확인하지 못했습니다.{Environment.NewLine}{Environment.NewLine}{ex.Message}",
+                "다음 작업 선택 실패", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+    }
 
     private static AppStatus ToAppStatus(InspectionExecutionStatus status) => status switch
     {

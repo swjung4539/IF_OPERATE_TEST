@@ -64,3 +64,25 @@ Fault Emulator와 같은 흐름으로 초기 선택 화면, 좌측 메뉴형 보
 - FAULT 및 스위치 검사
 
 로터리 스위치, FAULT 접점, DIO ID DIP 검사는 각 항목의 열기 버튼으로 독립 검사창을 실행합니다.
+
+## 연속 검사 결과 파일 검증
+
+```powershell
+.\verify-workbook-flow.cmd
+```
+
+다음 흐름을 임시 Excel 문서로 자동 검증합니다.
+
+- 동일 문서 10개 및 최대 30개 보드 누적
+- 중복 시리얼과 31번째 기록 차단
+- 중단 검사 체크포인트 복구
+- 새 문서 `_02` 생성
+- COMM/DIO 결과 문서 분리
+- Excel 잠금 중 저장 실패와 기존 파일 무손상
+
+## 개발·배포 실행 파일 운용
+
+- 기능 수정과 현장 확인은 `artifacts\Debug\OperateTest.exe`에서 수행합니다.
+- Debug 파일은 `dotnet build OperateTest.sln -c Debug` 또는 `build-debug.cmd`로 갱신합니다.
+- 사용자가 배포를 확정하기 전에는 `artifacts\Deploy\OperateTest.exe`를 다시 게시하지 않습니다.
+- 최종 승인 후에만 `publish-deploy.cmd`를 실행하고 배포 파일의 버전과 SHA-256을 기록합니다.

@@ -25,6 +25,23 @@ public enum DioSafetyStatus
     Failed
 }
 
+public enum DeviceResponseStatus
+{
+    NotChecked,
+    Checking,
+    Responding,
+    NoResponse,
+    ProtocolError
+}
+
+public enum InspectionContinuationAction
+{
+    None,
+    SameWorkbook,
+    NewWorkbook,
+    Finish
+}
+
 public sealed record InspectionSession(
     InspectionBoardType BoardType,
     string TemplatePath,
@@ -35,12 +52,20 @@ public sealed record InspectionSession(
     int RowNumber)
 {
     public InspectionResultState Results { get; } = new();
+    public Guid SessionId { get; set; } = Guid.NewGuid();
+    public Guid? PreviousSessionId { get; set; }
+    public DateTime StartedAt { get; set; } = DateTime.Now;
+    public string ApplicationVersion { get; set; } = string.Empty;
+    public string TemplateProfileVersion { get; set; } = string.Empty;
+    public string TemplateSha256 { get; set; } = string.Empty;
+    public Dictionary<string, int> AttemptCounts { get; } = new(StringComparer.OrdinalIgnoreCase);
 }
 
 public sealed class InspectionResultState
 {
     public Dictionary<string, InspectionItemResult> VisualItems { get; } = new(StringComparer.OrdinalIgnoreCase);
     public Dictionary<string, InspectionItemResult> PowerItems { get; } = new(StringComparer.OrdinalIgnoreCase);
+    public Dictionary<string, DeviceResponseState> DeviceResponses { get; } = new(StringComparer.OrdinalIgnoreCase);
     public bool ManualInspectionCompleted { get; set; }
     public InspectionExecutionStatus ManualStatus { get; set; }
     public bool? CommunicationPassed { get; set; }
@@ -69,6 +94,13 @@ public sealed class InspectionResultState
     }
 }
 
+public sealed class DeviceResponseState
+{
+    public DeviceResponseStatus Status { get; set; }
+    public DateTime? CheckedAt { get; set; }
+    public string Detail { get; set; } = string.Empty;
+}
+
 public sealed class InspectionItemResult
 {
     public bool? Passed { get; set; }
@@ -78,4 +110,11 @@ public sealed class InspectionItemResult
 public sealed record WorkbookValidationResult(
     bool IsValid,
     string Message,
-    IReadOnlyList<string> SheetNames);
+    IReadOnlyList<string> SheetNames,
+    string ProfileVersion = "");
+
+public sealed record WorkbookUsage(int UsedRows, int Capacity)
+{
+    public int RemainingRows => Math.Max(0, Capacity - UsedRows);
+    public bool IsFull => RemainingRows == 0;
+}

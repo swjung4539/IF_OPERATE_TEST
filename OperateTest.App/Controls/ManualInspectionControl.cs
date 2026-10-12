@@ -1,4 +1,3 @@
-using System.Globalization;
 using OperateTest.App.Models;
 using OperateTest.App.Services;
 using TestEmulator.Controls;
@@ -24,12 +23,16 @@ public sealed class ManualInspectionControl : Panel
     private readonly Dictionary<string, ComboBox> _powerSelectors = [];
     private readonly Dictionary<string, AppTextBox> _measurements = [];
     private readonly Label _status = new();
+    private readonly Action? _stateChanged;
+    private bool _loading = true;
 
-    public ManualInspectionControl(InspectionSession session)
+    public ManualInspectionControl(InspectionSession session, Action? stateChanged = null)
     {
         _session = session;
+        _stateChanged = stateChanged;
         Dock = DockStyle.Fill;
         AutoScroll = true;
+        AutoScrollMinSize = new Size(1252, 680);
         BackColor = Colors.AppBackground;
 
         var visual = new AppPanel { Location = new Point(30, 12), Size = new Size(570, 570) };
@@ -48,7 +51,7 @@ public sealed class ManualInspectionControl : Panel
         power.Controls.Add(Title("전원검사", 22, 18, 220));
         power.Controls.Add(Caption("LED는 직접 판정하고, 전압은 측정값 입력 시 기준 범위로 자동 판정됩니다.", 22, 48, 550));
         var py = 86;
-        foreach (var definition in PowerDefinitions(session.BoardType))
+        foreach (var definition in PowerInspectionCriteriaService.Get(session.BoardType))
         {
             AddInspectionRow(power, definition.Key, definition.Label, definition.Criterion, py,
                 _session.Results.PowerItems, _powerSelectors, _measurements, definition.Minimum, definition.Maximum);
@@ -74,6 +77,7 @@ public sealed class ManualInspectionControl : Panel
             : "모든 항목을 판정해 임시 저장하세요. Excel 반영은 최종 판정에서 진행됩니다.";
         Controls.Add(_status);
         Controls.Add(save);
+        _loading = false;
     }
 
     private void AddInspectionRow(
@@ -131,6 +135,7 @@ public sealed class ManualInspectionControl : Panel
         };
         selector.Items.AddRange(["선택", "PASS", "FAIL"]);
         selector.SelectedIndex = prior.Passed switch { true => 1, false => 2, _ => 0 };
+        selector.SelectedIndexChanged += (_, _) => MarkDirty();
         selectors[key] = selector;
         parent.Controls.Add(selector);
 
@@ -156,18 +161,19 @@ public sealed class ManualInspectionControl : Panel
             {
                 var input = measurement.TextValue.Trim();
                 prior.Measurement = input;
-                if (!TryParseVoltage(input, out var value))
+                var evaluation = PowerInspectionCriteriaService.Evaluate(input, minimum!.Value, maximum!.Value, out _);
+                if (evaluation is VoltageEvaluation.Missing or VoltageEvaluation.Invalid)
                 {
                     selector.SelectedIndex = 0;
-                    measurement.HasError = input.Length > 0;
+                    measurement.HasError = evaluation == VoltageEvaluation.Invalid;
                     ShowAutomaticResult(
-                        input.Length == 0 ? "값 입력" : "숫자 확인",
-                        input.Length == 0 ? Colors.TextMuted : Colors.Danger,
-                        input.Length == 0 ? Colors.AppBackground : Colors.DangerSurface);
+                        evaluation == VoltageEvaluation.Missing ? "값 입력" : "숫자 확인",
+                        evaluation == VoltageEvaluation.Missing ? Colors.TextMuted : Colors.Danger,
+                        evaluation == VoltageEvaluation.Missing ? Colors.AppBackground : Colors.DangerSurface);
                     return;
                 }
                 measurement.HasError = false;
-                var passed = value >= minimum!.Value && value <= maximum!.Value;
+                var passed = evaluation == VoltageEvaluation.Pass;
                 selector.SelectedIndex = passed ? 1 : 2;
                 ShowAutomaticResult(
                     passed ? "PASS" : "FAIL",
@@ -175,8 +181,20 @@ public sealed class ManualInspectionControl : Panel
                     passed ? Colors.SuccessSurface : Colors.DangerSurface);
             }
             measurement.TextChanged2 += (_, _) => EvaluateMeasurement();
+            measurement.TextChanged2 += (_, _) => MarkDirty();
             EvaluateMeasurement();
         }
+    }
+
+    private void MarkDirty()
+    {
+        if (_loading) return;
+        _session.Results.InvalidateFinalization();
+        _session.Results.ManualInspectionCompleted = false;
+        _session.Results.ManualStatus = InspectionExecutionStatus.NotRun;
+        _status.Text = "입력값이 변경되었습니다. [육안·전원 결과 임시 저장]을 눌러 변경사항을 반영하세요.";
+        _status.ForeColor = Colors.Warning;
+        _stateChanged?.Invoke();
     }
 
     private void SaveResults()
@@ -196,6 +214,8 @@ public sealed class ManualInspectionControl : Panel
         foreach (var pair in _measurements)
             _session.Results.PowerItems[pair.Key].Measurement = pair.Value.TextValue.Trim();
 
+        var audit = new InspectionAuditService();
+        var attempt = audit.BeginAttempt(_session, "manual", "육안 및 전원 측정 결과 저장");
         _session.Results.InvalidateFinalization();
         _session.Results.ManualInspectionCompleted = true;
         var failed = _session.Results.VisualItems.Values.Count(item => item.Passed == false)
@@ -203,38 +223,14 @@ public sealed class ManualInspectionControl : Panel
         _session.Results.ManualStatus = failed == 0
             ? InspectionExecutionStatus.Pass
             : InspectionExecutionStatus.Fail;
+        audit.CompleteAttempt(_session, "manual", attempt, _session.Results.ManualStatus, $"FAIL {failed}개");
         new InspectionCheckpointService().TrySave(_session);
         _status.Text = failed == 0
             ? "육안·전원 결과를 임시 저장했습니다. 전체 항목 PASS · 최종 판정 시 Excel 반영"
             : $"육안·전원 결과를 임시 저장했습니다. FAIL {failed}개 · 최종 판정 시 Excel 반영";
         _status.ForeColor = failed == 0 ? Colors.Success : Colors.Danger;
+        _stateChanged?.Invoke();
     }
-
-    private static bool TryParseVoltage(string input, out double value)
-    {
-        var normalized = input.Replace("V", string.Empty, StringComparison.OrdinalIgnoreCase).Trim();
-        return double.TryParse(normalized, NumberStyles.Float, CultureInfo.CurrentCulture, out value)
-               || double.TryParse(normalized.Replace(',', '.'), NumberStyles.Float, CultureInfo.InvariantCulture, out value);
-    }
-
-    private static (string Key, string Label, string Criterion, double? Minimum, double? Maximum)[] PowerDefinitions(InspectionBoardType boardType) =>
-        boardType == InspectionBoardType.Communication
-            ?
-            [
-                ("power_led", "LED1", "녹색 LED 점등", null, null),
-                ("input_24v", "C27 양단", "23.5V~24.5V", 23.5, 24.5),
-                ("tp1_5v", "TP1–TP3", "4.9V~5.1V", 4.9, 5.1),
-                ("tp2_3v3", "TP2–GND_ISO1", "3.2V~3.4V", 3.2, 3.4),
-                ("c37_5v", "C37 양단", "4.9V~5.1V", 4.9, 5.1),
-                ("c41_5v", "C41 양단", "4.9V~5.1V", 4.9, 5.1)
-            ]
-            :
-            [
-                ("power_led", "LED35", "녹색 LED 점등", null, null),
-                ("input_24v", "C27 양단", "23.5V~24.5V", 23.5, 24.5),
-                ("c30_5v", "C30 양단", "4.9V~5.1V", 4.9, 5.1),
-                ("tp3_3v3", "TP3–GND_ISO1", "3.2V~3.4V", 3.2, 3.4)
-            ];
 
     private static Label Title(string text, int x, int y, int width) => new()
     {

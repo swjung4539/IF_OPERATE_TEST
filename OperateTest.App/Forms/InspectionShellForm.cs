@@ -1,39 +1,36 @@
 using OperateTest.App.Models;
 using OperateTest.App.Services;
 using TestEmulator.Controls;
+using TestEmulator.Layout;
 using TestEmulator.Theme;
 
 namespace OperateTest.App.Forms;
 
 public abstract class InspectionShellForm : Form
 {
-    public bool ContinueWithNextBoard { get; private set; }
-
-    public void RequestNextBoard()
-    {
-        if (_session?.Results.WorkbookSavedAt is null) return;
-        ContinueWithNextBoard = true;
-        Close();
-    }
-
-    private readonly Panel _content = new BufferedPanel { Dock = DockStyle.Fill, BackColor = Colors.AppBackground };
+    private readonly Panel _content = new BufferedPanel { Dock = DockStyle.Fill, AutoScroll = true, BackColor = Colors.AppBackground };
     private readonly Label _pageTitle = new();
     private readonly Label _pageSubtitle = new();
     private readonly Dictionary<string, SideMenuButton> _menus = new();
     private readonly Label _connectionSummary = new();
+    private readonly WorkflowProgressBar _workflow = new();
+    private readonly Label _nextAction = new();
+    private readonly Label _saveStatus = new();
     private readonly string _sessionPrefix;
     private readonly InspectionSession? _session;
     private readonly InspectionCheckpointService _checkpoints = new();
+    private Func<(bool Ready, string Detail)> _connectionReadiness = () => (false, "연결 확인 필요");
+
+    public InspectionContinuationAction CompletionAction { get; private set; }
 
     protected InspectionShellForm(string boardTitle, string boardSubtitle, Color accent, bool showSettings = true, InspectionSession? session = null)
     {
         _session = session;
+        InspectionCheckpointService.SaveActivity += OnCheckpointSaveActivity;
         _sessionPrefix = session is null ? string.Empty : $"{session.SerialNumber} · {session.Inspector}";
         Text = boardTitle;
-        AutoScaleMode = AutoScaleMode.None;
         StartPosition = FormStartPosition.CenterParent;
-        MinimumSize = new Size(1460, 800);
-        ClientSize = new Size(1500, 860);
+        ResponsiveWindow.Configure(this, new Size(1500, 860), new Size(1040, 680));
         WindowState = FormWindowState.Normal;
         BackColor = Colors.AppBackground;
         Font = Fonts.Body;
@@ -66,9 +63,16 @@ public abstract class InspectionShellForm : Form
         AddMenu(menuHost, "manual", "육안 및 전원 검사", AppIcon.Clipboard);
         AddMenu(menuHost, "dashboard", "대시보드", AppIcon.Home);
         sidebar.Controls.Add(menuHost);
-        var back = new AppButton { Variant = AppButtonVariant.Secondary, IconGlyph = AppIcon.ChevronLeft, Text = "검사 대상 선택", Location = new Point(16, 70), Size = new Size(Metrics.SideMenuWidth - 32, 50) };
+        _saveStatus.Location = new Point(16, 8);
+        _saveStatus.Size = new Size(Metrics.SideMenuWidth - 32, 26);
+        _saveStatus.Font = Fonts.Caption;
+        _saveStatus.ForeColor = Colors.TextSecondary;
+        _saveStatus.Text = session is null ? "저장 대상 없음" : "아직 자동 저장되지 않음";
+        _saveStatus.TextAlign = ContentAlignment.MiddleLeft;
+        _saveStatus.AutoEllipsis = true;
+        var back = new AppButton { Variant = AppButtonVariant.Secondary, IconGlyph = AppIcon.ChevronLeft, Text = "검사 대상 선택", Location = new Point(16, 104), Size = new Size(Metrics.SideMenuWidth - 32, 50) };
         back.Click += (_, _) => Close();
-        var saveCheckpoint = new AppButton { Variant = AppButtonVariant.OutlinePrimary, IconGlyph = AppIcon.Document, Text = "검사내용 임시 저장", Location = new Point(16, 10), Size = new Size(Metrics.SideMenuWidth - 32, 50), Enabled = session is not null };
+        var saveCheckpoint = new AppButton { Variant = AppButtonVariant.OutlinePrimary, IconGlyph = AppIcon.Document, Text = "검사내용 임시 저장", Location = new Point(16, 42), Size = new Size(Metrics.SideMenuWidth - 32, 50), Enabled = session is not null };
         saveCheckpoint.Click += (_, _) =>
         {
             if (_session is null) return;
@@ -84,22 +88,31 @@ public abstract class InspectionShellForm : Form
                 MessageBox.Show(this, $"검사내용을 임시 저장하지 못했습니다.{Environment.NewLine}{Environment.NewLine}{ex.Message}", "임시 저장 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         };
-        var bottomActions = new Panel { Dock = DockStyle.Bottom, Height = 132, BackColor = Colors.Surface };
+        var bottomActions = new Panel { Dock = DockStyle.Bottom, Height = 166, BackColor = Colors.Surface };
+        bottomActions.Controls.Add(_saveStatus);
         bottomActions.Controls.Add(saveCheckpoint);
         bottomActions.Controls.Add(back);
         sidebar.Controls.Add(bottomActions);
 
-        var pageHeader = new BufferedPanel { Dock = DockStyle.Top, Height = 112, BackColor = Colors.AppBackground };
-        _pageTitle.Location = new Point(40, 24);
+        var pageHeader = new BufferedPanel { Dock = DockStyle.Top, Height = 206, BackColor = Colors.AppBackground };
+        _pageTitle.Location = new Point(40, 16);
         _pageTitle.Size = new Size(900, 40);
         _pageTitle.Font = new Font("맑은 고딕", 22f, FontStyle.Bold);
         _pageTitle.ForeColor = Colors.TextPrimary;
-        _pageSubtitle.Location = new Point(42, 69);
+        _pageSubtitle.Location = new Point(42, 57);
         _pageSubtitle.Size = new Size(1000, 25);
         _pageSubtitle.Font = Fonts.Body;
         _pageSubtitle.ForeColor = Colors.TextSecondary;
+        _workflow.SetBounds(40, 88, 1110, 78);
+        _nextAction.SetBounds(40, 174, 1110, 22);
+        _nextAction.Font = Fonts.Caption;
+        _nextAction.ForeColor = Colors.Primary;
+        _nextAction.AutoEllipsis = true;
         pageHeader.Controls.Add(_pageTitle);
         pageHeader.Controls.Add(_pageSubtitle);
+        pageHeader.Controls.Add(_workflow);
+        pageHeader.Controls.Add(_nextAction);
+        pageHeader.Resize += (_, _) => LayoutPageHeader(pageHeader);
 
         var main = new BufferedPanel { Dock = DockStyle.Fill, BackColor = Colors.AppBackground };
         main.Controls.Add(_content);
@@ -107,7 +120,41 @@ public abstract class InspectionShellForm : Form
         Controls.Add(main);
         Controls.Add(sidebar);
         Controls.Add(top);
+        LayoutPageHeader(pageHeader);
+        Activated += (_, _) => RefreshWorkflow();
         FormClosing += (_, _) => { if (_session is not null) _checkpoints.TrySave(_session); };
+    }
+
+    private void LayoutPageHeader(Control pageHeader)
+    {
+        var contentWidth = Math.Max(_workflow.MinimumSize.Width, pageHeader.ClientSize.Width - 80);
+        _pageTitle.Width = contentWidth;
+        _pageSubtitle.Width = contentWidth;
+        _workflow.Width = contentWidth;
+        _nextAction.Width = contentWidth;
+    }
+
+    private void OnCheckpointSaveActivity(object? sender, CheckpointSaveEventArgs e)
+    {
+        if (_session is null || e.SessionId != _session.SessionId || IsDisposed) return;
+        void UpdateStatus()
+        {
+            if (IsDisposed) return;
+            _saveStatus.Text = e.Success
+                ? $"자동 저장됨 {e.Timestamp:HH:mm:ss}"
+                : "자동 저장 실패 · 수동 저장 필요";
+            _saveStatus.ForeColor = e.Success ? Colors.Success : Colors.Danger;
+            _saveStatus.AccessibleDescription = e.Success ? e.Path : e.Message;
+        }
+
+        if (InvokeRequired && IsHandleCreated) BeginInvoke(UpdateStatus);
+        else UpdateStatus();
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing) InspectionCheckpointService.SaveActivity -= OnCheckpointSaveActivity;
+        base.Dispose(disposing);
     }
 
     private void AddMenu(Panel host, string key, string text, AppIcon icon)
@@ -135,6 +182,27 @@ public abstract class InspectionShellForm : Form
         page.BringToFront();
         _content.Invalidate(true);
         foreach (var previous in previousPages) previous.Dispose();
+        RefreshWorkflow();
+    }
+
+    protected void ConfigureConnectionReadiness(Func<(bool Ready, string Detail)> provider)
+    {
+        _connectionReadiness = provider;
+        RefreshWorkflow();
+    }
+
+    protected void RefreshWorkflow()
+    {
+        if (_session is null) return;
+        var readiness = _connectionReadiness();
+        var snapshot = InspectionWorkflowService.Evaluate(_session, readiness.Ready, readiness.Detail);
+        _workflow.SetSteps(snapshot.Steps);
+        _nextAction.Text = $"필수 검사 {snapshot.CompletedItems}/{snapshot.TotalItems} 완료  ·  {snapshot.NextAction}";
+        _nextAction.ForeColor = snapshot.Steps.Any(step => step.State == WorkflowStageState.Attention)
+            ? Colors.Warning
+            : snapshot.Steps.All(step => step.State == WorkflowStageState.Complete)
+                ? Colors.Success
+                : Colors.Primary;
     }
 
     protected void SetTopStatus(string text, Color color)
@@ -146,6 +214,12 @@ public abstract class InspectionShellForm : Form
     }
 
     protected abstract void Navigate(string key);
+
+    protected void RequestContinuation(InspectionContinuationAction action)
+    {
+        CompletionAction = action;
+        Close();
+    }
 
     private sealed class BufferedPanel : Panel
     {

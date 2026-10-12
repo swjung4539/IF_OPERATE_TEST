@@ -10,10 +10,11 @@ public interface ISerialConnectionManager
     ISerialPortService GetTransport(string channelKey);
     Task ConnectAsync(SerialChannelDefinition definition, string portName, CancellationToken ct = default);
     Task DisconnectAsync(string channelKey, CancellationToken ct = default);
-    void DisconnectMany(IEnumerable<string> channelKeys);
+    Task DisconnectManyAsync(IEnumerable<string> channelKeys, CancellationToken ct = default);
+    Task DisconnectAllAsync(CancellationToken ct = default);
 }
 
-public sealed class SerialConnectionManager : ISerialConnectionManager, IDisposable
+public sealed class SerialConnectionManager : ISerialConnectionManager, IDisposable, IAsyncDisposable
 {
     private readonly ISerialPortCatalog _catalog;
     private readonly Dictionary<string, SerialConnection> _connections = new(StringComparer.OrdinalIgnoreCase);
@@ -54,12 +55,39 @@ public sealed class SerialConnectionManager : ISerialConnectionManager, IDisposa
     public Task DisconnectAsync(string channelKey, CancellationToken ct = default) =>
         Get(channelKey).DisconnectAsync(ct);
 
-    public void DisconnectMany(IEnumerable<string> channelKeys)
+    public async Task DisconnectManyAsync(IEnumerable<string> channelKeys, CancellationToken ct = default)
     {
+        List<Exception>? failures = null;
         foreach (var key in channelKeys)
         {
-            try { Get(key).DisconnectAsync().GetAwaiter().GetResult(); }
-            catch { }
+            ct.ThrowIfCancellationRequested();
+            try
+            {
+                await Get(key).DisconnectAsync(ct).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                (failures ??= []).Add(new IOException($"{key} 포트 해제 실패: {ex.Message}", ex));
+            }
+        }
+        if (failures is not null) throw new AggregateException("일부 통신 포트를 해제하지 못했습니다.", failures);
+    }
+
+    public Task DisconnectAllAsync(CancellationToken ct = default) =>
+        DisconnectManyAsync(_connections.Keys.ToArray(), ct);
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            await SafetyOperationService.RunWithTimeoutAsync(
+                "통신 포트 해제",
+                SafetyOperationService.SerialDisconnectTimeout,
+                DisconnectAllAsync).ConfigureAwait(false);
+        }
+        finally
+        {
+            Dispose();
         }
     }
 
